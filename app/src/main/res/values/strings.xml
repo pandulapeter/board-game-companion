@@ -2,10 +2,16 @@
 
     <!-- General -->
     <string name="app_title" translatable="false">Board Game Companion</string>
+    <string name="close">Close</string>
+    <string name="work_in_progress">Work in progress</string>
 
     <!-- Home -->
     <string name="home_games">Games</string>
     <string name="home_glossary">Glossary</string>
     <string name="home_rule_book">Rule book</string>
+
+    <!-- Games -->
+    <string name="games_new_game">New game</string>
+    <string name="games_empty_state">No active games</string>
 
 </resources>

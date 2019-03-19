@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.rbtgames.boardgame.R
 
@@ -36,6 +37,10 @@ fun View.showSnackbar(message: String, @StringRes actionResId: Int = 0, action: 
 
 fun View.showSnackbar(@StringRes messageResId: Int, @StringRes actionResId: Int = 0, action: () -> Unit = {}) = showSnackbar(context.getString(messageResId), actionResId, action)
 
+fun MutableLiveData<Boolean?>.sendEvent() {
+    value = true
+}
+
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     vararg sharedViews: View?,
     tag: String = T::class.java.name,
@@ -55,6 +60,8 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
         commitAllowingStateLoss()
     }
 }
+
+fun FragmentManager.navigateBack() = popBackStackImmediate()
 
 inline fun <T : Fragment> T.withArguments(bundleOperations: (Bundle) -> Unit): T = apply {
     arguments = Bundle().apply { bundleOperations(this) }

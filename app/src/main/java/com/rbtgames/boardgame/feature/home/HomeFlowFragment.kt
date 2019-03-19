@@ -5,7 +5,7 @@ import android.view.View
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentHomeFlowBinding
 import com.rbtgames.boardgame.feature.FlowFragment
-import com.rbtgames.boardgame.feature.home.games.GamesFragment
+import com.rbtgames.boardgame.feature.home.games.GamesFlowFragment
 import com.rbtgames.boardgame.feature.home.glossary.GlossaryFragment
 import com.rbtgames.boardgame.feature.home.ruleBook.RuleBookFragment
 import com.rbtgames.boardgame.utils.consume
@@ -28,11 +28,19 @@ class HomeFlowFragment : FlowFragment<FragmentHomeFlowBinding>(R.layout.fragment
         }
     }
 
-    private fun navigateToGames() = childFragmentManager.handleReplace { GamesFragment.newInstance() }
+    override fun onBackPressed() = currentFragment.let {
+        when {
+            it == null -> false
+            it.onBackPressed() -> true
+            else -> false
+        }
+    }
 
-    private fun navigateToGlossary() = childFragmentManager.handleReplace { GlossaryFragment.newInstance() }
+    private fun navigateToGames() = childFragmentManager.handleReplace(addToBackStack = true) { GamesFlowFragment.newInstance() }
 
-    private fun navigateToRuleBook() = childFragmentManager.handleReplace { RuleBookFragment.newInstance() }
+    private fun navigateToGlossary() = childFragmentManager.handleReplace(addToBackStack = true) { GlossaryFragment.newInstance() }
+
+    private fun navigateToRuleBook() = childFragmentManager.handleReplace(addToBackStack = true) { RuleBookFragment.newInstance() }
 
     companion object {
         fun newInstance() = HomeFlowFragment()
