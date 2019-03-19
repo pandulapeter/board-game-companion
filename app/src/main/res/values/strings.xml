@@ -3,6 +3,7 @@
     <!-- General -->
     <string name="app_title" translatable="false">Board Game Companion</string>
     <string name="close">Close</string>
+    <string name="back">Back</string>
     <string name="work_in_progress">Work in progress</string>
 
     <!-- Home -->
@@ -12,6 +13,9 @@
 
     <!-- Games -->
     <string name="games_new_game">New game</string>
-    <string name="games_empty_state">No active games</string>
+    <string name="games_no_games">No active games</string>
+    <string name="games_no_players">At least two players are needed to start the game.</string>
+    <string name="games_add_player">Add player</string>
+    <string name="games_start_game">Start game</string>
 
 </resources>
