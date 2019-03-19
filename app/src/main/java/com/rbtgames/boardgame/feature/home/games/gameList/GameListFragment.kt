@@ -16,6 +16,16 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.shouldOpenNewGameScreen.observeAndReset { navigateToNewGame() }
+        //TODO: Remove this.
+        var isExtended = true
+        binding.text.setOnClickListener {
+            if (isExtended) {
+                binding.floatingActionButton.shrink()
+            } else {
+                binding.floatingActionButton.extend()
+            }
+            isExtended = !isExtended
+        }
     }
 
     private fun navigateToNewGame() = parentFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }

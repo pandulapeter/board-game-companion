@@ -12,7 +12,10 @@
         android:theme="@style/AppTheme.Splash"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".Activity">
+        <activity
+            android:name=".Activity"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
 

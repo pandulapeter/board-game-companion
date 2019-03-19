@@ -2,7 +2,9 @@
 
     <!-- General -->
     <dimen name="first_keyline">24dp</dimen>
-    <dimen name="second_keyline">48dp</dimen>
+    <dimen name="first_keyline_button">14dp</dimen>
+    <dimen name="first_keyline_text_input">20dp</dimen>
+    <dimen name="second_keyline">72dp</dimen>
     <dimen name="small_content_padding">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
     <dimen name="large_content_padding">16dp</dimen>

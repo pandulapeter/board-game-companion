@@ -16,6 +16,9 @@
     <string name="games_no_games">No active games</string>
     <string name="games_no_players">At least two players are needed to start the game.</string>
     <string name="games_add_player">Add player</string>
+    <string name="games_player_name">Player name</string>
+    <string name="games_player_color">Player color</string>
     <string name="games_start_game">Start game</string>
+    <string name="games_done">Done</string>
 
 </resources>

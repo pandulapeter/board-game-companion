@@ -22,6 +22,18 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
         super.onViewCreated(view, savedInstanceState)
         viewModel.shouldNavigateBack.observeAndReset { parentFragmentManager?.navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observeAndReset { navigateToNewPlayerScreen() }
+        //TODO: Remove this.
+        var isExtended = true
+        binding.text.setOnClickListener {
+            if (isExtended) {
+                binding.addPlayerButton.shrink()
+                binding.startGameButton.shrink()
+            } else {
+                binding.addPlayerButton.extend()
+                binding.startGameButton.extend()
+            }
+            isExtended = !isExtended
+        }
     }
 
     private fun navigateToNewPlayerScreen() = activityFragmentManager?.handleReplace(addToBackStack = true) { NewPlayerFragment.newInstance() }

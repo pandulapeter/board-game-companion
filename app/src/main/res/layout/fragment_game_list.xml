@@ -17,17 +17,19 @@
         android:transitionGroup="true">
 
         <TextView
+            android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/games_no_games" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/floating_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/content_padding"
-            android:layout_marginBottom="@dimen/large_content_padding"
+            android:layout_marginBottom="@dimen/first_keyline"
             android:onClick="@{() -> viewModel.onNewButtonPressed()}"
             android:text="@string/games_new_game"
             app:icon="@drawable/ic_add" />

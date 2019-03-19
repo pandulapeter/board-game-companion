@@ -9,11 +9,20 @@ class NewGameViewModel : ScreenViewModel() {
 
     val shouldNavigateBack = eventLiveData()
     val shouldNavigateToNewPlayerScreen = eventLiveData()
+    val isAddPlayerButtonEnabled = mutableLiveDataOf(true)
     val isStartGameButtonEnabled = mutableLiveDataOf(false)
 
     fun onBackButtonPressed() = shouldNavigateBack.sendEvent()
 
-    fun onAddPlayerButtonPressed() = shouldNavigateToNewPlayerScreen.sendEvent()
+    fun onAddPlayerButtonPressed() {
+        if (isAddPlayerButtonEnabled.value == true) {
+            shouldNavigateToNewPlayerScreen.sendEvent()
+        }
+    }
 
-    fun onStartGameButtonPressed() = Unit
+    fun onStartGameButtonPressed() {
+        if (isStartGameButtonEnabled.value == true) {
+            //TODO
+        }
+    }
 }
