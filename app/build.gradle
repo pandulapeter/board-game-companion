@@ -1,0 +1,86 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.rbtgames.boardgame"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "0.0.1"
+    }
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "BUILD_TIME", "\"${new Date().format("yyyy.MM.dd.")}\"")
+    }
+    signingConfigs {
+        internal {
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storeFile file("internal.keystore")
+            storePassword "android"
+        }
+        release { //TODO: A different signing configuration is needed.
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storeFile file("internal.keystore")
+            storePassword "android"
+        }
+    }
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        internal {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.internal
+            applicationIdSuffix ".internal"
+            versionNameSuffix "-internal"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    // Kotlin language support
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+    // Service locator
+    implementation "org.koin:koin-androidx-viewmodel:1.0.2"
+
+    // Kotlin coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
+
+    // UI components
+    implementation "androidx.appcompat:appcompat:1.0.2"
+    implementation "com.google.android.material:material:1.1.0-alpha04"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
+
+    // Lifecycle
+    def lifecycleVersion = "2.1.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
+}

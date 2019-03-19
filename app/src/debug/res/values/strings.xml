@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- General -->
+    <string name="app_title" translatable="false">Board Game Companion (debug)</string>
+
+</resources>
