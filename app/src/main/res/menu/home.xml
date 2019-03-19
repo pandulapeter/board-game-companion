@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/games"
+        android:icon="@drawable/ic_games"
+        android:title="@string/home_games" />
+
+    <item
+        android:id="@+id/glossary"
+        android:icon="@drawable/ic_glossary"
+        android:title="@string/home_glossary" />
+
+    <item
+        android:id="@+id/rule_book"
+        android:icon="@drawable/ic_rule_book"
+        android:title="@string/home_rule_book" />
+
+</menu>

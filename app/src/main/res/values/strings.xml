@@ -3,4 +3,9 @@
     <!-- General -->
     <string name="app_title" translatable="false">Board Game Companion</string>
 
+    <!-- Home -->
+    <string name="home_games">Games</string>
+    <string name="home_glossary">Glossary</string>
+    <string name="home_rule_book">Rule book</string>
+
 </resources>
