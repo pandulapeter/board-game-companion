@@ -7,6 +7,8 @@ import androidx.core.view.GravityCompat
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
+import com.rbtgames.boardgame.feature.home.games.newGame.newPlayer.NewPlayerFragment
+import com.rbtgames.boardgame.utils.handleReplace
 import com.rbtgames.boardgame.utils.navigateBack
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,7 +21,10 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.shouldNavigateBack.observeAndReset { parentFragmentManager?.navigateBack() }
+        viewModel.shouldNavigateToNewPlayerScreen.observeAndReset { navigateToNewPlayerScreen() }
     }
+
+    private fun navigateToNewPlayerScreen() = activityFragmentManager?.handleReplace(addToBackStack = true) { NewPlayerFragment.newInstance() }
 
     companion object {
         fun newInstance() = NewGameFragment()

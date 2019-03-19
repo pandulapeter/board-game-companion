@@ -1,11 +1,8 @@
 package com.rbtgames.boardgame.feature
 
 import android.os.Bundle
-import android.transition.ChangeBounds
-import android.transition.ChangeTransform
 import android.transition.Fade
 import android.transition.Transition
-import android.transition.TransitionSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +29,6 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
         allowEnterTransitionOverlap = true
         allowReturnTransitionOverlap = true
         resetTransitions()
-        sharedElementEnterTransition = TransitionSet().apply {
-            addTransition(ChangeTransform())
-            addTransition(ChangeBounds())
-        }
-        sharedElementReturnTransition = sharedElementEnterTransition
     }
 
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
