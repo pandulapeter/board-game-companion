@@ -2,6 +2,7 @@ package com.rbtgames.boardgame.feature.home.games.playerDetail
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.model.Game
@@ -9,6 +10,7 @@ import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentPlayerDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
+import com.rbtgames.boardgame.utils.consume
 import com.rbtgames.boardgame.utils.hideKeyboard
 import com.rbtgames.boardgame.utils.navigateBack
 import com.rbtgames.boardgame.utils.showKeyboard
@@ -30,18 +32,17 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
             adapter = colorAdapter
             addItemDecoration(ColorItemDecoration(requireContext()))
         }
-        binding.playerNameInput.apply { post { showKeyboard(this) } }
+        binding.playerNameInput.apply {
+            post { if (isAdded) showKeyboard(this) }
+            setOnEditorActionListener { _, actionId, _ -> consume { if (actionId == EditorInfo.IME_ACTION_DONE) viewModel.onDoneButtonPressed() } }
+        }
         viewModel.shouldNavigateBack.observeAndReset {
             val currentFocus = activity?.currentFocus
             if (currentFocus == null) {
                 activityFragmentManager?.navigateBack()
             } else {
                 hideKeyboard(currentFocus)
-                binding.root.postDelayed({
-                    if (isAdded) {
-                        activityFragmentManager?.navigateBack()
-                    }
-                }, 100)
+                binding.root.postDelayed({ if (isAdded) activityFragmentManager?.navigateBack() }, 100)
             }
         }
         viewModel.colors.observe { colorViewModels -> colorAdapter.submitList(colorViewModels) }

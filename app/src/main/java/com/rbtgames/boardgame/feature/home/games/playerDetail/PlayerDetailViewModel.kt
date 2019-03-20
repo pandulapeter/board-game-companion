@@ -12,10 +12,10 @@ class PlayerDetailViewModel(private val game: Game, private val player: Player) 
     val shouldNavigateBack = eventLiveData()
     val playerName = mutableLiveDataOf(player.name)
     val isDoneButtonEnabled = mutableLiveDataOf(player.name.isNotEmpty())
-    val colors = mutableLiveDataOf(Player.Color.values().mapIndexed { index, color ->
+    val colors = mutableLiveDataOf(Player.Color.values().map { color ->
         ColorViewModel(
             color = color,
-            isSelected = index == 0
+            isSelected = color.colorResourceId == player.color.colorResourceId
         )
     })
 
@@ -27,13 +27,15 @@ class PlayerDetailViewModel(private val game: Game, private val player: Player) 
 
     fun onDoneButtonPressed() {
         if (isDoneButtonEnabled.value == true) {
+            val playerName = playerName.value ?: ""
+            val playerColor = colors.value?.find { it.isSelected }?.color ?: Player.Color.values().first()
             game.players.apply {
                 val currentPlayer = find { it.id == player.id }
                 if (currentPlayer == null) {
-                    add(player)
+                    add(Player(player.id, playerName, playerColor))
                 } else {
-                    currentPlayer.name = player.name
-                    currentPlayer.color = player.color
+                    currentPlayer.name = playerName
+                    currentPlayer.color = playerColor
                 }
             }
             shouldNavigateBack.sendEvent()

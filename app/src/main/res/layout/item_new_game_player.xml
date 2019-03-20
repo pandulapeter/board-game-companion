@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rbtgames.boardgame.feature.home.games.newGame.PlayerViewModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/new_game_item_height"
+        android:layout_marginTop="@dimen/content_padding"
+        android:foreground="?attr/selectableItemBackground"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:color="@{viewModel.player.color}"
+        app:contentPadding="@dimen/content_padding">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/content_padding"
+            android:layout_marginEnd="@dimen/content_padding"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.player.name}"
+            android:textColor="@color/black"
+            tools:text="Player name" />
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

@@ -19,7 +19,7 @@ val dataModule = module {
 
 val featureModule = module {
     viewModel<GameListViewModel>()
-    viewModel<NewGameViewModel>()
+    viewModel { (game: Game) -> NewGameViewModel(game) }
     viewModel { (game: Game, player: Player) -> PlayerDetailViewModel(game, player) }
     viewModel<GlossaryViewModel>()
     viewModel<RuleBookViewModel>()

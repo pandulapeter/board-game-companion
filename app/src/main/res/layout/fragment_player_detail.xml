@@ -38,6 +38,7 @@
             android:layout_marginTop="@dimen/large_content_padding"
             android:layout_marginEnd="@dimen/first_keyline_text_input"
             android:hint="@string/games_player_name"
+            android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:inputType="textPersonName|textCapWords"
             android:maxLength="25"

@@ -15,27 +15,19 @@
         android:layout_height="match_parent"
         android:background="?android:attr/windowBackground">
 
-        <ScrollView
-            android:id="@+id/scroll_view"
-            style="@style/ScrollView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/content_padding"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/first_keyline"
             android:paddingTop="@dimen/content_padding"
+            android:paddingEnd="@dimen/first_keyline"
             android:paddingBottom="@dimen/list_bottom_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/back_button">
-
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/games_no_players" />
-
-        </ScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
         <ImageView
             android:id="@+id/back_button"

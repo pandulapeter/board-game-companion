@@ -11,11 +11,11 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/player_detail_color"
-        android:layout_height="@dimen/player_detail_color"
+        android:layout_width="@dimen/player_detail_color_card"
+        android:layout_height="@dimen/player_detail_color_card"
         android:foreground="?attr/selectableItemBackground"
         android:theme="@style/Theme.MaterialComponents.Light"
-        app:cardCornerRadius="@dimen/player_detail_color_card_radius"
+        app:cardCornerRadius="@dimen/card_corner_radius"
         app:color="@{viewModel.color}">
 
         <ImageView
