@@ -9,5 +9,10 @@
     <dimen name="content_padding">8dp</dimen>
     <dimen name="large_content_padding">16dp</dimen>
     <dimen name="button_corner_radius">32dp</dimen>
+    <dimen name="list_bottom_padding">80dp</dimen>
+
+    <!-- Player detail -->
+    <dimen name="player_detail_color">80dp</dimen>
+    <dimen name="player_detail_color_card_radius">16dp</dimen>
 
 </resources>

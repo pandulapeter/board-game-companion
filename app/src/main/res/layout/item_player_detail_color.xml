@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rbtgames.boardgame.feature.home.games.playerDetail.ColorViewModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/player_detail_color"
+        android:layout_height="@dimen/player_detail_color"
+        android:foreground="?attr/selectableItemBackground"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:cardCornerRadius="@dimen/player_detail_color_card_radius"
+        app:color="@{viewModel.color}">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:visibility="@{viewModel.isSelected}"
+            app:srcCompat="@drawable/ic_done" />
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

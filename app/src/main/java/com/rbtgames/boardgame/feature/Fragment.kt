@@ -2,13 +2,15 @@ package com.rbtgames.boardgame.feature
 
 import android.os.Bundle
 import android.transition.Fade
-import android.transition.Transition
+import android.transition.Slide
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -17,12 +19,9 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
 
     private var realBinding: B? = null
     protected val binding get() = realBinding ?: throw IllegalStateException("Trying to access a null binding.")
-    protected open val initialEnterTransition: Transition? = Fade()
-    protected open val initialReenterTransition: Transition? = null
-    protected open val initialExitTransition: Transition? = Fade()
-    protected open val initialReturnTransition: Transition? get() = initialExitTransition
     protected val activityFragmentManager get() = (activity as? AppCompatActivity?)?.supportFragmentManager
     protected val parentFragmentManager get() = parentFragment?.childFragmentManager
+    protected open val transitionType = TransitionType.SIBLING
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +54,17 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     open fun onBackPressed() = false
 
     private fun resetTransitions() {
-        enterTransition = initialEnterTransition
-        reenterTransition = initialReenterTransition
-        exitTransition = initialExitTransition
-        returnTransition = initialReturnTransition
+        reenterTransition = Fade()
+        exitTransition = Fade()
+        enterTransition = when (transitionType) {
+            TransitionType.SIBLING -> Fade()
+            TransitionType.DETAIL -> Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, resources.configuration.layoutDirection))
+            TransitionType.MODAL -> Slide(Gravity.BOTTOM)
+        }
+        returnTransition = enterTransition
+    }
+
+    protected enum class TransitionType {
+        SIBLING, DETAIL, MODAL
     }
 }

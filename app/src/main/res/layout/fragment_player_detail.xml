@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/windowBackground">
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/first_keyline_button"
+            android:layout_marginTop="@dimen/first_keyline_button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/close"
+            android:onClick="@{() -> viewModel.onCloseButtonPressed()}"
+            android:padding="@dimen/content_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close" />
+
+        <EditText
+            android:id="@+id/player_name_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/first_keyline_text_input"
+            android:layout_marginTop="@dimen/large_content_padding"
+            android:layout_marginEnd="@dimen/first_keyline_text_input"
+            android:hint="@string/games_player_name"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName|textCapWords"
+            android:maxLength="25"
+            android:text="@={viewModel.playerName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/close_button"
+            tools:ignore="UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/player_color_hint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/first_keyline"
+            android:layout_marginTop="@dimen/large_content_padding"
+            android:layout_marginEnd="@dimen/first_keyline"
+            android:text="@string/games_player_color"
+            android:textColor="@color/brand"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/player_name_input" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/first_keyline"
+            android:layout_marginBottom="@dimen/first_keyline"
+            android:enabled="@{viewModel.isDoneButtonEnabled}"
+            android:onClick="@{() -> viewModel.onDoneButtonPressed()}"
+            android:text="@string/games_done"
+            app:icon="@drawable/ic_done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_content_padding"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/first_keyline"
+            android:paddingEnd="@dimen/first_keyline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/player_color_hint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
