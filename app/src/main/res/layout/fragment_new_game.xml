@@ -10,69 +10,100 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:attr/windowBackground">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="exitUntilCollapsed|scroll"
+                app:title="@string/games_new_game">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_bar_collapsed_height"
+                    android:layout_marginTop="@dimen/app_bar_top_margin"
+                    app:contentInsetStart="@dimen/second_keyline"
+                    app:layout_collapseMode="pin" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_bar_expanded_height"
+                    app:layout_collapseMode="parallax" />
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/first_keyline_button"
+                    android:layout_marginTop="@dimen/first_keyline_button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/back"
+                    android:onClick="@{() -> viewModel.onBackButtonPressed()}"
+                    android:padding="@dimen/content_padding"
+                    app:layout_collapseMode="pin"
+                    app:srcCompat="@drawable/ic_back" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            style="@style/ScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingStart="@dimen/first_keyline"
             android:paddingTop="@dimen/content_padding"
             android:paddingEnd="@dimen/first_keyline"
             android:paddingBottom="@dimen/list_bottom_padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/back_button" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/first_keyline_button"
-            android:layout_marginTop="@dimen/first_keyline_button"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back"
-            android:onClick="@{() -> viewModel.onBackButtonPressed()}"
-            android:padding="@dimen/content_padding"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back" />
+            android:layout_gravity="bottom">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/add_player_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/first_keyline"
-            android:layout_marginEnd="@dimen/small_content_padding"
-            android:layout_marginBottom="@dimen/first_keyline"
-            android:enabled="@{viewModel.isAddPlayerButtonEnabled}"
-            android:onClick="@{() -> viewModel.onAddPlayerButtonPressed()}"
-            android:text="@string/games_add_player"
-            app:icon="@drawable/ic_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/start_game_button"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/add_player_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/first_keyline"
+                android:layout_marginEnd="@dimen/small_content_padding"
+                android:layout_marginBottom="@dimen/first_keyline"
+                android:enabled="@{viewModel.isAddPlayerButtonEnabled}"
+                android:onClick="@{() -> viewModel.onAddPlayerButtonPressed()}"
+                android:text="@string/games_add_player"
+                app:icon="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/start_game_button"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/start_game_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_content_padding"
-            android:layout_marginEnd="@dimen/first_keyline"
-            android:enabled="@{viewModel.isStartGameButtonEnabled}"
-            android:onClick="@{() -> viewModel.onStartGameButtonPressed()}"
-            android:text="@string/games_start_game"
-            app:icon="@drawable/ic_start"
-            app:layout_constraintBottom_toBottomOf="@+id/add_player_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/add_player_button" />
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/start_game_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_content_padding"
+                android:layout_marginEnd="@dimen/first_keyline"
+                android:enabled="@{viewModel.isStartGameButtonEnabled}"
+                android:onClick="@{() -> viewModel.onStartGameButtonPressed()}"
+                android:text="@string/games_start_game"
+                app:icon="@drawable/ic_start"
+                app:layout_constraintBottom_toBottomOf="@+id/add_player_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/add_player_button" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

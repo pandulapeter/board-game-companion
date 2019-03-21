@@ -11,6 +11,9 @@
     <dimen name="button_corner_radius">32dp</dimen>
     <dimen name="list_bottom_padding">96dp</dimen>
     <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="app_bar_collapsed_height">64dp</dimen>
+    <dimen name="app_bar_expanded_height">144dp</dimen>
+    <dimen name="app_bar_top_margin">2dp</dimen>
 
     <!-- New game -->
     <dimen name="new_game_item_height">56dp</dimen>
