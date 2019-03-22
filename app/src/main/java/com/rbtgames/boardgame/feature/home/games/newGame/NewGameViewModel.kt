@@ -10,6 +10,8 @@ import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
 
 class NewGameViewModel(val game: Game) : ScreenViewModel() {
 
+    val shouldShowCloseConfirmation: LiveData<Boolean?> get() = _shouldShowCloseConfirmation
+    private val _shouldShowCloseConfirmation = eventLiveData()
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
     private val _shouldNavigateBack = eventLiveData()
     val shouldNavigateToNewPlayerScreen: LiveData<Boolean?> get() = _shouldNavigateToNewPlayerScreen
@@ -24,13 +26,19 @@ class NewGameViewModel(val game: Game) : ScreenViewModel() {
     fun refreshPlayers() {
         _players.value = game.players.map { player -> PlayerViewModel(player) }.toMutableList<NewGameListItem>().apply {
             if (size < MINIMUM_PLAYER_COUNT) {
-                add(HintViewModel(R.string.games_no_players))
+                add(HintViewModel(R.string.new_game_no_players))
             }
         }
         _isStartGameButtonEnabled.value = game.players.size >= MINIMUM_PLAYER_COUNT
     }
 
-    fun onBackButtonPressed() = _shouldNavigateBack.sendEvent()
+    fun onBackButtonPressed() {
+        if (_players.value?.any { it is PlayerViewModel } != true) {
+            _shouldNavigateBack.sendEvent()
+        } else {
+            _shouldShowCloseConfirmation.sendEvent()
+        }
+    }
 
     fun onAddPlayerButtonPressed() {
         if (_isAddPlayerButtonEnabled.value == true) {

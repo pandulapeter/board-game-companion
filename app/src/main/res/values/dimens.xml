@@ -1,22 +1,24 @@
 <resources>
 
-    <!-- General -->
+    <!-- Keylines -->
     <dimen name="first_keyline">24dp</dimen>
     <dimen name="first_keyline_button">14dp</dimen>
     <dimen name="first_keyline_text_input">20dp</dimen>
     <dimen name="second_keyline">72dp</dimen>
+
+    <!-- Margin and padding -->
     <dimen name="small_content_padding">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
     <dimen name="large_content_padding">16dp</dimen>
-    <dimen name="button_corner_radius">32dp</dimen>
     <dimen name="list_bottom_padding">96dp</dimen>
+
+    <!-- Widget specific dimensions -->
+    <dimen name="button_corner_radius">32dp</dimen>
     <dimen name="card_corner_radius">16dp</dimen>
     <dimen name="app_bar_collapsed_height">64dp</dimen>
     <dimen name="app_bar_expanded_height">144dp</dimen>
     <dimen name="app_bar_top_margin">2dp</dimen>
-
-    <!-- New game -->
-    <dimen name="new_game_item_height">56dp</dimen>
+    <dimen name="list_item_height">56dp</dimen>
 
     <!-- Player detail -->
     <dimen name="player_detail_color_card">80dp</dimen>

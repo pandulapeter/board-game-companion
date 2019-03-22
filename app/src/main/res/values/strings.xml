@@ -11,14 +11,22 @@
     <string name="home_glossary">Glossary</string>
     <string name="home_rule_book">Rule book</string>
 
-    <!-- Games -->
+    <!-- Game list -->
     <string name="games_new_game">New game</string>
     <string name="games_no_games">No active games</string>
-    <string name="games_no_players">At least two players are needed to start the game.</string>
-    <string name="games_add_player">Add player</string>
-    <string name="games_player_name">Player name</string>
-    <string name="games_player_color">Player color</string>
-    <string name="games_start_game">Start game</string>
-    <string name="games_done">Done</string>
+
+    <!-- New game -->
+    <string name="new_game_no_players">At least two players are needed to start the game.</string>
+    <string name="new_game_add_player">Add player</string>
+    <string name="new_game_start_game">Start game</string>
+    <string name="new_game_close_confirmation_title">Are you sure you want to leave?</string>
+    <string name="new_game_close_confirmation_message">The players you added will not be saved.</string>
+    <string name="new_game_close_confirmation_positive">Leave</string>
+    <string name="new_game_close_confirmation_negative">Cancel</string>
+
+    <!-- Player detail -->
+    <string name="player_detail_player_name">Player name</string>
+    <string name="player_detail_player_color">Player color</string>
+    <string name="player_detail_done">Done</string>
 
 </resources>

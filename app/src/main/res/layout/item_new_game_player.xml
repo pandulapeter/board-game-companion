@@ -13,7 +13,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/new_game_item_height"
+        android:layout_height="@dimen/list_item_height"
         android:layout_marginTop="@dimen/content_padding"
         android:foreground="?attr/selectableItemBackground"
         android:theme="@style/Theme.MaterialComponents.Light"
