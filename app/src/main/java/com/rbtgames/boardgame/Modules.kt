@@ -1,7 +1,5 @@
 package com.rbtgames.boardgame
 
-import com.rbtgames.boardgame.data.model.Game
-import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.home.games.gameList.GameListViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.NewGameViewModel
@@ -19,8 +17,8 @@ val dataModule = module {
 
 val featureModule = module {
     viewModel<GameListViewModel>()
-    viewModel { (game: Game) -> NewGameViewModel(game) }
-    viewModel { (game: Game, player: Player) -> PlayerDetailViewModel(game, player) }
+    viewModel<NewGameViewModel>()
+    viewModel { (playerId: String, gameId: String) -> PlayerDetailViewModel(get(), playerId, gameId) }
     viewModel<GlossaryViewModel>()
     viewModel<RuleBookViewModel>()
 }

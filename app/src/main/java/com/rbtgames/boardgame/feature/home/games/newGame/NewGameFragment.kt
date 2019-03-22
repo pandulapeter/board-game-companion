@@ -5,23 +5,20 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.R
-import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerAdapter
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
 import com.rbtgames.boardgame.feature.shared.AlertDialogFragment
-import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.consume
 import com.rbtgames.boardgame.utils.handleReplace
 import com.rbtgames.boardgame.utils.navigateBack
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>(R.layout.fragment_new_game), AlertDialogFragment.OnDialogItemSelectedListener {
 
-    override val viewModel by viewModel<NewGameViewModel> { parametersOf(arguments?.game ?: Game()) }
+    override val viewModel by viewModel<NewGameViewModel>()
     override val transitionType = TransitionType.DETAIL
     private var playerAdapter: PlayerAdapter? = null
     private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -68,15 +65,10 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
         super.onDestroyView()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        arguments?.game = viewModel.game
-    }
-
     private fun navigateBack() = parentFragmentManager?.navigateBack()
 
     private fun navigateToNewPlayerScreen(player: Player) =
-        activityFragmentManager?.handleReplace(addToBackStack = true) { PlayerDetailFragment.newInstance(viewModel.game, player) }
+        activityFragmentManager?.handleReplace(addToBackStack = true) { PlayerDetailFragment.newInstance(player.id, viewModel.game.id) }
 
     private fun showCloseConfirmationDialog() = AlertDialogFragment.show(
         id = DIALOG_CLOSE_CONFIRMATION_ID,
@@ -89,7 +81,6 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     companion object {
         private const val DIALOG_CLOSE_CONFIRMATION_ID = 1
-        private var Bundle.game by BundleArgumentDelegate.Parcelable<Game>("game")
 
         fun newInstance() = NewGameFragment()
     }

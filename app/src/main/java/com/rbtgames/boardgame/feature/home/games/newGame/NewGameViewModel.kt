@@ -2,14 +2,15 @@ package com.rbtgames.boardgame.feature.home.games.newGame
 
 import androidx.lifecycle.LiveData
 import com.rbtgames.boardgame.R
-import com.rbtgames.boardgame.data.model.Game
+import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameListItem
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
 
-class NewGameViewModel(val game: Game) : ScreenViewModel() {
+class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
 
+    val game get() = gameRepository.getNewGame()
     val shouldShowCloseConfirmation: LiveData<Boolean?> get() = _shouldShowCloseConfirmation
     private val _shouldShowCloseConfirmation = eventLiveData()
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
@@ -34,6 +35,7 @@ class NewGameViewModel(val game: Game) : ScreenViewModel() {
 
     fun onBackButtonPressed() {
         if (_players.value?.any { it is PlayerViewModel } != true) {
+            gameRepository.cancelNewGame()
             _shouldNavigateBack.sendEvent()
         } else {
             _shouldShowCloseConfirmation.sendEvent()
@@ -48,7 +50,8 @@ class NewGameViewModel(val game: Game) : ScreenViewModel() {
 
     fun onStartGameButtonPressed() {
         if (_isStartGameButtonEnabled.value == true) {
-            //TODO
+            gameRepository.confirmNewGame(gameRepository.getNewGame().copy(startTime = System.currentTimeMillis()))
+            _shouldNavigateBack.sendEvent() //TODO: Remove this
         }
     }
 

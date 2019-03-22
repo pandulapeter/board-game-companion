@@ -26,6 +26,8 @@ var View.visible
         visibility = if (value) View.VISIBLE else View.GONE
     }
 
+fun View.postDelayed(delay: Long, action: () -> Unit) = postDelayed(action, delay)
+
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     vararg sharedViews: View?,
     tag: String = T::class.java.name,

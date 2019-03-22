@@ -1,10 +1,9 @@
 package com.rbtgames.boardgame.data.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import java.util.UUID
 
-@Parcelize
 data class Game(
+    val id: String = UUID.randomUUID().toString(),
     val startTime: Long = System.currentTimeMillis(),
     val players: MutableList<Player> = mutableListOf()
-) : Parcelable
+)

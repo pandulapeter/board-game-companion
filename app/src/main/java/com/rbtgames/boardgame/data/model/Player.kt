@@ -1,18 +1,15 @@
 package com.rbtgames.boardgame.data.model
 
-import android.os.Parcelable
 import androidx.annotation.ColorRes
 import com.rbtgames.boardgame.R
-import kotlinx.android.parcel.Parcelize
 import java.util.UUID
 
-@Parcelize
 data class Player(
     val id: String = UUID.randomUUID().toString(),
-    var name: String = "",
-    var color: Color = Color.COLOR_1,
-    var points: Int = 0
-) : Parcelable {
+    val name: String = "",
+    val color: Color = Color.COLOR_1,
+    val points: Int = 0
+) {
 
     enum class Color(@ColorRes val colorResourceId: Int) {
         COLOR_1(R.color.player_1),

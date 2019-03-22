@@ -5,8 +5,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
-import com.rbtgames.boardgame.data.model.Game
-import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentPlayerDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorAdapter
@@ -15,6 +13,7 @@ import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.consume
 import com.rbtgames.boardgame.utils.hideKeyboard
 import com.rbtgames.boardgame.utils.navigateBack
+import com.rbtgames.boardgame.utils.postDelayed
 import com.rbtgames.boardgame.utils.showKeyboard
 import com.rbtgames.boardgame.utils.withArguments
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +21,7 @@ import org.koin.core.parameter.parametersOf
 
 class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerDetailViewModel>(R.layout.fragment_player_detail) {
 
-    override val viewModel by viewModel<PlayerDetailViewModel> { parametersOf(arguments?.game, arguments?.player) }
+    override val viewModel by viewModel<PlayerDetailViewModel> { parametersOf(arguments?.playerId, arguments?.gameId) }
     override val transitionType = TransitionType.MODAL
     private var colorAdapter: ColorAdapter? = null
 
@@ -45,10 +44,11 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
                 activityFragmentManager?.navigateBack()
             } else {
                 hideKeyboard(currentFocus)
-                binding.root.postDelayed({ if (isAdded) activityFragmentManager?.navigateBack() }, 100)
+                binding.root.postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) activityFragmentManager?.navigateBack() }
             }
         }
         viewModel.colors.observe { colorViewModels -> colorAdapter?.submitList(colorViewModels) }
+        viewModel.initialSelectedColorIndex.observe { position -> binding.recyclerView.apply { postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) scrollToPosition(position) } } }
     }
 
     override fun onDestroyView() {
@@ -57,12 +57,13 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
     }
 
     companion object {
-        private var Bundle.game by BundleArgumentDelegate.Parcelable<Game>("game")
-        private var Bundle.player by BundleArgumentDelegate.Parcelable<Player>("player")
+        private const val KEYBOARD_HIDE_DELAY = 100L
+        private var Bundle.playerId by BundleArgumentDelegate.String("playerId")
+        private var Bundle.gameId by BundleArgumentDelegate.String("gameId")
 
-        fun newInstance(game: Game, player: Player) = PlayerDetailFragment().withArguments {
-            it.game = game
-            it.player = player
+        fun newInstance(playerId: String, gameId: String) = PlayerDetailFragment().withArguments {
+            it.playerId = playerId
+            it.gameId = gameId
         }
     }
 }
