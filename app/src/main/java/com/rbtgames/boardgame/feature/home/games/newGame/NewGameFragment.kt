@@ -3,7 +3,7 @@ package com.rbtgames.boardgame.feature.home.games.newGame
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
@@ -24,15 +24,13 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
     override val viewModel by viewModel<NewGameViewModel> { parametersOf(arguments?.game ?: Game()) }
     override val transitionType = TransitionType.DETAIL
     private var playerAdapter: PlayerAdapter? = null
-    private val onScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (dy > 0) {
-                binding.addPlayerButton.shrink()
-                binding.startGameButton.shrink()
-            } else {
-                binding.addPlayerButton.extend()
-                binding.startGameButton.extend()
-            }
+    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+        if (verticalOffset == 0) {
+            binding.addPlayerButton.extend()
+            binding.startGameButton.extend()
+        } else {
+            binding.addPlayerButton.shrink()
+            binding.startGameButton.shrink()
         }
     }
 
@@ -43,8 +41,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playerAdapter
-            addOnScrollListener(onScrollListener)
         }
+        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
@@ -65,8 +63,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
     }
 
     override fun onDestroyView() {
-        binding.recyclerView.removeOnScrollListener(onScrollListener)
         playerAdapter = null
+        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
     }
 
