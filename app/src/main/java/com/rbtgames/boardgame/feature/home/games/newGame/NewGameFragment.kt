@@ -2,7 +2,6 @@ package com.rbtgames.boardgame.feature.home.games.newGame
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +10,7 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
-import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerAdapter
+import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameAdapter
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
 import com.rbtgames.boardgame.feature.shared.AlertDialogFragment
@@ -26,7 +25,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override val viewModel by viewModel<NewGameViewModel>()
     override val transitionType = TransitionType.DETAIL
-    private var playerAdapter: PlayerAdapter? = null
+    private var newGameAdapter: NewGameAdapter? = null
     private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
         if (verticalOffset == 0) {
             binding.addPlayerButton.extend()
@@ -39,7 +38,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playerAdapter = PlayerAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
+        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
+        newGameAdapter = NewGameAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
@@ -65,7 +65,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.also { position ->
                     if (position != RecyclerView.NO_POSITION) {
-                        (playerAdapter?.getItem(position) as? PlayerViewModel?)?.player?.also { playerToDelete ->
+                        (newGameAdapter?.getItem(position) as? PlayerViewModel?)?.player?.also { playerToDelete ->
                             viewModel.deletePlayerPermanently()
                             showSnackbar(
                                 message = getString(R.string.new_game_player_deleted_message, playerToDelete.name),
@@ -79,19 +79,17 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
                 }
             }
         })
-        playerAdapter?.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.also { itemTouchHelper.startDrag(it) } }
+        newGameAdapter?.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.also { itemTouchHelper.startDrag(it) } }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = playerAdapter
+            adapter = newGameAdapter
             itemTouchHelper.attachToRecyclerView(this)
-            (itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
         }
-        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
-        viewModel.listItems.observe { players -> playerAdapter?.submitList(players) }
+        viewModel.listItems.observe { players -> newGameAdapter?.submitList(players) }
     }
 
     override fun onResume() {
@@ -108,7 +106,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
     }
 
     override fun onDestroyView() {
-        playerAdapter = null
+        newGameAdapter = null
         binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
     }

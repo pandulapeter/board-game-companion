@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -41,21 +42,17 @@
 
         </com.rbtgames.boardgame.feature.shared.StateSavingAppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            style="@style/ScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/app_bar_expanded_height"
-                android:gravity="center_horizontal"
-                android:text="@string/games_no_games" />
-
-        </androidx.core.widget.NestedScrollView>
+            android:paddingStart="@dimen/first_keyline"
+            android:paddingTop="@dimen/content_padding"
+            android:paddingEnd="@dimen/first_keyline"
+            android:paddingBottom="@dimen/list_bottom_padding"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/item_game_list_game" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floating_action_button"
@@ -65,8 +62,9 @@
             android:layout_marginEnd="@dimen/content_padding"
             android:layout_marginBottom="@dimen/first_keyline"
             android:onClick="@{() -> viewModel.onNewButtonPressed()}"
-            android:text="@string/games_new_game"
-            app:icon="@drawable/ic_add" />
+            android:text="@string/game_list_new_game"
+            app:icon="@drawable/ic_add"
+            app:layout_behavior="com.rbtgames.boardgame.feature.shared.SnackbarSlideBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -12,7 +12,7 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.ItemNewGameHintBinding
 import com.rbtgames.boardgame.databinding.ItemNewGamePlayerBinding
 
-class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Unit) :
+class NewGameAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Unit) :
     ListAdapter<NewGameListItem, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<NewGameListItem>() {
 
         override fun areItemsTheSame(oldItem: NewGameListItem, newItem: NewGameListItem) = oldItem.id == newItem.id
@@ -75,14 +75,7 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
 
         companion object {
             fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit) =
-                PlayerViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.item_new_game_player,
-                        parent,
-                        false
-                    ), onItemClicked
-                )
+                PlayerViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_new_game_player, parent, false), onItemClicked)
         }
     }
 

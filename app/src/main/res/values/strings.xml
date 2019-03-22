@@ -13,13 +13,15 @@
     <string name="home_rule_book">Rule book</string>
 
     <!-- Game list -->
-    <string name="games_new_game">New game</string>
-    <string name="games_no_games">No active games</string>
+    <string name="game_list_new_game">New game</string>
+    <string name="game_list_no_games">There are no game sessions</string>
+    <string name="game_list_hint">Tap on a card to resume the game or swipe it away to delete it</string>
+    <string name="game_list_next_player_name">Next player: %s</string>
 
     <!-- New game -->
-    <string name="new_game_no_players">At least two players are needed to start the game.</string>
-    <string name="new_game_one_player">At least two players are needed to start the game. You can tap on the cards to change the player\'s details or swipe them away.</string>
-    <string name="new_game_two_or_more_players">You can tap on the cards to change the players\' details or swipe them away horizontally. Dragging the cards vertically can be used to set the initial order.</string>
+    <string name="new_game_no_players">At least two players are needed to start the game</string>
+    <string name="new_game_one_player">At least two players are needed to start the game. You can tap on the cards to change the player\'s details or swipe them away</string>
+    <string name="new_game_two_or_more_players">You can tap on the cards to change the players\' details or swipe them away horizontally. Dragging the cards vertically can be used to set the initial order</string>
     <string name="new_game_add_player">Add player</string>
     <string name="new_game_start_game">Start game</string>
     <string name="new_game_player_deleted_message">%s removed</string>
