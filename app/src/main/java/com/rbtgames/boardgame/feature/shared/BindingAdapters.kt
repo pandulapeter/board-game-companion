@@ -7,7 +7,7 @@ import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.utils.color
 import com.rbtgames.boardgame.utils.visible
 
-@BindingAdapter("android:visibility")
+@BindingAdapter("visibility")
 fun View.setVisibility(isVisible: Boolean) {
     visible = isVisible
 }

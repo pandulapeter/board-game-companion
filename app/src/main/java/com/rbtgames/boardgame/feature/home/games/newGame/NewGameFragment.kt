@@ -2,7 +2,9 @@ package com.rbtgames.boardgame.feature.home.games.newGame
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.model.Player
@@ -11,7 +13,9 @@ import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerAdapter
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
 import com.rbtgames.boardgame.feature.shared.AlertDialogFragment
+import com.rbtgames.boardgame.feature.shared.ElevationItemTouchHelperCallback
 import com.rbtgames.boardgame.utils.consume
+import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.handleReplace
 import com.rbtgames.boardgame.utils.navigateBack
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,10 +38,53 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         playerAdapter = PlayerAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
+        val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
+
+            override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
+                when {
+                    binding.recyclerView.isAnimating -> 0
+                    viewModel.canSwipeItem(viewHolder.adapterPosition) -> makeMovementFlags(
+                        if (viewModel.canMoveItem(viewHolder.adapterPosition)) ItemTouchHelper.UP or ItemTouchHelper.DOWN else 0,
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                    )
+                    else -> 0
+                }
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = consume {
+                viewHolder.adapterPosition.let { originalPosition ->
+                    target.adapterPosition.let { targetPosition ->
+                        if (viewModel.canMoveItem(originalPosition) && viewModel.canMoveItem(targetPosition)) {
+                            viewModel.swapSongsInPlaylist(originalPosition, targetPosition)
+                        }
+                    }
+                }
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewHolder.adapterPosition.let { position ->
+                    //                    if (position != RecyclerView.NO_POSITION) {
+//                        viewModel.deletePlaylistPermanently()
+//                        val playlist = playerAdapter?.get[position].playlist
+//                        showSnackbar(
+//                            message = getString(R.string.manage_playlists_playlist_deleted_message, playlist.title),
+//                            actionText = R.string.undo,
+//                            action = {
+//                                analyticsManager.onUndoButtonPressed(AnalyticsManager.PARAM_VALUE_SCREEN_MANAGE_PLAYLISTS)
+//                                viewModel.cancelDeletePlaylist()
+//                            },
+//                            dismissAction = { viewModel.deletePlaylistPermanently() }
+//                        )
+//                        viewModel.deletePlaylistTemporarily(playlist.id)
+//                    }
+                }
+            }
+        })
+        playerAdapter?.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.let { itemTouchHelper.startDrag(it) } }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playerAdapter
+            itemTouchHelper.attachToRecyclerView(this)
         }
         binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }

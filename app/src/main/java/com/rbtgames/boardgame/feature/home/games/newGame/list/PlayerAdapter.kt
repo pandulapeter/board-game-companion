@@ -1,6 +1,8 @@
 package com.rbtgames.boardgame.feature.home.games.newGame.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -18,6 +20,7 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
         override fun areContentsTheSame(oldItem: NewGameListItem, newItem: NewGameListItem) = oldItem == newItem
     }) {
 
+    var dragHandleTouchListener: ((position: Int) -> Unit)? = null
     private val exception by lazy { IllegalArgumentException("Invalid view type") }
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
@@ -27,7 +30,9 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        R.layout.item_new_game_player -> PlayerViewHolder.create(parent) { position -> onPlayerClicked(getItem(position) as PlayerViewModel) }
+        R.layout.item_new_game_player -> PlayerViewHolder.create(parent) { position -> onPlayerClicked(getItem(position) as PlayerViewModel) }.apply {
+            setDragHandleTouchListener(dragHandleTouchListener)
+        }
         R.layout.item_new_game_hint -> HintViewHolder.create(parent)
         else -> throw exception
     }
@@ -46,6 +51,18 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
                     if (adapterPosition != RecyclerView.NO_POSITION) {
                         onItemClicked(adapterPosition)
                     }
+                }
+            }
+        }
+
+        @SuppressLint("ClickableViewAccessibility")
+        fun setDragHandleTouchListener(itemTouchListener: ((position: Int) -> Unit)?) {
+            if (itemTouchListener != null) {
+                binding.dragHandle.setOnTouchListener { _, event ->
+                    if (event.actionMasked == MotionEvent.ACTION_DOWN && adapterPosition != RecyclerView.NO_POSITION) {
+                        itemTouchListener(adapterPosition)
+                    }
+                    false
                 }
             }
         }

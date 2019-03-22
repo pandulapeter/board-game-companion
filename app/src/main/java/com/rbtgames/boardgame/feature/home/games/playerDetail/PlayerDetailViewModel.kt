@@ -41,10 +41,11 @@ class PlayerDetailViewModel(private val gameRepository: GameRepository, private 
                         val playerName = playerName.value ?: defaultName
                         val playerColor = _colors.value?.find { it.isSelected }?.color ?: defaultColor
                         if (initialPlayer != null) {
+                            val index = indexOf(initialPlayer)
                             remove(initialPlayer)
-                            add(Player(id = initialPlayer.id, name = playerName, color = playerColor))
+                            add(index, Player(id = initialPlayer.id, name = playerName, color = playerColor))
                         } else {
-                            add(Player(name = playerName, color = playerColor))
+                            add(0, Player(name = playerName, color = playerColor))
                         }
                     }
                 )

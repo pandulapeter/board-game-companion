@@ -21,16 +21,43 @@
         app:color="@{viewModel.player.color}"
         app:contentPadding="@dimen/content_padding">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/content_padding"
-            android:layout_marginEnd="@dimen/content_padding"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:text="@{viewModel.player.name}"
-            android:textColor="@color/black"
-            tools:text="Player name" />
+            android:animateLayoutChanges="true">
+
+            <TextView
+                android:id="@+id/player_name"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:text="@{viewModel.player.name}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/drag_handle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Player name" />
+
+            <ImageView
+                android:id="@+id/drag_handle"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/content_padding"
+                android:scaleType="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_drag_handle"
+                app:visibility="@{viewModel.isDragHandleVisible}"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
