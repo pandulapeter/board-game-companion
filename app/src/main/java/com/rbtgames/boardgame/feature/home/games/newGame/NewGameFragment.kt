@@ -23,7 +23,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override val viewModel by viewModel<NewGameViewModel> { parametersOf(arguments?.game ?: Game()) }
     override val transitionType = TransitionType.DETAIL
-    private val playerAdapter = PlayerAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
+    private var playerAdapter: PlayerAdapter? = null
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             if (dy > 0) {
@@ -38,6 +38,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        playerAdapter = PlayerAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
@@ -47,7 +48,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
-        viewModel.players.observe { players -> playerAdapter.submitList(players) }
+        viewModel.players.observe { players -> playerAdapter?.submitList(players) }
     }
 
     override fun onResume() {
@@ -65,6 +66,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override fun onDestroyView() {
         binding.recyclerView.removeOnScrollListener(onScrollListener)
+        playerAdapter = null
         super.onDestroyView()
     }
 

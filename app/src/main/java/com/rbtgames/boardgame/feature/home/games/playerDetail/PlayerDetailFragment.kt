@@ -24,10 +24,11 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
 
     override val viewModel by viewModel<PlayerDetailViewModel> { parametersOf(arguments?.game, arguments?.player) }
     override val transitionType = TransitionType.MODAL
-    private val colorAdapter = ColorAdapter { color -> viewModel.onColorSelected(color) }
+    private var colorAdapter: ColorAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        colorAdapter = ColorAdapter { color -> viewModel.onColorSelected(color) }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -47,7 +48,12 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
                 binding.root.postDelayed({ if (isAdded) activityFragmentManager?.navigateBack() }, 100)
             }
         }
-        viewModel.colors.observe { colorViewModels -> colorAdapter.submitList(colorViewModels) }
+        viewModel.colors.observe { colorViewModels -> colorAdapter?.submitList(colorViewModels) }
+    }
+
+    override fun onDestroyView() {
+        colorAdapter = null
+        super.onDestroyView()
     }
 
     companion object {
