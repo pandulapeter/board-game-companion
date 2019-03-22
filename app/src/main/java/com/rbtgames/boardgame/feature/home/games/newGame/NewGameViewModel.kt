@@ -1,6 +1,7 @@
 package com.rbtgames.boardgame.feature.home.games.newGame
 
 import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
@@ -24,9 +25,10 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     private val _isStartGameButtonEnabled = mutableLiveDataOf(false)
     val players: LiveData<List<NewGameListItem>> get() = _players
     private val _players = mutableLiveDataOf(emptyList<NewGameListItem>())
+    private var playerToDeleteId: String? = null
 
     fun refreshPlayers() {
-        _players.value = game.players.let { players ->
+        _players.value = game.players.filter { it.id != playerToDeleteId }.let { players ->
             players.map { player -> PlayerViewModel(player, players.size > 1) }.toMutableList<NewGameListItem>().apply {
                 when (size) {
                     0 -> add(HintViewModel(R.string.new_game_no_players))
@@ -38,7 +40,7 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
         _isStartGameButtonEnabled.value = game.players.size >= MINIMUM_PLAYER_COUNT
     }
 
-    fun swapSongsInPlaylist(originalPosition: Int, targetPosition: Int) {
+    fun swapPlayers(originalPosition: Int, targetPosition: Int) {
         _players.value?.toMutableList()?.let { newPlayerList ->
             if (originalPosition < targetPosition) {
                 for (i in originalPosition until targetPosition) {
@@ -56,7 +58,7 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
 
     fun canSwipeItem(position: Int) = _players.value?.filterIsInstance<PlayerViewModel>()?.size?.let { size ->
         when (size) {
-            0 -> false
+            RecyclerView.NO_POSITION, 0 -> false
             1 -> position == 0
             else -> position < size
         }
@@ -64,10 +66,31 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
 
     fun canMoveItem(position: Int) = _players.value?.filterIsInstance<PlayerViewModel>()?.size?.let { size ->
         when (size) {
-            0, 1 -> false
+            RecyclerView.NO_POSITION, 0, 1 -> false
             else -> position < size
         }
     } ?: false
+
+    fun deletePlayerTemporarily(playerId: String) {
+        playerToDeleteId = playerId
+        refreshPlayers()
+    }
+
+    fun cancelDeletePlayer() {
+        playerToDeleteId = null
+        refreshPlayers()
+    }
+
+    fun hasPlayerToDelete() = playerToDeleteId != null
+
+    fun deletePlayerPermanently() {
+        playerToDeleteId?.let {
+            _players.value?.toMutableList()?.let { newPlayerList ->
+                gameRepository.updateNewGame(game.copy(players = newPlayerList.filterIsInstance<PlayerViewModel>().map { it.player }))
+            }
+            playerToDeleteId = null
+        }
+    }
 
     fun onBackButtonPressed() {
         if (_players.value?.any { it is PlayerViewModel } != true) {

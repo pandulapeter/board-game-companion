@@ -24,6 +24,7 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     protected val activityFragmentManager get() = (activity as? AppCompatActivity?)?.supportFragmentManager
     protected val parentFragmentManager get() = parentFragment?.childFragmentManager
     protected open val transitionType = TransitionType.SIBLING
+    private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,20 +50,37 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     }
 
     override fun onPause() {
+        dismissSnackbar()
         super.onPause()
         resetTransitions()
     }
 
+    protected fun dismissSnackbar() {
+        snackbar?.dismiss()
+    }
+
     open fun onBackPressed() = false
 
-    private fun View.showSnackbar(message: String, @StringRes actionResId: Int = 0, action: () -> Unit = {}) = Snackbar.make(this, message, Snackbar.LENGTH_SHORT).apply {
-        if (actionResId != 0) {
-            setAction(actionResId) { action() }
-        }
-    }.show()
+    protected fun showSnackbar(message: String, @StringRes actionResId: Int = 0, action: (() -> Unit)? = null, dismissAction: (() -> Unit)? = null) {
+        dismissSnackbar()
+        snackbar = Snackbar.make(binding.root, message, if (action == null && dismissAction == null) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG).apply {
+            if (actionResId != 0 && action != null) {
+                setAction(actionResId) { action() }
+            }
+            addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event != DISMISS_EVENT_ACTION && event != DISMISS_EVENT_CONSECUTIVE) {
+                        dismissAction?.invoke()
+                    }
+                    removeCallback(this)
+                    snackbar = null
+                }
+            })
+        }.apply { show() }
+    }
 
-    protected fun View.showSnackbar(@StringRes messageResId: Int, @StringRes actionResId: Int = 0, action: () -> Unit = {}) =
-        showSnackbar(context.getString(messageResId), actionResId, action)
+    protected fun showSnackbar(@StringRes messageResId: Int, @StringRes actionResId: Int = 0, action: (() -> Unit)? = null, dismissAction: (() -> Unit)? = null) =
+        showSnackbar(requireContext().getString(messageResId), actionResId, action, dismissAction)
 
 
     private fun resetTransitions() {

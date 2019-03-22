@@ -43,6 +43,8 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
         else -> throw exception
     }
 
+    public override fun getItem(position: Int): NewGameListItem = super.getItem(position)
+
     class PlayerViewHolder(private val binding: ItemNewGamePlayerBinding, onItemClicked: (position: Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
         init {

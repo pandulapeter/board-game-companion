@@ -4,6 +4,7 @@
     <string name="app_title" translatable="false">Board Game Companion</string>
     <string name="close">Close</string>
     <string name="back">Back</string>
+    <string name="undo">Undo</string>
     <string name="work_in_progress">Work in progress</string>
 
     <!-- Home -->
@@ -18,9 +19,11 @@
     <!-- New game -->
     <string name="new_game_no_players">At least two players are needed to start the game.</string>
     <string name="new_game_one_player">At least two players are needed to start the game. You can tap on the cards to change the player\'s details or swipe them away.</string>
-    <string name="new_game_two_or_more_players">You can tap on the cards to change the player\'s details or swipe them away. Dragging the cards can be used to set the initial order.</string>
+    <string name="new_game_two_or_more_players">You can tap on the cards to change the players\' details or swipe them away horizontally. Dragging the cards vertically can be used to set the initial order.</string>
     <string name="new_game_add_player">Add player</string>
     <string name="new_game_start_game">Start game</string>
+    <string name="new_game_player_deleted_message">%s removed</string>
+    <string name="new_game_player_deleted_action">@string/undo</string>
     <string name="new_game_close_confirmation_title">Are you sure you want to leave?</string>
     <string name="new_game_close_confirmation_message">The players you added will not be saved.</string>
     <string name="new_game_close_confirmation_positive">Leave</string>

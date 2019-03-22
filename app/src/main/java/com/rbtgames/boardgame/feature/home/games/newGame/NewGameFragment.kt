@@ -11,6 +11,7 @@ import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerAdapter
+import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
 import com.rbtgames.boardgame.feature.shared.AlertDialogFragment
 import com.rbtgames.boardgame.feature.shared.ElevationItemTouchHelperCallback
@@ -45,7 +46,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
                     binding.recyclerView.isAnimating -> 0
                     viewModel.canSwipeItem(viewHolder.adapterPosition) -> makeMovementFlags(
                         if (viewModel.canMoveItem(viewHolder.adapterPosition)) ItemTouchHelper.UP or ItemTouchHelper.DOWN else 0,
-                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                        if (viewModel.hasPlayerToDelete()) 0 else ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
                     )
                     else -> 0
                 }
@@ -54,7 +55,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
                 viewHolder.adapterPosition.let { originalPosition ->
                     target.adapterPosition.let { targetPosition ->
                         if (viewModel.canMoveItem(originalPosition) && viewModel.canMoveItem(targetPosition)) {
-                            viewModel.swapSongsInPlaylist(originalPosition, targetPosition)
+                            dismissSnackbar()
+                            viewModel.swapPlayers(originalPosition, targetPosition)
                         }
                     }
                 }
@@ -62,20 +64,17 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.let { position ->
-                    //                    if (position != RecyclerView.NO_POSITION) {
-//                        viewModel.deletePlaylistPermanently()
-//                        val playlist = playerAdapter?.get[position].playlist
-//                        showSnackbar(
-//                            message = getString(R.string.manage_playlists_playlist_deleted_message, playlist.title),
-//                            actionText = R.string.undo,
-//                            action = {
-//                                analyticsManager.onUndoButtonPressed(AnalyticsManager.PARAM_VALUE_SCREEN_MANAGE_PLAYLISTS)
-//                                viewModel.cancelDeletePlaylist()
-//                            },
-//                            dismissAction = { viewModel.deletePlaylistPermanently() }
-//                        )
-//                        viewModel.deletePlaylistTemporarily(playlist.id)
-//                    }
+                    if (position != RecyclerView.NO_POSITION) {
+                        (playerAdapter?.getItem(position) as? PlayerViewModel?)?.player?.let { playerToDelete ->
+                            showSnackbar(
+                                message = getString(R.string.new_game_player_deleted_message, playerToDelete.name),
+                                actionResId = R.string.new_game_player_deleted_action,
+                                action = { viewModel.cancelDeletePlayer() },
+                                dismissAction = { viewModel.deletePlayerPermanently() }
+                            )
+                            viewModel.deletePlayerTemporarily(playerToDelete.id)
+                        }
+                    }
                 }
             }
         })
