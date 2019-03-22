@@ -37,9 +37,9 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
         else -> throw exception
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when {
-        holder is PlayerViewHolder -> holder.bind(getItem(position) as PlayerViewModel)
-        holder is HintViewHolder -> holder.bind(getItem(position) as HintViewModel)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
+        is PlayerViewHolder -> holder.bind(getItem(position) as PlayerViewModel)
+        is HintViewHolder -> holder.bind(getItem(position) as HintViewModel)
         else -> throw exception
     }
 

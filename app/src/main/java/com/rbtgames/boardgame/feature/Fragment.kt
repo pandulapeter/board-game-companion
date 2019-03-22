@@ -62,7 +62,6 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     open fun onBackPressed() = false
 
     protected fun showSnackbar(message: String, @StringRes actionResId: Int = 0, action: (() -> Unit)? = null, dismissAction: (() -> Unit)? = null) {
-        dismissSnackbar()
         snackbar = Snackbar.make(binding.root, message, if (action == null && dismissAction == null) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG).apply {
             if (actionResId != 0 && action != null) {
                 setAction(actionResId) { action() }

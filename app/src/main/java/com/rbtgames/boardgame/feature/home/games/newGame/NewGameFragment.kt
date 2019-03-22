@@ -2,6 +2,7 @@ package com.rbtgames.boardgame.feature.home.games.newGame
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,16 +47,15 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
                     binding.recyclerView.isAnimating -> 0
                     viewModel.canSwipeItem(viewHolder.adapterPosition) -> makeMovementFlags(
                         if (viewModel.canMoveItem(viewHolder.adapterPosition)) ItemTouchHelper.UP or ItemTouchHelper.DOWN else 0,
-                        if (viewModel.hasPlayerToDelete()) 0 else ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
                     )
                     else -> 0
                 }
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = consume {
-                viewHolder.adapterPosition.let { originalPosition ->
-                    target.adapterPosition.let { targetPosition ->
+                viewHolder.adapterPosition.also { originalPosition ->
+                    target.adapterPosition.also { targetPosition ->
                         if (viewModel.canMoveItem(originalPosition) && viewModel.canMoveItem(targetPosition)) {
-                            dismissSnackbar()
                             viewModel.swapPlayers(originalPosition, targetPosition)
                         }
                     }
@@ -63,9 +63,10 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewHolder.adapterPosition.let { position ->
+                viewHolder.adapterPosition.also { position ->
                     if (position != RecyclerView.NO_POSITION) {
-                        (playerAdapter?.getItem(position) as? PlayerViewModel?)?.player?.let { playerToDelete ->
+                        (playerAdapter?.getItem(position) as? PlayerViewModel?)?.player?.also { playerToDelete ->
+                            viewModel.deletePlayerPermanently()
                             showSnackbar(
                                 message = getString(R.string.new_game_player_deleted_message, playerToDelete.name),
                                 actionResId = R.string.new_game_player_deleted_action,
@@ -78,18 +79,19 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
                 }
             }
         })
-        playerAdapter?.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.let { itemTouchHelper.startDrag(it) } }
+        playerAdapter?.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.also { itemTouchHelper.startDrag(it) } }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playerAdapter
             itemTouchHelper.attachToRecyclerView(this)
+            (itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
         }
         binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
-        viewModel.players.observe { players -> playerAdapter?.submitList(players) }
+        viewModel.listItems.observe { players -> playerAdapter?.submitList(players) }
     }
 
     override fun onResume() {
@@ -127,6 +129,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     companion object {
         private const val DIALOG_CLOSE_CONFIRMATION_ID = 1
+        private const val SNACKBAR_DISMISS_DELAY = 100L
 
         fun newInstance() = NewGameFragment()
     }

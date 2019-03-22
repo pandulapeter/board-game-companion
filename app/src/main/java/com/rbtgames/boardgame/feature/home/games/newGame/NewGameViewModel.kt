@@ -19,16 +19,15 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     private val _shouldNavigateBack = eventLiveData()
     val shouldNavigateToNewPlayerScreen: LiveData<Boolean?> get() = _shouldNavigateToNewPlayerScreen
     private val _shouldNavigateToNewPlayerScreen = eventLiveData()
-    val isAddPlayerButtonEnabled: LiveData<Boolean> get() = _isAddPlayerButtonEnabled
-    private val _isAddPlayerButtonEnabled = mutableLiveDataOf(true)
     val isStartGameButtonEnabled: LiveData<Boolean> get() = _isStartGameButtonEnabled
     private val _isStartGameButtonEnabled = mutableLiveDataOf(false)
-    val players: LiveData<List<NewGameListItem>> get() = _players
-    private val _players = mutableLiveDataOf(emptyList<NewGameListItem>())
+    val listItems: LiveData<List<NewGameListItem>> get() = _listItems
+    private val _listItems = mutableLiveDataOf(emptyList<NewGameListItem>())
     private var playerToDeleteId: String? = null
+    private val players get() = _listItems.value?.filterIsInstance<PlayerViewModel>() ?: emptyList()
 
     fun refreshPlayers() {
-        _players.value = game.players.filter { it.id != playerToDeleteId }.let { players ->
+        _listItems.value = game.players.filter { it.id != playerToDeleteId }.let { players ->
             players.map { player -> PlayerViewModel(player, players.size > 1) }.toMutableList<NewGameListItem>().apply {
                 when (size) {
                     0 -> add(HintViewModel(R.string.new_game_no_players))
@@ -37,11 +36,11 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
                 }
             }
         }
-        _isStartGameButtonEnabled.value = game.players.size >= MINIMUM_PLAYER_COUNT
+        _isStartGameButtonEnabled.value = players.size >= MINIMUM_PLAYER_COUNT
     }
 
     fun swapPlayers(originalPosition: Int, targetPosition: Int) {
-        _players.value?.toMutableList()?.let { newPlayerList ->
+        _listItems.value?.toMutableList()?.let { newPlayerList ->
             if (originalPosition < targetPosition) {
                 for (i in originalPosition until targetPosition) {
                     Collections.swap(newPlayerList, i, i + 1)
@@ -51,25 +50,33 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
                     Collections.swap(newPlayerList, i, i - 1)
                 }
             }
-            _players.value = newPlayerList
-            gameRepository.updateNewGame(game.copy(players = newPlayerList.filterIsInstance<PlayerViewModel>().map { it.player }))
+            _listItems.value = newPlayerList
+            val players = players.map { it.player }.toMutableList()
+            playerToDeleteId?.let { playerToDeleteId ->
+                val playerToDelete = game.players.find { it.id == playerToDeleteId }
+                val playerToDeleteIndex = game.players.indexOf(playerToDelete)
+                if (playerToDelete != null) {
+                    players.add(playerToDeleteIndex, playerToDelete)
+                }
+            }
+            gameRepository.updateNewGame(game.copy(players = players))
         }
     }
 
-    fun canSwipeItem(position: Int) = _players.value?.filterIsInstance<PlayerViewModel>()?.size?.let { size ->
+    fun canSwipeItem(position: Int) = players.size.let { size ->
         when (size) {
             RecyclerView.NO_POSITION, 0 -> false
             1 -> position == 0
             else -> position < size
         }
-    } ?: false
+    }
 
-    fun canMoveItem(position: Int) = _players.value?.filterIsInstance<PlayerViewModel>()?.size?.let { size ->
+    fun canMoveItem(position: Int) = players.size.let { size ->
         when (size) {
             RecyclerView.NO_POSITION, 0, 1 -> false
             else -> position < size
         }
-    } ?: false
+    }
 
     fun deletePlayerTemporarily(playerId: String) {
         playerToDeleteId = playerId
@@ -81,19 +88,15 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
         refreshPlayers()
     }
 
-    fun hasPlayerToDelete() = playerToDeleteId != null
-
     fun deletePlayerPermanently() {
-        playerToDeleteId?.let {
-            _players.value?.toMutableList()?.let { newPlayerList ->
-                gameRepository.updateNewGame(game.copy(players = newPlayerList.filterIsInstance<PlayerViewModel>().map { it.player }))
-            }
+        if (playerToDeleteId != null) {
+            gameRepository.updateNewGame(game.copy(players = players.map { it.player }))
             playerToDeleteId = null
         }
     }
 
     fun onBackButtonPressed() {
-        if (_players.value?.any { it is PlayerViewModel } != true) {
+        if (_listItems.value?.any { it is PlayerViewModel } != true) {
             gameRepository.cancelNewGame()
             _shouldNavigateBack.sendEvent()
         } else {
@@ -102,9 +105,7 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     }
 
     fun onAddPlayerButtonPressed() {
-        if (_isAddPlayerButtonEnabled.value == true) {
-            _shouldNavigateToNewPlayerScreen.sendEvent()
-        }
+        _shouldNavigateToNewPlayerScreen.sendEvent()
     }
 
     fun onStartGameButtonPressed() {

@@ -81,7 +81,6 @@
                 android:layout_marginStart="@dimen/first_keyline"
                 android:layout_marginEnd="@dimen/small_content_padding"
                 android:layout_marginBottom="@dimen/first_keyline"
-                android:enabled="@{viewModel.isAddPlayerButtonEnabled}"
                 android:onClick="@{() -> viewModel.onAddPlayerButtonPressed()}"
                 android:text="@string/new_game_add_player"
                 app:icon="@drawable/ic_add"
