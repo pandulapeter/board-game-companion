@@ -65,16 +65,15 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
 
     fun canSwipeItem(position: Int) = players.size.let { size ->
         when (size) {
-            RecyclerView.NO_POSITION, 0 -> false
-            1 -> position == 0
-            else -> position < size
+            0 -> false
+            else -> position != RecyclerView.NO_POSITION && position < size
         }
     }
 
     fun canMoveItem(position: Int) = players.size.let { size ->
         when (size) {
-            RecyclerView.NO_POSITION, 0, 1 -> false
-            else -> position < size
+            0, 1 -> false
+            else -> position != RecyclerView.NO_POSITION && position < size
         }
     }
 

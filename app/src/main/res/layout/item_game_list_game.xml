@@ -31,7 +31,9 @@
                 android:id="@+id/game_start_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
                 app:time="@{viewModel.game.startTime}"
                 tools:text="Game start time" />
 
@@ -39,7 +41,8 @@
                 android:id="@+id/next_player_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{@string/game_list_next_player_name(viewModel.nextPlayerName)}"
                 tools:text="Next player name" />
 

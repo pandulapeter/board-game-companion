@@ -19,7 +19,8 @@
         android:theme="@style/Theme.MaterialComponents.Light"
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:color="@{viewModel.player.color}"
-        app:contentPadding="@dimen/content_padding">
+        app:contentPadding="@dimen/content_padding"
+        tools:cardBackgroundColor="@color/brand">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,8 +32,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="@dimen/content_padding"
                 android:layout_marginEnd="@dimen/content_padding"
+                android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@{viewModel.player.name}"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"

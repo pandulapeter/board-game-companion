@@ -27,4 +27,8 @@ class GameRepository {
     fun getGameById(id: String) = games.find { it.id == id } ?: newGame
 
     fun getAllGames(): List<Game> = games
+
+    fun deleteGame(gameId: String) {
+        games.removeAll { it.id == gameId }
+    }
 }
