@@ -6,10 +6,11 @@
 
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/brand</item>
-        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorPrimaryDark">@color/background</item>
         <item name="colorSecondary">@color/brand</item>
         <item name="colorAccent">@color/brand</item>
         <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
 </resources>
