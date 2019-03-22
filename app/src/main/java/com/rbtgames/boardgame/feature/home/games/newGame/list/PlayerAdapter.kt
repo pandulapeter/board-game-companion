@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.newGame
+package com.rbtgames.boardgame.feature.home.games.newGame.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,21 +10,19 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.ItemNewGameHintBinding
 import com.rbtgames.boardgame.databinding.ItemNewGamePlayerBinding
 
-class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Unit) : ListAdapter<Any, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<Any>() {
+class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Unit) :
+    ListAdapter<NewGameListItem, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<NewGameListItem>() {
 
-    override fun areItemsTheSame(oldItem: Any, newItem: Any) = when {
-        oldItem is PlayerViewModel && newItem is PlayerViewModel -> oldItem.player.id == newItem.player.id
-        oldItem is Int && newItem is Int -> true
-        else -> false
-    }
+        override fun areItemsTheSame(oldItem: NewGameListItem, newItem: NewGameListItem) = oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: Any, newItem: Any) = oldItem == newItem
-}) {
+        override fun areContentsTheSame(oldItem: NewGameListItem, newItem: NewGameListItem) = oldItem == newItem
+    }) {
+
     private val exception by lazy { IllegalArgumentException("Invalid view type") }
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is PlayerViewModel -> R.layout.item_new_game_player
-        is Int -> R.layout.item_new_game_hint
+        is HintViewModel -> R.layout.item_new_game_hint
         else -> throw exception
     }
 
@@ -36,7 +34,7 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when {
         holder is PlayerViewHolder -> holder.bind(getItem(position) as PlayerViewModel)
-        holder is HintViewHolder -> holder.bind(getItem(position) as Int)
+        holder is HintViewHolder -> holder.bind(getItem(position) as HintViewModel)
         else -> throw exception
     }
 
@@ -58,13 +56,20 @@ class PlayerAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> Un
 
         companion object {
             fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit) =
-                PlayerViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_new_game_player, parent, false), onItemClicked)
+                PlayerViewHolder(
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context),
+                        R.layout.item_new_game_player,
+                        parent,
+                        false
+                    ), onItemClicked
+                )
         }
     }
 
     class HintViewHolder(private val binding: ItemNewGameHintBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: Int) {
+        fun bind(viewModel: HintViewModel) {
             binding.viewModel = viewModel
         }
 

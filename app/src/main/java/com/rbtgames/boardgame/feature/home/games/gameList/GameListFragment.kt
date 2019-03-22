@@ -15,7 +15,7 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.shouldOpenNewGameScreen.observeAndReset { navigateToNewGame() }
+        viewModel.shouldOpenNewGameScreen.observe { navigateToNewGame() }
         //TODO: Remove this.
         var isExtended = true
         binding.text.setOnClickListener {

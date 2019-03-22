@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.playerDetail
+package com.rbtgames.boardgame.feature.home.games.playerDetail.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,7 +18,8 @@ class ColorAdapter(private val onItemClicked: (color: Player.Color) -> Unit) :
         override fun areContentsTheSame(oldItem: ColorViewModel, newItem: ColorViewModel) = oldItem == newItem
     }) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder.create(parent) { position -> onItemClicked(getItem(position).color) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder.create(parent) { position -> onItemClicked(getItem(position).color) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
 
@@ -40,7 +41,14 @@ class ColorAdapter(private val onItemClicked: (color: Player.Color) -> Unit) :
 
         companion object {
             fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit) =
-                ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_player_detail_color, parent, false), onItemClicked)
+                ViewHolder(
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context),
+                        R.layout.item_player_detail_color,
+                        parent,
+                        false
+                    ), onItemClicked
+                )
         }
     }
 }

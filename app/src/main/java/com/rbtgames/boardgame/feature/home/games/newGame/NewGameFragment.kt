@@ -9,6 +9,7 @@ import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
+import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerAdapter
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.handleReplace
@@ -41,8 +42,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
             adapter = playerAdapter
             addOnScrollListener(onScrollListener)
         }
-        viewModel.shouldNavigateBack.observeAndReset { parentFragmentManager?.navigateBack() }
-        viewModel.shouldNavigateToNewPlayerScreen.observeAndReset { navigateToNewPlayerScreen(Player()) }
+        viewModel.shouldNavigateBack.observe { parentFragmentManager?.navigateBack() }
+        viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
         viewModel.players.observe { players -> playerAdapter.submitList(players) }
     }
 

@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 
 abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResourceId: Int) : Fragment() {
 
@@ -52,6 +54,16 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     }
 
     open fun onBackPressed() = false
+
+    private fun View.showSnackbar(message: String, @StringRes actionResId: Int = 0, action: () -> Unit = {}) = Snackbar.make(this, message, Snackbar.LENGTH_SHORT).apply {
+        if (actionResId != 0) {
+            setAction(actionResId) { action() }
+        }
+    }.show()
+
+    protected fun View.showSnackbar(@StringRes messageResId: Int, @StringRes actionResId: Int = 0, action: () -> Unit = {}) =
+        showSnackbar(context.getString(messageResId), actionResId, action)
+
 
     private fun resetTransitions() {
         reenterTransition = Fade()

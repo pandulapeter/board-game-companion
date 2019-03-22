@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.playerDetail
+package com.rbtgames.boardgame.feature.home.games.playerDetail.list
 
 import android.content.Context
 import android.graphics.Rect

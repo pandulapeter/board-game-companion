@@ -9,6 +9,8 @@ import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentPlayerDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
+import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorAdapter
+import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorItemDecoration
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.consume
 import com.rbtgames.boardgame.utils.hideKeyboard
@@ -36,7 +38,7 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
             post { if (isAdded) showKeyboard(this) }
             setOnEditorActionListener { _, actionId, _ -> consume { if (actionId == EditorInfo.IME_ACTION_DONE) viewModel.onDoneButtonPressed() } }
         }
-        viewModel.shouldNavigateBack.observeAndReset {
+        viewModel.shouldNavigateBack.observe {
             val currentFocus = activity?.currentFocus
             if (currentFocus == null) {
                 activityFragmentManager?.navigateBack()

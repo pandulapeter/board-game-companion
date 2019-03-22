@@ -7,14 +7,11 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.MutableLiveData
-import com.google.android.material.snackbar.Snackbar
 import com.rbtgames.boardgame.R
 
 fun Context.color(@ColorRes colorResInt: Int) = ContextCompat.getColor(this, colorResInt)
@@ -28,18 +25,6 @@ var View.visible
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
     }
-
-fun View.showSnackbar(message: String, @StringRes actionResId: Int = 0, action: () -> Unit = {}) = Snackbar.make(this, message, Snackbar.LENGTH_SHORT).apply {
-    if (actionResId != 0) {
-        setAction(actionResId) { action() }
-    }
-}.show()
-
-fun View.showSnackbar(@StringRes messageResId: Int, @StringRes actionResId: Int = 0, action: () -> Unit = {}) = showSnackbar(context.getString(messageResId), actionResId, action)
-
-fun MutableLiveData<Boolean?>.sendEvent() {
-    value = true
-}
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     vararg sharedViews: View?,

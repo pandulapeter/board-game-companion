@@ -1,12 +1,12 @@
 package com.rbtgames.boardgame.feature.home.games.gameList
 
+import androidx.lifecycle.LiveData
 import com.rbtgames.boardgame.feature.ScreenViewModel
-import com.rbtgames.boardgame.utils.eventLiveData
-import com.rbtgames.boardgame.utils.sendEvent
 
 class GameListViewModel : ScreenViewModel() {
 
-    val shouldOpenNewGameScreen = eventLiveData()
+    val shouldOpenNewGameScreen: LiveData<Boolean?> get() = _shouldOpenNewGameScreen
+    private val _shouldOpenNewGameScreen = eventLiveData()
 
-    fun onNewButtonPressed() = shouldOpenNewGameScreen.sendEvent()
+    fun onNewButtonPressed() = _shouldOpenNewGameScreen.sendEvent()
 }

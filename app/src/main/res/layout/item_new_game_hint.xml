@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="Integer" />
+            type="com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/content_padding"
         android:gravity="center"
         android:padding="@dimen/large_content_padding"
-        android:text="@{viewModel}"
+        android:text="@{viewModel.hintResourceId}"
         tools:text="Hint" />
 
 </layout>
