@@ -4,15 +4,21 @@ import androidx.lifecycle.LiveData
 import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
+import com.rbtgames.boardgame.data.repository.PlayerRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorViewModel
 
-class PlayerDetailViewModel(private val gameRepository: GameRepository, private val playerId: String, private val gameId: String) : ScreenViewModel() {
+class PlayerDetailViewModel(
+    private val gameRepository: GameRepository,
+    private val playerRepository: PlayerRepository,
+    private val playerId: String,
+    private val gameId: String
+) : ScreenViewModel() {
 
     private val defaultName = ""
     private val defaultColor = Player.Color.values().first()
-    private val game = gameRepository.getGameById(gameId)!!
-    private val initialPlayer = game.players.find { it.id == playerId }
+    private val game = gameRepository.getGame(gameId)!!
+    private val initialPlayer = playerRepository.getPlayer(playerId)
     val playerName = mutableLiveDataOf(initialPlayer?.name ?: defaultName)
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
     private val _shouldNavigateBack = eventLiveData()
@@ -37,17 +43,20 @@ class PlayerDetailViewModel(private val gameRepository: GameRepository, private 
                 Game(
                     id = gameId,
                     startTime = game.startTime,
-                    players = game.players.toMutableList().apply {
+                    playerIds = game.playerIds.toMutableList().apply {
                         add(
-                            if (initialPlayer != null) indexOf(initialPlayer).also { remove(initialPlayer) } else 0,
-                            Player(
-                                id = playerId,
-                                name = playerName.value ?: defaultName,
-                                color = _colors.value?.find { it.isSelected }?.color ?: defaultColor
-                            )
+                            if (initialPlayer != null) indexOf(initialPlayer.id).also { remove(initialPlayer.id) } else 0,
+                            playerId
                         )
 
                     }
+                )
+            )
+            playerRepository.updatePlayer(
+                Player(
+                    id = playerId,
+                    name = playerName.value ?: defaultName,
+                    color = _colors.value?.find { it.isSelected }?.color ?: defaultColor
                 )
             )
             _shouldNavigateBack.sendEvent()

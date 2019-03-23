@@ -74,6 +74,14 @@ dependencies {
     // Kotlin coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
 
+    // Persistence
+    def roomVersion = "2.1.0-alpha05"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+    // Serialization
+    implementation "com.google.code.gson:gson:2.8.5"
+
     // UI components
     implementation "androidx.appcompat:appcompat:1.0.2"
     implementation "com.google.android.material:material:1.1.0-alpha04"

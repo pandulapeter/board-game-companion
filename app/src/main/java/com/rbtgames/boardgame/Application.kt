@@ -10,6 +10,7 @@ class Application : Application() {
         super.onCreate()
         startKoin(
             this, listOf(
+                persistenceModule,
                 dataModule,
                 featureModule
             )

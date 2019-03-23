@@ -4,13 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
+import com.rbtgames.boardgame.data.repository.PlayerRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameListItem
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
 import java.util.Collections
 
-class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
+class NewGameViewModel(private val gameRepository: GameRepository, private val playerRepository: PlayerRepository) : ScreenViewModel() {
 
     val game get() = gameRepository.getNewGame()
     val shouldShowCloseConfirmation: LiveData<Boolean?> get() = _shouldShowCloseConfirmation
@@ -27,14 +28,18 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     private val players get() = _listItems.value?.filterIsInstance<PlayerViewModel>() ?: emptyList()
 
     fun refreshPlayers() {
-        _listItems.value = game.players.filter { it.id != playerToDeleteId }.let { players ->
-            players.map { player -> PlayerViewModel(player, players.size > 1) }.toMutableList<NewGameListItem>().apply {
-                when (size) {
-                    0 -> add(HintViewModel(R.string.new_game_no_players))
-                    1 -> add(HintViewModel(R.string.new_game_one_player))
-                    else -> add(HintViewModel(R.string.new_game_two_or_more_players))
+        _listItems.value = game.playerIds.filter { it != playerToDeleteId }.let { players ->
+            players
+                .mapNotNull { playerId -> playerRepository.getPlayer(playerId) }
+                .map { player -> PlayerViewModel(player, players.size > 1) }
+                .toMutableList<NewGameListItem>()
+                .apply {
+                    when (size) {
+                        0 -> add(HintViewModel(R.string.new_game_no_players))
+                        1 -> add(HintViewModel(R.string.new_game_one_player))
+                        else -> add(HintViewModel(R.string.new_game_two_or_more_players))
+                    }
                 }
-            }
         }
         _isStartGameButtonEnabled.value = players.size >= MINIMUM_PLAYER_COUNT
     }
@@ -51,15 +56,14 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
                 }
             }
             _listItems.value = newPlayerList
-            val players = players.map { it.player }.toMutableList()
-            playerToDeleteId?.let { playerToDeleteId ->
-                val playerToDelete = game.players.find { it.id == playerToDeleteId }
-                val playerToDeleteIndex = game.players.indexOf(playerToDelete)
-                if (playerToDelete != null) {
-                    players.add(playerToDeleteIndex, playerToDelete)
+            val playerIds = players.map { it.player.id }.toMutableList()
+            playerToDeleteId?.also { playerToDeleteId ->
+                val playerToDeleteIndex = game.playerIds.indexOf(playerToDeleteId)
+                if (playerToDeleteIndex != -1) {
+                    playerIds.add(playerToDeleteIndex, playerToDeleteId)
                 }
             }
-            gameRepository.updateNewGame(game.copy(players = players))
+            gameRepository.updateNewGame(game.copy(playerIds = playerIds))
         }
     }
 
@@ -88,8 +92,9 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     }
 
     fun deletePlayerPermanently() {
-        if (playerToDeleteId != null) {
-            gameRepository.updateNewGame(game.copy(players = players.map { it.player }))
+        playerToDeleteId?.let {
+            gameRepository.updateNewGame(game.copy(playerIds = players.map { playerViewModel -> playerViewModel.player.id }))
+            playerRepository.deletePlayer(it)
             playerToDeleteId = null
         }
     }

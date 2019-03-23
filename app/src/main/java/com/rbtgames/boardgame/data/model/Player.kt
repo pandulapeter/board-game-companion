@@ -1,14 +1,18 @@
 package com.rbtgames.boardgame.data.model
 
 import androidx.annotation.ColorRes
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.rbtgames.boardgame.R
 import java.util.UUID
 
+@Entity(tableName = Player.TABLE_NAME)
 data class Player(
-    val id: String = UUID.randomUUID().toString(),
-    val name: String = "",
-    val color: Color = Color.COLOR_1,
-    val points: Int = 0
+    @PrimaryKey @ColumnInfo(name = ID) val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "name") val name: String = "",
+    @ColumnInfo(name = "color") val color: Color = Color.COLOR_1,
+    @ColumnInfo(name = "points") val points: Int = 0
 ) {
 
     enum class Color(@ColorRes val colorResourceId: Int) {
@@ -28,5 +32,10 @@ data class Player(
         COLOR_14(R.color.player_14),
         COLOR_15(R.color.player_15),
         COLOR_16(R.color.player_16)
+    }
+
+    companion object {
+        const val TABLE_NAME = "playerIds"
+        const val ID = "id"
     }
 }

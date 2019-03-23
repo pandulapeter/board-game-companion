@@ -24,7 +24,7 @@ class GameRepository {
         newGame = null
     }
 
-    fun getGameById(id: String) = games.find { it.id == id } ?: newGame
+    fun getGame(gameId: String) = games.find { it.id == gameId } ?: newGame
 
     fun getAllGames(): List<Game> = games
 
