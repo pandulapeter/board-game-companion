@@ -101,7 +101,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override fun onPositiveButtonSelected(id: Int) {
         if (id == DIALOG_CLOSE_CONFIRMATION_ID) {
-            navigateBack()
+            viewModel.navigateBack()
         }
     }
 

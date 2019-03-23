@@ -109,11 +109,15 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
 
     fun onBackButtonPressed() {
         if (_listItems.value?.any { it is PlayerViewModel } != true) {
-            gameRepository.cancelNewGame()
-            _shouldNavigateBack.sendEvent()
+            navigateBack()
         } else {
             _shouldShowCloseConfirmation.sendEvent()
         }
+    }
+
+    fun navigateBack() {
+        gameRepository.cancelNewGame()
+        _shouldNavigateBack.sendEvent()
     }
 
     fun onAddPlayerButtonPressed() {
@@ -123,7 +127,7 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     fun onStartGameButtonPressed() {
         if (_isStartGameButtonEnabled.value == true) {
             launch(Dispatchers.Default) {
-                gameRepository.confirmNewGame(gameRepository.getNewGame().copy(startTime = System.currentTimeMillis()))
+                gameRepository.confirmNewGame(game.copy(startTime = System.currentTimeMillis()))
                 launch(Dispatchers.Main) {
                     _shouldNavigateBack.sendEvent() //TODO: Remove this
                 }
