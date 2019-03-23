@@ -12,6 +12,7 @@ import com.rbtgames.boardgame.feature.shared.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Collections
+import java.util.UUID
 
 class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
 
@@ -129,10 +130,11 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
 
     fun onStartGameButtonPressed() {
         if (_isStartGameButtonEnabled.value == true) {
+            val id = UUID.randomUUID().toString()
             launch(Dispatchers.Default) {
-                gameRepository.confirmNewGame(game.copy(startTime = System.currentTimeMillis()))
+                gameRepository.confirmNewGame(game.copy(id = id, startTime = System.currentTimeMillis()))
                 launch(Dispatchers.Main) {
-                    _gameIdToNavigateTo.value = game.id
+                    _gameIdToNavigateTo.value = id
                 }
             }
         }

@@ -49,7 +49,7 @@
             android:layout_height="match_parent"
             android:paddingStart="@dimen/first_keyline"
             android:paddingTop="@dimen/content_padding"
-            android:paddingEnd="@dimen/first_keyline"
+            android:paddingEnd="@dimen/content_padding"
             android:paddingBottom="@dimen/list_bottom_padding"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_game_list_game" />

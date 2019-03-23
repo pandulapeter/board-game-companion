@@ -30,17 +30,15 @@ class GameRepository(database: Database) {
                 game.lastActionTime
             )
         )
-        game.players.forEach { player ->
-            gameDao.insertPlayer(
-                PlayerEntity(
-                    id = player.id,
-                    gameId = game.id,
-                    name = player.name,
-                    color = player.color,
-                    points = player.points
-                )
+        gameDao.insertPlayers(game.players.map { player ->
+            PlayerEntity(
+                id = player.id,
+                gameId = game.id,
+                name = player.name,
+                color = player.color,
+                points = player.points
             )
-        }
+        })
         newGame = null
     }
 

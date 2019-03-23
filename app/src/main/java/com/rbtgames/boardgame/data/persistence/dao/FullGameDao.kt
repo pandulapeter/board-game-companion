@@ -24,7 +24,7 @@ interface FullGameDao {
     fun insertGame(game: GameEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlayer(player: PlayerEntity)
+    fun insertPlayers(players: List<PlayerEntity>)
 
     @Query("DELETE FROM ${GameEntity.TABLE_NAME} WHERE ${GameEntity.ID} IN(:gameId)")
     fun deleteGame(gameId: String)
