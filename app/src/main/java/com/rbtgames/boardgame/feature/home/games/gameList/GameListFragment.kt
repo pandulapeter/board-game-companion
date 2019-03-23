@@ -33,7 +33,7 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
-        gameListAdapter = GameListAdapter { gameViewModel -> navigateToGame(gameViewModel.game.id) }
+        gameListAdapter = GameListAdapter { gameViewModel -> navigateToGameDetail(gameViewModel.game.id) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
@@ -85,7 +85,7 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
 
     private fun navigateToNewGame() = parentFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }
 
-    private fun navigateToGame(gameId: String) = parentFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
+    private fun navigateToGameDetail(gameId: String) = parentFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     companion object {
         fun newInstance() = GameListFragment()

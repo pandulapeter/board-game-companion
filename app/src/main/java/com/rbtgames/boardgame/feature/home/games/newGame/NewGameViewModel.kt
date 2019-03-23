@@ -8,6 +8,7 @@ import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameListItem
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
+import com.rbtgames.boardgame.feature.shared.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Collections
@@ -23,6 +24,8 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
     private val _shouldNavigateToNewPlayerScreen = eventLiveData()
     val isStartGameButtonEnabled: LiveData<Boolean> get() = _isStartGameButtonEnabled
     private val _isStartGameButtonEnabled = mutableLiveDataOf(false)
+    val gameIdToNavigateTo: LiveData<String?> get() = _gameIdToNavigateTo
+    private val _gameIdToNavigateTo = SingleLiveEvent<String?>()
     val listItems: LiveData<List<NewGameListItem>> get() = _listItems
     private val _listItems = mutableLiveDataOf(emptyList<NewGameListItem>())
     private var playerToDeleteId: String? = null
@@ -129,7 +132,7 @@ class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewM
             launch(Dispatchers.Default) {
                 gameRepository.confirmNewGame(game.copy(startTime = System.currentTimeMillis()))
                 launch(Dispatchers.Main) {
-                    _shouldNavigateBack.sendEvent() //TODO: Remove this
+                    _gameIdToNavigateTo.value = game.id
                 }
             }
         }

@@ -10,6 +10,7 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
+import com.rbtgames.boardgame.feature.home.games.gameDetail.GameDetailFragment
 import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameAdapter
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
@@ -86,6 +87,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
             adapter = newGameAdapter
             itemTouchHelper.attachToRecyclerView(this)
         }
+        viewModel.gameIdToNavigateTo.observe { gameId -> if (gameId != null) navigateToGameDetailScreen(gameId) }
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
@@ -115,6 +117,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     private fun navigateToNewPlayerScreen(player: Player) =
         activityFragmentManager?.handleReplace(addToBackStack = true) { PlayerDetailFragment.newInstance(player.id, viewModel.game.id) }
+
+    private fun navigateToGameDetailScreen(gameId: String) = parentFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     private fun showCloseConfirmationDialog() = AlertDialogFragment.show(
         id = DIALOG_CLOSE_CONFIRMATION_ID,

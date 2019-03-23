@@ -50,6 +50,8 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 
 fun FragmentManager.navigateBack() = popBackStackImmediate()
 
+fun FragmentManager.clearBackStack() = repeat(backStackEntryCount) { popBackStack() }
+
 inline fun <T : Fragment> T.withArguments(bundleOperations: (Bundle) -> Unit): T = apply {
     arguments = Bundle().apply { bundleOperations(this) }
 }

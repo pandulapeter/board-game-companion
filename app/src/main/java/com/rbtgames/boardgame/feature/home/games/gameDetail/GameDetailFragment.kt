@@ -6,7 +6,8 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
-import com.rbtgames.boardgame.utils.navigateBack
+import com.rbtgames.boardgame.utils.clearBackStack
+import com.rbtgames.boardgame.utils.consume
 import com.rbtgames.boardgame.utils.withArguments
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -21,7 +22,9 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         viewModel.shouldNavigateBack.observe { navigateBack() }
     }
 
-    private fun navigateBack() = parentFragmentManager?.navigateBack()
+    private fun navigateBack() = parentFragmentManager?.clearBackStack()
+
+    override fun onBackPressed() = consume { navigateBack() }
 
     companion object {
         private var Bundle.gameId by BundleArgumentDelegate.String("gameId")
