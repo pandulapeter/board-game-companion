@@ -13,14 +13,13 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.experimental.builder.viewModel
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
-import org.koin.experimental.builder.single
 
 val persistenceModule = module {
     single { Room.databaseBuilder(androidContext(), Database::class.java, "gameDatabase.db").build() }
 }
 
 val dataModule = module {
-    single<GameRepository>()
+    single { GameRepository(get()) }
 }
 
 val featureModule = module {
