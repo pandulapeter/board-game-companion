@@ -23,22 +23,8 @@ class GameRepository(database: Database) {
     }
 
     suspend fun confirmNewGame(game: Game) = withContext(Dispatchers.Default) {
-        gameDao.insertGame(
-            GameEntity(
-                game.id,
-                game.startTime,
-                game.lastActionTime
-            )
-        )
-        gameDao.insertPlayers(game.players.map { player ->
-            PlayerEntity(
-                id = player.id,
-                gameId = game.id,
-                name = player.name,
-                color = player.color,
-                points = player.points
-            )
-        })
+        gameDao.insertGame(game.toGameEntity())
+        gameDao.insertPlayers(game.players.toPlayerEntity(game.id))
         newGame = null
     }
 
@@ -52,6 +38,11 @@ class GameRepository(database: Database) {
 
     suspend fun getAllGames() = withContext(Dispatchers.Default) {
         gameDao.getAllGames().map { it.toGame() }
+    }
+
+    suspend fun updateGame(game: Game) = withContext(Dispatchers.Default) {
+        gameDao.insertGame(game.toGameEntity())
+        gameDao.insertPlayers(game.players.toPlayerEntity(game.id))
     }
 
     suspend fun deleteGame(gameId: String) = withContext(Dispatchers.Default) {
@@ -71,4 +62,20 @@ class GameRepository(database: Database) {
         color = color,
         points = points
     )
+
+    private fun Game.toGameEntity() = GameEntity(
+        id = id,
+        startTime = startTime,
+        lastActionTime = lastActionTime
+    )
+
+    private fun List<Player>.toPlayerEntity(gameId: String) = map { player ->
+        PlayerEntity(
+            id = player.id,
+            gameId = gameId,
+            name = player.name,
+            color = player.color,
+            points = player.points
+        )
+    }
 }

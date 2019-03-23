@@ -1,6 +1,8 @@
 package com.rbtgames.boardgame.feature.home.games.gameDetail
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
@@ -13,10 +15,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     val points = mutableLiveDataOf("")
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
     private val _shouldNavigateBack = eventLiveData()
-    val nextPlayerColor: LiveData<Player.Color> get() = _nextPlayerColor
-    private val _nextPlayerColor = mutableLiveDataOf(Player.Color.COLOR_1)
-    val nextPlayerName: LiveData<String> get() = _nextPlayerName
-    private val _nextPlayerName = mutableLiveDataOf("")
+    val currentPlayer: LiveData<Player?> get() = _currentPlayer
+    private val _currentPlayer = MutableLiveData<Player?>()
     val isNextTurnButtonEnabled: LiveData<Boolean> get() = _isNextTurnButtonEnabled
     private val _isNextTurnButtonEnabled = mutableLiveDataOf(false)
     val players: LiveData<List<PlayerViewModel>> get() = _players
@@ -30,17 +30,27 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     fun onBackButtonPressed() = _shouldNavigateBack.sendEvent()
 
     fun onNextTurnButtonPressed() {
-        points.value = ""
+        launch(Dispatchers.Default) {
+            val game = gameRepository.getGame(gameId)!!
+            val points = points.value?.toInt() ?: 0
+            val newGame = game.copy(
+                lastActionTime = System.currentTimeMillis(),
+                players = game.players.map { player ->
+                    if (player.id == _currentPlayer.value?.id) player.copy(points = player.points + points) else player
+                }
+            )
+            gameRepository.updateGame(newGame)
+            refreshList(newGame)
+        }
     }
 
-    private fun refreshList() {
+    private fun refreshList(game: Game? = null) {
         launch(Dispatchers.Default) {
-            val players = gameRepository.getGame(gameId)!!.players.sortedByDescending { it.points }.mapIndexed { index, player -> PlayerViewModel(index, player) }
-            val nextPlayer = players.first().player
+            val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }.mapIndexed { index, player -> PlayerViewModel(index, player) }
             launch(Dispatchers.Main) {
                 _players.value = players
-                _nextPlayerColor.value = nextPlayer.color
-                _nextPlayerName.value = nextPlayer.name
+                _currentPlayer.value = players.first().player
+                points.value = ""
             }
         }
     }

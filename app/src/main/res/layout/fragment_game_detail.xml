@@ -19,13 +19,12 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="0dp"
-            android:layout_height="@dimen/app_bar_expanded_height"
-            android:theme="@style/LightTheme"
-            app:color="@{viewModel.nextPlayerColor}"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground"
+            android:paddingBottom="@dimen/content_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@color/brand">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -41,7 +40,6 @@
                     android:contentDescription="@string/back"
                     android:onClick="@{() -> viewModel.onBackButtonPressed()}"
                     android:padding="@dimen/content_padding"
-                    android:tint="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_back" />
@@ -54,9 +52,8 @@
                     android:layout_marginEnd="@dimen/first_keyline"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{@string/game_detail_current_turn(viewModel.nextPlayerName)}"
+                    android:text="@{@string/game_detail_current_turn(viewModel.currentPlayer.name)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/close_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +97,7 @@
             app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/next_turn_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/content_padding"

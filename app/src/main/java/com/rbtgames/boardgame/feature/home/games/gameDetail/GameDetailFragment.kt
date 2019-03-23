@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
@@ -22,6 +23,15 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     override val viewModel by viewModel<GameDetailViewModel> { parametersOf(arguments?.gameId) }
     override val transitionType = TransitionType.DETAIL
     private var gameDetailAdapter: GameDetailAdapter? = null
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) = binding.nextTurnButton.run {
+            if (dy > 0) {
+                shrink()
+            } else {
+                extend()
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,6 +44,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = gameDetailAdapter
+            addOnScrollListener(onScrollListener)
         }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.players.observe { playerViewModels -> gameDetailAdapter?.submitList(playerViewModels) }
@@ -49,6 +60,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     override fun onBackPressed() = consume { navigateBack() }
 
     override fun onDestroyView() {
+        binding.recyclerView.removeOnScrollListener(onScrollListener)
         gameDetailAdapter = null
         super.onDestroyView()
     }
