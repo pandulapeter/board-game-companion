@@ -39,7 +39,7 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
                 when {
                     binding.recyclerView.isAnimating -> 0
-                    viewModel.canSwipeItem(viewHolder.adapterPosition) -> makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+                    viewModel.canSwipeItem(viewHolder.adapterPosition) && !viewModel.hasGameToDelete() -> makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
                     else -> 0
                 }
 

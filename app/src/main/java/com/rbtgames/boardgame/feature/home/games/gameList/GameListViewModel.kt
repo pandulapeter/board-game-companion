@@ -24,7 +24,6 @@ class GameListViewModel(private val gameRepository: GameRepository) : ScreenView
         launch(Dispatchers.Default) {
             _listItems.postValue(
                 gameRepository.getAllGames()
-                    .asSequence()
                     .filter { it.id != gameToDeleteId }
                     .sortedByDescending { it.lastActionTime }
                     .map { game -> GameViewModel(game) }
@@ -54,6 +53,8 @@ class GameListViewModel(private val gameRepository: GameRepository) : ScreenView
         gameToDeleteId = null
         refreshGames()
     }
+
+    fun hasGameToDelete() = gameToDeleteId != null
 
     fun deleteGamePermanently() {
         gameToDeleteId?.let {
