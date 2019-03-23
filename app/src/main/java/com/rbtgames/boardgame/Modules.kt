@@ -3,6 +3,7 @@ package com.rbtgames.boardgame
 import androidx.room.Room
 import com.rbtgames.boardgame.data.persistence.Database
 import com.rbtgames.boardgame.data.repository.GameRepository
+import com.rbtgames.boardgame.feature.home.games.gameDetail.GameDetailViewModel
 import com.rbtgames.boardgame.feature.home.games.gameList.GameListViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.NewGameViewModel
 import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailViewModel
@@ -26,6 +27,7 @@ val featureModule = module {
     viewModel<GameListViewModel>()
     viewModel<NewGameViewModel>()
     viewModel { (playerId: String, gameId: String) -> PlayerDetailViewModel(get(), playerId, gameId) }
+    viewModel { (gameId: String) -> GameDetailViewModel(get(), gameId) }
     viewModel<GlossaryViewModel>()
     viewModel<RuleBookViewModel>()
 }

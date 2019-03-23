@@ -127,7 +127,6 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     companion object {
         private const val DIALOG_CLOSE_CONFIRMATION_ID = 1
-        private const val SNACKBAR_DISMISS_DELAY = 100L
 
         fun newInstance() = NewGameFragment()
     }

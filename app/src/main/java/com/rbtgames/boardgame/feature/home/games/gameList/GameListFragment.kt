@@ -9,6 +9,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameListBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
+import com.rbtgames.boardgame.feature.home.games.gameDetail.GameDetailFragment
 import com.rbtgames.boardgame.feature.home.games.gameList.list.GameListAdapter
 import com.rbtgames.boardgame.feature.home.games.gameList.list.GameViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.NewGameFragment
@@ -84,7 +85,7 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
 
     private fun navigateToNewGame() = parentFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }
 
-    private fun navigateToGame(gameId: String) = showSnackbar(R.string.work_in_progress)
+    private fun navigateToGame(gameId: String) = parentFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     companion object {
         fun newInstance() = GameListFragment()
