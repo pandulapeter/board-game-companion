@@ -12,7 +12,7 @@
     <string name="home_glossary">Glossary</string>
     <string name="home_rule_book">Rule book</string>
 
-    <!-- Game list -->
+    <!-- GameEntity list -->
     <string name="game_list_new_game">New game</string>
     <string name="game_list_no_games">There are no game sessions</string>
     <string name="game_list_hint">Tap on a card to resume the game or swipe it away horizontally to delete it</string>
@@ -33,7 +33,7 @@
     <string name="new_game_close_confirmation_positive">Leave</string>
     <string name="new_game_close_confirmation_negative">Cancel</string>
 
-    <!-- Player detail -->
+    <!-- PlayerEntity detail -->
     <string name="player_detail_player_name">Player name</string>
     <string name="player_detail_player_color">Player color</string>
     <string name="player_detail_done">Done</string>

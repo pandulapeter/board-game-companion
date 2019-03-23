@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
-import com.rbtgames.boardgame.data.repository.PlayerRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameListItem
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Collections
 
-class NewGameViewModel(private val gameRepository: GameRepository, private val playerRepository: PlayerRepository) : ScreenViewModel() {
+class NewGameViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
 
     val game get() = gameRepository.getNewGame()
     val shouldShowCloseConfirmation: LiveData<Boolean?> get() = _shouldShowCloseConfirmation
@@ -34,8 +34,8 @@ class NewGameViewModel(private val gameRepository: GameRepository, private val p
 
     fun refreshPlayers() {
         launch {
-            _listItems.postValue(game.playerIds
-                .mapNotNull { playerId -> if (playerId == playerToDeleteId) null else playerRepository.getPlayer(playerId) }
+            _listItems.postValue(game.players
+                .filter { player -> player.id != playerToDeleteId }
                 .let { players ->
                     players
                         .map { player -> PlayerViewModel(player, players.size > 1) }
@@ -64,14 +64,15 @@ class NewGameViewModel(private val gameRepository: GameRepository, private val p
                 }
             }
             _listItems.value = newPlayerList
-            val playerIds = players.map { it.player.id }.toMutableList()
-            playerToDeleteId?.also { playerToDeleteId ->
-                val playerToDeleteIndex = game.playerIds.indexOf(playerToDeleteId)
-                if (playerToDeleteIndex != -1) {
-                    playerIds.add(playerToDeleteIndex, playerToDeleteId)
+            val players = players.map { it.player }.toMutableList()
+            playerToDeleteId?.let { playerToDeleteId ->
+                val playerToDelete = game.players.find { it.id == playerToDeleteId }
+                val playerToDeleteIndex = game.players.indexOf(playerToDelete)
+                if (playerToDelete != null) {
+                    players.add(playerToDeleteIndex, playerToDelete)
                 }
             }
-            gameRepository.updateNewGame(game.copy(playerIds = playerIds))
+            gameRepository.updateNewGame(game.copy(players = players))
         }
     }
 
@@ -101,8 +102,7 @@ class NewGameViewModel(private val gameRepository: GameRepository, private val p
 
     fun deletePlayerPermanently() {
         playerToDeleteId?.let {
-            gameRepository.updateNewGame(game.copy(playerIds = players.map { playerViewModel -> playerViewModel.player.id }))
-            playerRepository.deletePlayer(it)
+            gameRepository.updateNewGame(game.copy(players = players.map { it.player }))
             playerToDeleteId = null
         }
     }
@@ -122,8 +122,12 @@ class NewGameViewModel(private val gameRepository: GameRepository, private val p
 
     fun onStartGameButtonPressed() {
         if (_isStartGameButtonEnabled.value == true) {
-            gameRepository.confirmNewGame(gameRepository.getNewGame().copy(startTime = System.currentTimeMillis()))
-            _shouldNavigateBack.sendEvent() //TODO: Remove this
+            launch(Dispatchers.Default) {
+                gameRepository.confirmNewGame(gameRepository.getNewGame().copy(startTime = System.currentTimeMillis()))
+                launch(Dispatchers.Main) {
+                    _shouldNavigateBack.sendEvent() //TODO: Remove this
+                }
+            }
         }
     }
 

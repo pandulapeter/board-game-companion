@@ -10,7 +10,7 @@
     <color name="brand">#CDDC39</color>
     <color name="background">#212121</color>
 
-    <!-- Player -->
+    <!-- PlayerEntity -->
     <color name="player_1">@color/brand</color>
     <color name="player_2">#FFEB3B</color>
     <color name="player_3">#FFC107</color>

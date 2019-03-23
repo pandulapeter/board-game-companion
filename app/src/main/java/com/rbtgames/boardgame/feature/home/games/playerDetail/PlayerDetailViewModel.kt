@@ -4,21 +4,20 @@ import androidx.lifecycle.LiveData
 import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
-import com.rbtgames.boardgame.data.repository.PlayerRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PlayerDetailViewModel(
     private val gameRepository: GameRepository,
-    private val playerRepository: PlayerRepository,
     private val playerId: String,
     private val gameId: String
 ) : ScreenViewModel() {
 
     private val defaultName = ""
     private val defaultColor = Player.Color.values().first()
-    private val game = gameRepository.getGame(gameId)!!
+    private lateinit var game: Game
     val playerName = mutableLiveDataOf(defaultName)
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
     private val _shouldNavigateBack = eventLiveData()
@@ -34,14 +33,17 @@ class PlayerDetailViewModel(
 
     init {
         playerName.observeForever { _isDoneButtonEnabled.value = it.isNotBlank() }
-        launch {
-            playerRepository.getPlayer(playerId).let { player ->
-                if (player != null) {
-                    playerName.value = player.name
-                    _initialSelectedColorIndex.value = Player.Color.values().indexOfFirst { it == player.color }
-                    onColorSelected(player.color)
+        launch(Dispatchers.Default) {
+            game = gameRepository.getGame(gameId)!!
+            game.players.find { it.id == playerId }.let { player ->
+                launch(Dispatchers.Main) {
+                    if (player != null) {
+                        playerName.value = player.name
+                        _initialSelectedColorIndex.value = Player.Color.values().indexOfFirst { it == player.color }
+                        onColorSelected(player.color)
+                    }
+                    initialPlayer = player
                 }
-                initialPlayer = player
             }
         }
     }
@@ -54,17 +56,16 @@ class PlayerDetailViewModel(
                 Game(
                     id = gameId,
                     startTime = game.startTime,
-                    playerIds = game.playerIds.toMutableList().apply {
-                        add(initialPlayer?.let { initialPlayer -> indexOf(initialPlayer.id).also { remove(initialPlayer.id) } } ?: 0, playerId)
-
-                    }
-                ))
-            playerRepository.updatePlayer(
-                Player(
-                    id = playerId,
-                    name = playerName.value ?: defaultName,
-                    color = _colors.value?.find { it.isSelected }?.color ?: defaultColor
-                )
+                    players = game.players.toMutableList().apply {
+                        add(
+                            initialPlayer?.let { initialPlayer -> indexOf(initialPlayer).also { remove(initialPlayer) } } ?: 0,
+                            Player(
+                                id = playerId,
+                                name = playerName.value ?: defaultName,
+                                color = _colors.value?.find { it.isSelected }?.color ?: defaultColor
+                            )
+                        )
+                    })
             )
             _shouldNavigateBack.sendEvent()
         }

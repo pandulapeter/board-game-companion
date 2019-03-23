@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
-import com.rbtgames.boardgame.data.repository.PlayerRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.gameList.list.GameListListItem
 import com.rbtgames.boardgame.feature.home.games.gameList.list.GameViewModel
 import com.rbtgames.boardgame.feature.home.games.gameList.list.HintViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GameListViewModel(private val gameRepository: GameRepository, private val playerRepository: PlayerRepository) : ScreenViewModel() {
+class GameListViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
 
     val shouldOpenNewGameScreen: LiveData<Boolean?> get() = _shouldOpenNewGameScreen
     private val _shouldOpenNewGameScreen = eventLiveData()
@@ -21,28 +21,19 @@ class GameListViewModel(private val gameRepository: GameRepository, private val 
     private val games get() = _listItems.value?.filterIsInstance<GameViewModel>() ?: emptyList()
 
     fun refreshGames() {
-        launch {
+        launch(Dispatchers.Default) {
             _listItems.postValue(
                 gameRepository.getAllGames()
                     .asSequence()
                     .filter { it.id != gameToDeleteId }
                     .sortedByDescending { it.lastActionTime }
-                    .toList()
-                    .let { games ->
-                        games
-                            .map { game ->
-                                GameViewModel(
-                                    game = game,
-                                    nextPlayerName = game.playerIds.mapNotNull { playerId -> playerRepository.getPlayer(playerId) }.minBy { it.points }?.name ?: ""
-                                )
-                            }
-                            .toMutableList<GameListListItem>()
-                            .apply {
-                                when (size) {
-                                    0 -> add(HintViewModel(R.string.game_list_no_games))
-                                    else -> add(HintViewModel(R.string.game_list_hint))
-                                }
-                            }
+                    .map { game -> GameViewModel(game) }
+                    .toMutableList<GameListListItem>()
+                    .apply {
+                        when (size) {
+                            0 -> add(HintViewModel(R.string.game_list_no_games))
+                            else -> add(HintViewModel(R.string.game_list_hint))
+                        }
                     })
         }
     }
@@ -66,7 +57,7 @@ class GameListViewModel(private val gameRepository: GameRepository, private val 
 
     fun deleteGamePermanently() {
         gameToDeleteId?.let {
-            gameRepository.deleteGame(it)
+            launch { gameRepository.deleteGame(it) }
             gameToDeleteId = null
         }
     }

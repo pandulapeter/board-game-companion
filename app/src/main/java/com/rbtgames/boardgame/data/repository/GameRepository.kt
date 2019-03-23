@@ -1,11 +1,18 @@
 package com.rbtgames.boardgame.data.repository
 
 import com.rbtgames.boardgame.data.model.Game
+import com.rbtgames.boardgame.data.model.Player
+import com.rbtgames.boardgame.data.persistence.Database
+import com.rbtgames.boardgame.data.persistence.model.FullGame
+import com.rbtgames.boardgame.data.persistence.model.GameEntity
+import com.rbtgames.boardgame.data.persistence.model.PlayerEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class GameRepository {
+class GameRepository(database: Database) {
 
+    private val gameDao = database.fullGameDao()
     private var newGame: Game? = null
-    private val games = mutableListOf<Game>()
 
     fun getNewGame() = (newGame ?: Game()).also {
         newGame = it
@@ -15,8 +22,25 @@ class GameRepository {
         newGame = game
     }
 
-    fun confirmNewGame(game: Game) {
-        games.add(game)
+    suspend fun confirmNewGame(game: Game) = withContext(Dispatchers.Default) {
+        gameDao.insertGame(
+            GameEntity(
+                game.id,
+                game.startTime,
+                game.lastActionTime
+            )
+        )
+        game.players.forEach { player ->
+            gameDao.insertPlayer(
+                PlayerEntity(
+                    id = player.id,
+                    gameId = game.id,
+                    name = player.name,
+                    color = player.color,
+                    points = player.points
+                )
+            )
+        }
         newGame = null
     }
 
@@ -24,11 +48,29 @@ class GameRepository {
         newGame = null
     }
 
-    fun getGame(gameId: String) = games.find { it.id == gameId } ?: newGame
-
-    fun getAllGames(): List<Game> = games
-
-    fun deleteGame(gameId: String) {
-        games.removeAll { it.id == gameId }
+    suspend fun getGame(gameId: String) = withContext(Dispatchers.Default) {
+        gameDao.getGame(gameId)?.toGame() ?: newGame
     }
+
+    suspend fun getAllGames() = withContext(Dispatchers.Default) {
+        gameDao.getAllGames().map { it.toGame() }
+    }
+
+    suspend fun deleteGame(gameId: String) = withContext(Dispatchers.Default) {
+        gameDao.deleteGame(gameId)
+    }
+
+    private fun FullGame.toGame() = Game(
+        id = id,
+        startTime = startTime,
+        lastActionTime = lastActionTime,
+        players = playerEntities.map { it.toPlayer() }
+    )
+
+    private fun PlayerEntity.toPlayer() = Player(
+        id = id,
+        name = name,
+        color = color,
+        points = points
+    )
 }
