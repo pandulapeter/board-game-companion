@@ -48,7 +48,7 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
             }
         }
         viewModel.colors.observe { colorViewModels -> colorAdapter?.submitList(colorViewModels) }
-        viewModel.initialSelectedColorIndex.observe { position -> binding.recyclerView.apply { postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) scrollToPosition(position) } } }
+        viewModel.initialSelectedColorIndex.observe { position -> binding.recyclerView.apply { postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) smoothScrollToPosition(position) } } }
     }
 
     override fun onDestroyView() {

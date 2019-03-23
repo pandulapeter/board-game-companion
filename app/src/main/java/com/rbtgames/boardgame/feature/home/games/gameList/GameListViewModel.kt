@@ -9,6 +9,7 @@ import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.gameList.list.GameListListItem
 import com.rbtgames.boardgame.feature.home.games.gameList.list.GameViewModel
 import com.rbtgames.boardgame.feature.home.games.gameList.list.HintViewModel
+import kotlinx.coroutines.launch
 
 class GameListViewModel(private val gameRepository: GameRepository, private val playerRepository: PlayerRepository) : ScreenViewModel() {
 
@@ -20,13 +21,29 @@ class GameListViewModel(private val gameRepository: GameRepository, private val 
     private val games get() = _listItems.value?.filterIsInstance<GameViewModel>() ?: emptyList()
 
     fun refreshGames() {
-        _listItems.value = gameRepository.getAllGames().filter { it.id != gameToDeleteId }.sortedByDescending { it.lastActionTime }.let { games ->
-            games.map { GameViewModel(it, playerRepository) }.toMutableList<GameListListItem>().apply {
-                when (size) {
-                    0 -> add(HintViewModel(R.string.game_list_no_games))
-                    else -> add(HintViewModel(R.string.game_list_hint))
-                }
-            }
+        launch {
+            _listItems.postValue(
+                gameRepository.getAllGames()
+                    .asSequence()
+                    .filter { it.id != gameToDeleteId }
+                    .sortedByDescending { it.lastActionTime }
+                    .toList()
+                    .let { games ->
+                        games
+                            .map { game ->
+                                GameViewModel(
+                                    game = game,
+                                    nextPlayerName = game.playerIds.mapNotNull { playerId -> playerRepository.getPlayer(playerId) }.minBy { it.points }?.name ?: ""
+                                )
+                            }
+                            .toMutableList<GameListListItem>()
+                            .apply {
+                                when (size) {
+                                    0 -> add(HintViewModel(R.string.game_list_no_games))
+                                    else -> add(HintViewModel(R.string.game_list_hint))
+                                }
+                            }
+                    })
         }
     }
 

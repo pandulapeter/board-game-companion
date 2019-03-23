@@ -9,6 +9,7 @@ import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel
 import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameListItem
 import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 class NewGameViewModel(private val gameRepository: GameRepository, private val playerRepository: PlayerRepository) : ScreenViewModel() {
@@ -27,21 +28,28 @@ class NewGameViewModel(private val gameRepository: GameRepository, private val p
     private var playerToDeleteId: String? = null
     private val players get() = _listItems.value?.filterIsInstance<PlayerViewModel>() ?: emptyList()
 
+    init {
+        _listItems.observeForever { _isStartGameButtonEnabled.value = players.size >= MINIMUM_PLAYER_COUNT }
+    }
+
     fun refreshPlayers() {
-        _listItems.value = game.playerIds.filter { it != playerToDeleteId }.let { players ->
-            players
-                .mapNotNull { playerId -> playerRepository.getPlayer(playerId) }
-                .map { player -> PlayerViewModel(player, players.size > 1) }
-                .toMutableList<NewGameListItem>()
-                .apply {
-                    when (size) {
-                        0 -> add(HintViewModel(R.string.new_game_no_players))
-                        1 -> add(HintViewModel(R.string.new_game_one_player))
-                        else -> add(HintViewModel(R.string.new_game_two_or_more_players))
-                    }
+        launch {
+            _listItems.postValue(game.playerIds
+                .mapNotNull { playerId -> if (playerId == playerToDeleteId) null else playerRepository.getPlayer(playerId) }
+                .let { players ->
+                    players
+                        .map { player -> PlayerViewModel(player, players.size > 1) }
+                        .toMutableList<NewGameListItem>()
+                        .apply {
+                            when (size) {
+                                0 -> add(HintViewModel(R.string.new_game_no_players))
+                                1 -> add(HintViewModel(R.string.new_game_one_player))
+                                else -> add(HintViewModel(R.string.new_game_two_or_more_players))
+                            }
+                        }
                 }
+            )
         }
-        _isStartGameButtonEnabled.value = players.size >= MINIMUM_PLAYER_COUNT
     }
 
     fun swapPlayers(originalPosition: Int, targetPosition: Int) {
