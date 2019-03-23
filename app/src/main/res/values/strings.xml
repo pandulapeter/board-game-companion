@@ -12,11 +12,11 @@
     <string name="home_glossary">Glossary</string>
     <string name="home_rule_book">Rule book</string>
 
-    <!-- GameEntity list -->
+    <!-- Game list -->
     <string name="game_list_new_game">New game</string>
     <string name="game_list_no_games">There are no game sessions</string>
     <string name="game_list_hint">Tap on a card to resume the game or swipe it away horizontally to delete it</string>
-    <string name="game_list_next_player_name">Next player: %s</string>
+    <string name="game_list_current_player_name">Current turn: %s</string>
     <string name="game_list_game_deleted_message">Game deleted</string>
     <string name="game_list_game_deleted_action">@string/undo</string>
 
@@ -33,9 +33,14 @@
     <string name="new_game_close_confirmation_positive">Leave</string>
     <string name="new_game_close_confirmation_negative">Cancel</string>
 
-    <!-- PlayerEntity detail -->
+    <!-- Player detail -->
     <string name="player_detail_player_name">Player name</string>
     <string name="player_detail_player_color">Player color</string>
     <string name="player_detail_done">Done</string>
+
+    <!-- Game detail -->
+    <string name="game_detail_current_turn">@string/game_list_current_player_name</string>
+    <string name="game_detail_points_hint">Points</string>
+    <string name="game_detail_next_turn">Next turn</string>
 
 </resources>

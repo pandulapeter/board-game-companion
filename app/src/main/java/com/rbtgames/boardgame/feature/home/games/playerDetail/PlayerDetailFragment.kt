@@ -51,6 +51,11 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
         viewModel.initialSelectedColorIndex.observe { position -> binding.recyclerView.apply { postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) smoothScrollToPosition(position) } } }
     }
 
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(activity?.currentFocus)
+    }
+
     override fun onDestroyView() {
         colorAdapter = null
         super.onDestroyView()

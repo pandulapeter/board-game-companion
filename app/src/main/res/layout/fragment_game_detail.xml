@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,19 +16,85 @@
         android:layout_height="match_parent"
         android:background="?android:attr/windowBackground">
 
-        <ImageView
-            android:id="@+id/close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/first_keyline_button"
-            android:layout_marginTop="@dimen/first_keyline_button"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back"
-            android:onClick="@{() -> viewModel.onBackButtonPressed()}"
-            android:padding="@dimen/content_padding"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/app_bar_expanded_height"
+            android:theme="@style/LightTheme"
+            app:color="@{viewModel.nextPlayerColor}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back" />
+            tools:background="@color/brand">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/close_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/first_keyline_button"
+                    android:layout_marginTop="@dimen/first_keyline_button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/back"
+                    android:onClick="@{() -> viewModel.onBackButtonPressed()}"
+                    android:padding="@dimen/content_padding"
+                    android:tint="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_back" />
+
+                <TextView
+                    android:id="@+id/next_player_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/second_keyline"
+                    android:layout_marginEnd="@dimen/first_keyline"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{@string/game_detail_current_turn(viewModel.nextPlayerName)}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/close_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/close_button"
+                    tools:text="Next turn" />
+
+                <EditText
+                    android:id="@+id/points_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/first_keyline_text_input"
+                    android:layout_marginTop="@dimen/large_content_padding"
+                    android:layout_marginEnd="@dimen/first_keyline_text_input"
+                    android:hint="@string/game_detail_points_hint"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:text="@={viewModel.points}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/close_button"
+                    tools:ignore="UnusedAttribute" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/first_keyline"
+            android:layout_marginBottom="@dimen/first_keyline"
+            android:enabled="@{viewModel.isNextTurnButtonEnabled}"
+            android:onClick="@{() -> viewModel.onNextTurnButtonPressed()}"
+            android:text="@string/game_detail_next_turn"
+            app:icon="@drawable/ic_done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
