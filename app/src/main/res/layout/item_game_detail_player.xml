@@ -43,7 +43,7 @@
                     android:layout_width="@dimen/player_dot_size"
                     android:layout_height="@dimen/player_dot_size"
                     android:importantForAccessibility="no"
-                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardCornerRadius="@dimen/player_dot_corner_radius"
                     app:color="@{viewModel.player.color}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

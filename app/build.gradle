@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
 apply plugin: "kotlin-kapt"
+apply plugin: "io.fabric"
 
 android {
     compileSdkVersion 28
@@ -38,7 +39,6 @@ android {
             debuggable true
             minifyEnabled false
             shrinkResources false
-            applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
         }
         internal {
@@ -46,7 +46,6 @@ android {
             shrinkResources true
             signingConfig signingConfigs.internal
             applicationIdSuffix ".internal"
-            versionNameSuffix "-internal"
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         release {
@@ -67,6 +66,10 @@ dependencies {
 
     // Kotlin language support
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+    // Crash reporting
+    implementation "com.google.firebase:firebase-core:16.0.8"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
 
     // Service locator
     implementation "org.koin:koin-androidx-viewmodel:1.0.2"
@@ -89,3 +92,4 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
 }
+apply plugin: 'com.google.gms.google-services'
