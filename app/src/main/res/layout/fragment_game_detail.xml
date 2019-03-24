@@ -20,11 +20,13 @@
             android:id="@+id/app_bar_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
             android:paddingBottom="@dimen/content_padding"
+            android:theme="@style/LightTheme"
+            app:color="@{viewModel.currentPlayer.color}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/brand">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,6 +42,7 @@
                     android:contentDescription="@string/back"
                     android:onClick="@{() -> viewModel.onBackButtonPressed()}"
                     android:padding="@dimen/content_padding"
+                    android:tint="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_back" />

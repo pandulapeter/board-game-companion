@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.utils.color
 import com.rbtgames.boardgame.utils.visible
@@ -19,6 +20,11 @@ fun View.setVisibility(isVisible: Boolean) {
 @BindingAdapter("color")
 fun CardView.setColor(color: Player.Color) {
     setCardBackgroundColor(context.color(color.colorResourceId))
+}
+
+@BindingAdapter("color")
+fun AppBarLayout.setColor(color: Player.Color?) {
+    color?.let { setBackgroundColor(context.color(color.colorResourceId)) }
 }
 
 @BindingAdapter("time")
