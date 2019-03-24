@@ -46,10 +46,12 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
 
     private fun refreshList(game: Game? = null) {
         launch(Dispatchers.Default) {
-            val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }.mapIndexed { index, player -> PlayerViewModel(index, player) }
+            val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }
+            val baseline = players.first().points
+            val playerViewModels = players.mapIndexed { index, player -> PlayerViewModel(index, baseline, player) }
             launch(Dispatchers.Main) {
-                _players.value = players
-                _currentPlayer.value = players.first().player
+                _players.value = playerViewModels.drop(1)
+                _currentPlayer.value = players.first()
                 points.value = ""
             }
         }
