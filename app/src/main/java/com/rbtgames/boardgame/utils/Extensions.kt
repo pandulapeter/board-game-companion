@@ -1,8 +1,10 @@
 package com.rbtgames.boardgame.utils
 
+import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewAnimationUtils
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
@@ -27,6 +29,37 @@ var View.visible
     }
 
 fun View.postDelayed(delay: Long, action: () -> Unit) = postDelayed(action, delay)
+
+fun View.animateCircularReveal(onAnimationEnd: () -> Unit) {
+    if (isAttachedToWindow) {
+        val cx = Math.round(width * 0.8).toInt()
+        val cy = Math.round(height * 0.8).toInt()
+        val maxRadius = Math.hypot(width.toDouble(), height.toDouble()).toFloat()
+        visible = true
+        val animator = ViewAnimationUtils.createCircularReveal(this, cx, cy, 0f, maxRadius).apply {
+            addListener(onAnimationEnd = {
+                onAnimationEnd()
+                removeAllListeners()
+            })
+        }
+        animator.start()
+    }
+}
+
+inline fun Animator.addListener(
+    crossinline onAnimationRepeat: () -> Unit = {},
+    crossinline onAnimationEnd: () -> Unit = {},
+    crossinline onAnimationCancel: () -> Unit = {},
+    crossinline onAnimationStart: () -> Unit = {}
+) = addListener(object : Animator.AnimatorListener {
+    override fun onAnimationRepeat(animation: Animator?) = onAnimationRepeat()
+
+    override fun onAnimationEnd(animation: Animator?) = onAnimationEnd()
+
+    override fun onAnimationCancel(animation: Animator?) = onAnimationCancel()
+
+    override fun onAnimationStart(animation: Animator?) = onAnimationStart()
+})
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     vararg sharedViews: View?,

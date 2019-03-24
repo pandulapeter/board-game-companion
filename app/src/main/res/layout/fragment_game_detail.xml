@@ -22,17 +22,27 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/content_padding"
             android:theme="@style/LightTheme"
             app:color="@{viewModel.currentPlayer.color}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:revealView="@{revealView}"
             tools:background="@color/brand">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/reveal_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@color/brand" />
 
                 <ImageView
                     android:id="@+id/close_button"
@@ -72,12 +82,14 @@
                     android:layout_marginStart="@dimen/first_keyline_text_input"
                     android:layout_marginTop="@dimen/large_content_padding"
                     android:layout_marginEnd="@dimen/large_content_padding"
+                    android:layout_marginBottom="@dimen/content_padding"
                     android:hint="@string/game_detail_points_hint"
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxLength="5"
                     android:text="@={viewModel.points}"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/next_turn_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/close_button"
@@ -88,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/first_keyline_button"
-                    android:layout_marginBottom="@dimen/small_content_padding"
+                    android:layout_marginBottom="@dimen/game_detail_fab_bottom_margin"
                     android:enabled="@{viewModel.isNextTurnButtonEnabled}"
                     android:onClick="@{() -> viewModel.onNextTurnButtonPressed()}"
                     android:text="@string/game_detail_next_turn"
