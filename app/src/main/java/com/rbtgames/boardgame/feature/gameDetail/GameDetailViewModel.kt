@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.gameDetail
+package com.rbtgames.boardgame.feature.gameDetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
-import com.rbtgames.boardgame.feature.home.games.gameDetail.list.PlayerViewModel
+import com.rbtgames.boardgame.feature.gameDetail.list.PlayerViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

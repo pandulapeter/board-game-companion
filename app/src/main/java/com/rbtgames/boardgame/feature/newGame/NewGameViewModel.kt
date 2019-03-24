@@ -1,13 +1,13 @@
-package com.rbtgames.boardgame.feature.home.games.newGame
+package com.rbtgames.boardgame.feature.newGame
 
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
-import com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel
-import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameListItem
-import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
+import com.rbtgames.boardgame.feature.newGame.list.HintViewModel
+import com.rbtgames.boardgame.feature.newGame.list.NewGameListItem
+import com.rbtgames.boardgame.feature.newGame.list.PlayerViewModel
 import com.rbtgames.boardgame.feature.shared.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

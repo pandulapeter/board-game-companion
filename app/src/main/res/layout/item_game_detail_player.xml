@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.rbtgames.boardgame.feature.home.games.gameDetail.list.PlayerViewModel" />
+            type="com.rbtgames.boardgame.feature.gameDetail.list.PlayerViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_content_padding"
-        android:layout_marginTop="@dimen/content_padding">
+        android:layout_marginTop="@dimen/large_content_padding">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

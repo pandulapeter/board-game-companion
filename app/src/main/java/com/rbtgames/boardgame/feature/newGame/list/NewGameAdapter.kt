@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.newGame.list
+package com.rbtgames.boardgame.feature.newGame.list
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

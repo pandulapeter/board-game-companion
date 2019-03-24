@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.gameDetail.list
+package com.rbtgames.boardgame.feature.gameDetail.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

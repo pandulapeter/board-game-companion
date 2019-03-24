@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.playerDetail.list
+package com.rbtgames.boardgame.feature.playerDetail.list
 
 import com.rbtgames.boardgame.data.model.Player
 

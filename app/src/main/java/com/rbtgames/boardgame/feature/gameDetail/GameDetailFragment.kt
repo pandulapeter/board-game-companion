@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.gameDetail
+package com.rbtgames.boardgame.feature.gameDetail
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
-import com.rbtgames.boardgame.feature.home.games.gameDetail.list.GameDetailAdapter
+import com.rbtgames.boardgame.feature.gameDetail.list.GameDetailAdapter
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.clearBackStack
 import com.rbtgames.boardgame.utils.consume
@@ -45,7 +45,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         }
     }
 
-    private fun navigateBack() = parentFragmentManager?.clearBackStack()
+    private fun navigateBack() = activityFragmentManager?.clearBackStack()
 
     override fun onPause() {
         super.onPause()

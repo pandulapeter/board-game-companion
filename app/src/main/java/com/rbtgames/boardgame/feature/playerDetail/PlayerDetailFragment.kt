@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.playerDetail
+package com.rbtgames.boardgame.feature.playerDetail
 
 import android.os.Bundle
 import android.view.View
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentPlayerDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
-import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorAdapter
-import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorItemDecoration
+import com.rbtgames.boardgame.feature.playerDetail.list.ColorAdapter
+import com.rbtgames.boardgame.feature.playerDetail.list.ColorItemDecoration
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.consume
 import com.rbtgames.boardgame.utils.hideKeyboard

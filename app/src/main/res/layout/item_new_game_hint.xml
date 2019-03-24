@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.rbtgames.boardgame.feature.home.games.newGame.list.HintViewModel" />
+            type="com.rbtgames.boardgame.feature.newGame.list.HintViewModel" />
 
     </data>
 

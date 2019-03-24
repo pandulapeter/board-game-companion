@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.newGame
+package com.rbtgames.boardgame.feature.newGame
 
 import android.os.Bundle
 import android.view.View
@@ -10,10 +10,10 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.databinding.FragmentNewGameBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
-import com.rbtgames.boardgame.feature.home.games.gameDetail.GameDetailFragment
-import com.rbtgames.boardgame.feature.home.games.newGame.list.NewGameAdapter
-import com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel
-import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailFragment
+import com.rbtgames.boardgame.feature.gameDetail.GameDetailFragment
+import com.rbtgames.boardgame.feature.newGame.list.NewGameAdapter
+import com.rbtgames.boardgame.feature.newGame.list.PlayerViewModel
+import com.rbtgames.boardgame.feature.playerDetail.PlayerDetailFragment
 import com.rbtgames.boardgame.feature.shared.AlertDialogFragment
 import com.rbtgames.boardgame.feature.shared.ElevationItemTouchHelperCallback
 import com.rbtgames.boardgame.utils.consume
@@ -113,12 +113,12 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
         super.onDestroyView()
     }
 
-    private fun navigateBack() = parentFragmentManager?.navigateBack()
+    private fun navigateBack() = activityFragmentManager?.navigateBack()
 
     private fun navigateToNewPlayerScreen(player: Player) =
         activityFragmentManager?.handleReplace(addToBackStack = true) { PlayerDetailFragment.newInstance(player.id, viewModel.game.id) }
 
-    private fun navigateToGameDetailScreen(gameId: String) = parentFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
+    private fun navigateToGameDetailScreen(gameId: String) = activityFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     private fun showCloseConfirmationDialog() = AlertDialogFragment.show(
         id = DIALOG_CLOSE_CONFIRMATION_ID,

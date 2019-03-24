@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorViewModel" />
+            type="com.rbtgames.boardgame.feature.playerDetail.list.ColorViewModel" />
 
     </data>
 

@@ -3,10 +3,10 @@ package com.rbtgames.boardgame
 import androidx.room.Room
 import com.rbtgames.boardgame.data.persistence.Database
 import com.rbtgames.boardgame.data.repository.GameRepository
-import com.rbtgames.boardgame.feature.home.games.gameDetail.GameDetailViewModel
-import com.rbtgames.boardgame.feature.home.games.gameList.GameListViewModel
-import com.rbtgames.boardgame.feature.home.games.newGame.NewGameViewModel
-import com.rbtgames.boardgame.feature.home.games.playerDetail.PlayerDetailViewModel
+import com.rbtgames.boardgame.feature.gameDetail.GameDetailViewModel
+import com.rbtgames.boardgame.feature.home.gameList.GameListViewModel
+import com.rbtgames.boardgame.feature.newGame.NewGameViewModel
+import com.rbtgames.boardgame.feature.playerDetail.PlayerDetailViewModel
 import com.rbtgames.boardgame.feature.home.glossary.GlossaryViewModel
 import com.rbtgames.boardgame.feature.home.ruleBook.RuleBookViewModel
 import org.koin.android.ext.koin.androidContext

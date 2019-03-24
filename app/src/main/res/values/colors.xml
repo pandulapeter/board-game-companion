@@ -11,20 +11,21 @@
     <color name="background">#212121</color>
 
     <!-- Player -->
-    <color name="player_1">#FFEB3B</color>
-    <color name="player_2">#FFC107</color>
-    <color name="player_3">#FF9800</color>
-    <color name="player_4">#FF5722</color>
-    <color name="player_5">#F44336</color>
-    <color name="player_6">#E91E63</color>
-    <color name="player_7">#9C27B0</color>
-    <color name="player_8">#673AB7</color>
-    <color name="player_9">#3F51B5</color>
-    <color name="player_10">#2196F3</color>
-    <color name="player_11">#03A9F4</color>
-    <color name="player_12">#00BCD4</color>
-    <color name="player_13">#009688</color>
-    <color name="player_14">#4CAF50</color>
-    <color name="player_15">#8BC34A</color>
+    <color name="player_1">#F44336</color>
+    <color name="player_2">#E91E63</color>
+    <color name="player_3">#9C27B0</color>
+    <color name="player_4">#673AB7</color>
+    <color name="player_5">#3F51B5</color>
+    <color name="player_6">#2196F3</color>
+    <color name="player_7">#03A9F4</color>
+    <color name="player_8">#00BCD4</color>
+    <color name="player_9">#009688</color>
+    <color name="player_10">#4CAF50</color>
+    <color name="player_11">#8BC34A</color>
+    <color name="player_12">#FFEB3B</color>
+    <color name="player_13">#FFC107</color>
+    <color name="player_14">#FF9800</color>
+    <color name="player_15">#FF5722</color>
+
 
 </resources>

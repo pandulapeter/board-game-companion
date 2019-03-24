@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.gameList
+package com.rbtgames.boardgame.feature.home.gameList
 
 import android.os.Bundle
 import android.view.View
@@ -9,10 +9,10 @@ import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameListBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
-import com.rbtgames.boardgame.feature.home.games.gameDetail.GameDetailFragment
-import com.rbtgames.boardgame.feature.home.games.gameList.list.GameListAdapter
-import com.rbtgames.boardgame.feature.home.games.gameList.list.GameViewModel
-import com.rbtgames.boardgame.feature.home.games.newGame.NewGameFragment
+import com.rbtgames.boardgame.feature.gameDetail.GameDetailFragment
+import com.rbtgames.boardgame.feature.home.gameList.list.GameListAdapter
+import com.rbtgames.boardgame.feature.home.gameList.list.GameViewModel
+import com.rbtgames.boardgame.feature.newGame.NewGameFragment
 import com.rbtgames.boardgame.feature.shared.ElevationItemTouchHelperCallback
 import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.handleReplace
@@ -83,9 +83,9 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
         super.onDestroyView()
     }
 
-    private fun navigateToNewGame() = parentFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }
+    private fun navigateToNewGame() = activityFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }
 
-    private fun navigateToGameDetail(gameId: String) = parentFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
+    private fun navigateToGameDetail(gameId: String) = activityFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     companion object {
         fun newInstance() = GameListFragment()

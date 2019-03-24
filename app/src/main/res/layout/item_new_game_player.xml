@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.rbtgames.boardgame.feature.home.games.newGame.list.PlayerViewModel" />
+            type="com.rbtgames.boardgame.feature.newGame.list.PlayerViewModel" />
 
     </data>
 

@@ -1,11 +1,11 @@
-package com.rbtgames.boardgame.feature.home.games.playerDetail
+package com.rbtgames.boardgame.feature.playerDetail
 
 import androidx.lifecycle.LiveData
 import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
-import com.rbtgames.boardgame.feature.home.games.playerDetail.list.ColorViewModel
+import com.rbtgames.boardgame.feature.playerDetail.list.ColorViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
