@@ -20,6 +20,8 @@
             android:id="@+id/app_bar_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:paddingBottom="@dimen/content_padding"
             android:theme="@style/LightTheme"
             app:color="@{viewModel.currentPlayer.color}"
@@ -69,17 +71,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/first_keyline_text_input"
                     android:layout_marginTop="@dimen/large_content_padding"
-                    android:layout_marginEnd="@dimen/first_keyline_text_input"
+                    android:layout_marginEnd="@dimen/large_content_padding"
                     android:hint="@string/game_detail_points_hint"
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:maxLength="5"
                     android:text="@={viewModel.points}"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/next_turn_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/close_button"
                     tools:ignore="UnusedAttribute" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/next_turn_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/first_keyline_button"
+                    android:layout_marginBottom="@dimen/small_content_padding"
+                    android:enabled="@{viewModel.isNextTurnButtonEnabled}"
+                    android:onClick="@{() -> viewModel.onNextTurnButtonPressed()}"
+                    android:text="@string/game_detail_next_turn"
+                    android:theme="@style/AppTheme"
+                    app:icon="@drawable/ic_done"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,7 +106,7 @@
             style="@style/ScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingStart="@dimen/first_keyline"
+            android:paddingStart="@dimen/content_padding"
             android:paddingTop="@dimen/content_padding"
             android:paddingEnd="@dimen/content_padding"
             android:paddingBottom="@dimen/list_bottom_padding"
@@ -98,19 +114,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/next_turn_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/content_padding"
-            android:layout_marginBottom="@dimen/first_keyline"
-            android:enabled="@{viewModel.isNextTurnButtonEnabled}"
-            android:onClick="@{() -> viewModel.onNextTurnButtonPressed()}"
-            android:text="@string/game_detail_next_turn"
-            app:icon="@drawable/ic_done"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
