@@ -5,6 +5,7 @@ import android.view.View
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentHomeFlowBinding
 import com.rbtgames.boardgame.feature.FlowFragment
+import com.rbtgames.boardgame.feature.home.about.AboutFragment
 import com.rbtgames.boardgame.feature.home.gameList.GameListFragment
 import com.rbtgames.boardgame.feature.home.glossary.GlossaryFragment
 import com.rbtgames.boardgame.feature.home.ruleBook.RuleBookFragment
@@ -20,6 +21,7 @@ class HomeFlowFragment : FlowFragment<FragmentHomeFlowBinding>(R.layout.fragment
                 R.id.games -> consume { navigateToGames() }
                 R.id.glossary -> consume { navigateToGlossary() }
                 R.id.rule_book -> consume { navigateToRuleBook() }
+                R.id.about -> consume { navigateToAbout() }
                 else -> false
             }
         }
@@ -41,6 +43,8 @@ class HomeFlowFragment : FlowFragment<FragmentHomeFlowBinding>(R.layout.fragment
     private fun navigateToGlossary() = childFragmentManager.handleReplace(addToBackStack = true) { GlossaryFragment.newInstance() }
 
     private fun navigateToRuleBook() = childFragmentManager.handleReplace(addToBackStack = true) { RuleBookFragment.newInstance() }
+
+    private fun navigateToAbout() = childFragmentManager.handleReplace(addToBackStack = true) { AboutFragment.newInstance() }
 
     companion object {
         fun newInstance() = HomeFlowFragment()

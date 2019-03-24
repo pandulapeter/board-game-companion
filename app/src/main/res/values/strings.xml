@@ -11,6 +11,7 @@
     <string name="home_games">Games</string>
     <string name="home_glossary">Glossary</string>
     <string name="home_rule_book">Rule book</string>
+    <string name="home_about">About</string>
 
     <!-- Game list -->
     <string name="game_list_new_game">New game</string>

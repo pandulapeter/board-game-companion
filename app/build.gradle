@@ -45,7 +45,7 @@ android {
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.internal
-            applicationIdSuffix ".internal"
+            versionNameSuffix "-internal"
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         release {

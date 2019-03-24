@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_rule_book"
         android:title="@string/home_rule_book" />
 
+    <item
+        android:id="@+id/about"
+        android:icon="@drawable/ic_about"
+        android:title="@string/home_about" />
+
 </menu>
