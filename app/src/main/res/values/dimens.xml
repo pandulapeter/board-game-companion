@@ -19,6 +19,7 @@
     <dimen name="app_bar_expanded_height">144dp</dimen>
     <dimen name="app_bar_top_margin">2dp</dimen>
     <dimen name="list_item_height">56dp</dimen>
+    <dimen name="player_dot_size">24dp</dimen>
 
     <!-- PlayerEntity detail -->
     <dimen name="player_detail_color_card">80dp</dimen>

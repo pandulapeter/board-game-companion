@@ -3,6 +3,7 @@ package com.rbtgames.boardgame.feature.home.games.gameDetail
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
@@ -45,9 +46,13 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
             layoutManager = LinearLayoutManager(requireContext())
             adapter = gameDetailAdapter
             addOnScrollListener(onScrollListener)
+            (itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
         }
         viewModel.shouldNavigateBack.observe { navigateBack() }
-        viewModel.players.observe { playerViewModels -> gameDetailAdapter?.submitList(playerViewModels) }
+        viewModel.players.observe { playerViewModels ->
+            binding.recyclerView.smoothScrollToPosition(0)
+            gameDetailAdapter?.submitList(playerViewModels)
+        }
     }
 
     private fun navigateBack() = parentFragmentManager?.clearBackStack()

@@ -15,32 +15,41 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height"
         android:layout_marginTop="@dimen/content_padding"
-        android:foreground="?attr/selectableItemBackground"
-        android:theme="@style/Theme.MaterialComponents.Light"
+        android:background="?attr/selectableItemBackground"
         app:cardCornerRadius="@dimen/card_corner_radius"
-        app:color="@{viewModel.player.color}"
-        app:contentPadding="@dimen/content_padding"
-        tools:cardBackgroundColor="@color/brand">
+        app:contentPadding="@dimen/content_padding">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dot"
+                android:layout_width="@dimen/player_dot_size"
+                android:layout_height="@dimen/player_dot_size"
+                android:layout_marginStart="@dimen/content_padding"
+                android:importantForAccessibility="no"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:color="@{viewModel.player.color}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:cardBackgroundColor="@color/brand" />
+
             <TextView
                 android:id="@+id/player_name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginStart="@dimen/large_content_padding"
                 android:layout_marginEnd="@dimen/content_padding"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="@{viewModel.player.name}"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/drag_handle"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/dot"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Player name" />
 
@@ -51,6 +60,7 @@
                 android:importantForAccessibility="no"
                 android:padding="@dimen/content_padding"
                 android:scaleType="center"
+                android:tint="@color/white"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

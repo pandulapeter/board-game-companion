@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.text.format.DateUtils
 import android.view.View
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
@@ -25,6 +26,11 @@ fun CardView.setColor(color: Player.Color) {
 @BindingAdapter("color")
 fun AppBarLayout.setColor(color: Player.Color?) {
     color?.let { setBackgroundColor(context.color(color.colorResourceId)) }
+}
+
+@BindingAdapter("color")
+fun ProgressBar.setColor(color: Player.Color?) {
+    color?.let { progressDrawable = progressDrawable?.mutate()?.apply { setTint(context.color(color.colorResourceId)) } }
 }
 
 @BindingAdapter("time")

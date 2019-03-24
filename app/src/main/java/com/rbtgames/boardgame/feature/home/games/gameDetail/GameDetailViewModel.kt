@@ -48,7 +48,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
         launch(Dispatchers.Default) {
             val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }
             val baseline = players.first().points
-            val playerViewModels = players.mapIndexed { index, player -> PlayerViewModel(index, baseline, player) }
+            val playerViewModels = players.mapIndexed { index, player -> PlayerViewModel(index, player, baseline) }
             launch(Dispatchers.Main) {
                 _players.value = playerViewModels.drop(1)
                 _currentPlayer.value = players.first()

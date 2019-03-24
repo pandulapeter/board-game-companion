@@ -11,31 +11,103 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
-        android:layout_marginTop="@dimen/content_padding"
-        android:foreground="?attr/selectableItemBackground"
-        android:theme="@style/Theme.MaterialComponents.Light"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:color="@{viewModel.player.color}"
-        app:contentPadding="@dimen/content_padding"
-        tools:cardBackgroundColor="@color/brand">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_padding">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/list_item_height"
+            android:background="?attr/selectableItemBackground"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:contentPadding="@dimen/content_padding"
+            app:layout_constraintEnd_toEndOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/dot"
+                    android:layout_width="@dimen/player_dot_size"
+                    android:layout_height="@dimen/player_dot_size"
+                    android:layout_marginStart="@dimen/content_padding"
+                    android:importantForAccessibility="no"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:color="@{viewModel.player.color}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:cardBackgroundColor="@color/brand">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@{viewModel.turnOrder}"
+                        android:textColor="@color/black"
+                        tools:text="1" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/player_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/large_content_padding"
+                    android:layout_marginEnd="@dimen/content_padding"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@{viewModel.player.name}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/dot"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Player name" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/player_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/content_padding"
-            android:layout_marginEnd="@dimen/content_padding"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="@{viewModel.title}"
-            android:textColor="@color/black"
-            tools:text="Player name and points" />
+            android:id="@+id/points_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/game_detail_points_format(viewModel.points)}"
+            app:layout_constraintBottom_toTopOf="@+id/progress_bar"
+            app:layout_constraintStart_toStartOf="@+id/progress_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="15 points" />
 
-    </androidx.cardview.widget.CardView>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_content_padding"
+            android:layout_marginEnd="@dimen/large_content_padding"
+            android:progress="100"
+            app:color="@{viewModel.player.color}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card_view"
+            app:layout_constraintTop_toBottomOf="@+id/points_indicator"
+            app:layout_goneMarginEnd="@dimen/large_content_padding" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
