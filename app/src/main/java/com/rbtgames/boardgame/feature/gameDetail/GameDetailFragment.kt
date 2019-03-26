@@ -3,6 +3,8 @@ package com.rbtgames.boardgame.feature.gameDetail
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
@@ -12,6 +14,7 @@ import com.rbtgames.boardgame.feature.gameDetail.list.GameDetailAdapter
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.clearBackStack
 import com.rbtgames.boardgame.utils.consume
+import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.hideKeyboard
 import com.rbtgames.boardgame.utils.postDelayed
 import com.rbtgames.boardgame.utils.showKeyboard
@@ -23,6 +26,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
 
     override val viewModel by viewModel<GameDetailViewModel> { parametersOf(arguments?.gameId) }
     override val transitionType = TransitionType.DETAIL
+    override val shouldUseTranslucentStatusBar = true
     private var gameDetailAdapter: GameDetailAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,6 +57,26 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     }
 
     override fun onBackPressed() = consume { navigateBack() }
+
+    override fun applyWindowInsets(statusBarHeight: Int) {
+        binding.closeButton.apply {
+            layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                topMargin = context.dimension(R.dimen.first_keyline_button) + statusBarHeight
+            }
+        }
+    }
+
+    override fun onKeyboardHeightChanged(keyboardHeight: Int) {
+        binding.recyclerView.apply {
+            post {
+                if (isAdded) {
+                    layoutParams = (layoutParams as LinearLayout.LayoutParams).apply {
+                        height = binding.container.height - binding.appBarLayout.height - keyboardHeight
+                    }
+                }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         gameDetailAdapter = null

@@ -37,10 +37,15 @@ fun View.animateCircularReveal(onAnimationEnd: () -> Unit) {
         val maxRadius = Math.hypot(width.toDouble(), height.toDouble()).toFloat()
         visible = true
         val animator = ViewAnimationUtils.createCircularReveal(this, cx, cy, 0f, maxRadius).apply {
-            addListener(onAnimationEnd = {
-                onAnimationEnd()
-                removeAllListeners()
-            })
+            addListener(
+                onAnimationEnd = {
+                    onAnimationEnd()
+                    removeAllListeners()
+                },
+                onAnimationCancel = {
+                    onAnimationEnd()
+                    removeAllListeners()
+                })
         }
         animator.start()
     }

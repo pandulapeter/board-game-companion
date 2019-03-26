@@ -16,6 +16,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.rbtgames.boardgame.WindowObserver
+import com.rbtgames.boardgame.feature.shared.KeyboardHeightProvider
 
 abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResourceId: Int) : Fragment() {
 
@@ -24,7 +26,19 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     protected val activityFragmentManager get() = (activity as? AppCompatActivity?)?.supportFragmentManager
     protected val parentFragmentManager get() = parentFragment?.childFragmentManager
     protected open val transitionType = TransitionType.SIBLING
+    protected val windowObserver get() = activity as? WindowObserver?
     private var snackbar: Snackbar? = null
+    private var keyboardHeightProvider: KeyboardHeightProvider? = null
+    private var previousKeyboardHeight = 0
+    private val keyboardListener = object : KeyboardHeightProvider.KeyboardListener {
+        override fun onHeightChanged(height: Int) {
+            if (previousKeyboardHeight != height) {
+                windowObserver?.keyboardHeight = height
+                previousKeyboardHeight = height
+                onKeyboardHeightChanged(height)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,21 +57,42 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
         binding.lifecycleOwner = viewLifecycleOwner
     }
 
-    @CallSuper
-    override fun onDestroyView() {
-        super.onDestroyView()
-        realBinding = null
+    override fun onResume() {
+        super.onResume()
+        keyboardHeightProvider = KeyboardHeightProvider(requireActivity()).apply {
+            addKeyboardListener(keyboardListener)
+        }
+        binding.root.post {
+            keyboardListener.onHeightChanged((activity as? WindowObserver?)?.keyboardHeight ?: 0)
+            keyboardHeightProvider?.start()
+        }
     }
 
     override fun onPause() {
         dismissSnackbar()
         super.onPause()
         resetTransitions()
+        keyboardHeightProvider?.apply {
+            removeKeyboardListener(keyboardListener)
+            close()
+        }
+        keyboardHeightProvider = null
+        previousKeyboardHeight = 0
     }
 
-    protected fun dismissSnackbar() {
+    @CallSuper
+    override fun onDestroyView() {
+        super.onDestroyView()
+        realBinding = null
+    }
+
+    private fun dismissSnackbar() {
         snackbar?.dismiss()
     }
+
+    open fun applyWindowInsets(statusBarHeight: Int) = binding.root.run { setPadding(paddingStart, statusBarHeight, paddingEnd, paddingBottom) }
+
+    protected open fun onKeyboardHeightChanged(keyboardHeight: Int) = Unit
 
     open fun onBackPressed() = false
 

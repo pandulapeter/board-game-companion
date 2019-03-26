@@ -15,7 +15,7 @@
         <activity
             android:name=".Activity"
             android:launchMode="singleInstance"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
 
             <intent-filter>
 

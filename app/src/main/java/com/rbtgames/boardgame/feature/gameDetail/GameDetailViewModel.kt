@@ -30,17 +30,23 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     fun onBackButtonPressed() = _shouldNavigateBack.sendEvent()
 
     fun onNextTurnButtonPressed() {
-        launch(Dispatchers.Default) {
-            val game = gameRepository.getGame(gameId)!!
-            val points = points.value?.toInt() ?: 0
-            val newGame = game.copy(
-                lastActionTime = System.currentTimeMillis(),
-                players = game.players.map { player ->
-                    if (player.id == _currentPlayer.value?.id) player.copy(points = player.points + points) else player
+        if (isNextTurnButtonEnabled.value == true) {
+            launch(Dispatchers.Default) {
+                val game = gameRepository.getGame(gameId)!!
+                val points = try {
+                    points.value?.toInt() ?: 0
+                } catch (_: NumberFormatException) {
+                    0
                 }
-            )
-            gameRepository.updateGame(newGame)
-            refreshList(newGame)
+                val newGame = game.copy(
+                    lastActionTime = System.currentTimeMillis(),
+                    players = game.players.map { player ->
+                        if (player.id == _currentPlayer.value?.id) player.copy(points = player.points + points) else player
+                    }
+                )
+                gameRepository.updateGame(newGame)
+                refreshList(newGame)
+            }
         }
     }
 

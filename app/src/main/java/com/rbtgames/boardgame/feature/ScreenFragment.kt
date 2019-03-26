@@ -11,10 +11,17 @@ import com.rbtgames.boardgame.BR
 abstract class ScreenFragment<B : ViewDataBinding, VM : ScreenViewModel>(layoutResourceId: Int) : Fragment<B>(layoutResourceId) {
 
     protected abstract val viewModel: VM
+    open val shouldUseTranslucentStatusBar = false
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        windowObserver?.setTranslucentStatusBar(shouldUseTranslucentStatusBar)
+        windowObserver?.statusBarHeight?.let {
+            if (it != 0) {
+                applyWindowInsets(it)
+            }
+        }
         binding.setVariable(BR.viewModel, viewModel)
     }
 

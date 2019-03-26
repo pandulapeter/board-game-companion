@@ -11,28 +11,29 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/windowBackground">
+        android:background="?android:attr/windowBackground"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:theme="@style/LightTheme"
             app:color="@{viewModel.currentPlayer.color}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:revealView="@{revealView}"
             tools:background="@color/brand">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/app_bar_layout_contents"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <View
                     android:id="@+id/reveal_view"
@@ -116,17 +117,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             style="@style/ScrollView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingStart="@dimen/content_padding"
             android:paddingEnd="@dimen/content_padding"
-            android:paddingBottom="@dimen/list_bottom_padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+            android:paddingBottom="@dimen/large_content_padding"
             tools:listitem="@layout/item_new_game_player" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </layout>
