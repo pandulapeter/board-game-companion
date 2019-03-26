@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
@@ -28,6 +29,13 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     override val transitionType = TransitionType.DETAIL
     override val shouldUseTranslucentStatusBar = true
     private var gameDetailAdapter: GameDetailAdapter? = null
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy > 0) {
+                hideKeyboard(activity?.currentFocus)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,6 +49,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
             layoutManager = LinearLayoutManager(requireContext())
             adapter = gameDetailAdapter
             (itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
+            addOnScrollListener(onScrollListener)
         }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.players.observe { playerViewModels ->
@@ -79,6 +88,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     }
 
     override fun onDestroyView() {
+        binding.recyclerView.removeOnScrollListener(onScrollListener)
         gameDetailAdapter = null
         super.onDestroyView()
     }
