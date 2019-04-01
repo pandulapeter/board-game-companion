@@ -14,6 +14,8 @@ class GameDetailAdapter : ListAdapter<PlayerViewModel, GameDetailAdapter.ViewHol
     override fun areItemsTheSame(oldItem: PlayerViewModel, newItem: PlayerViewModel) = oldItem.player.id == newItem.player.id
 
     override fun areContentsTheSame(oldItem: PlayerViewModel, newItem: PlayerViewModel) = oldItem == newItem
+
+    override fun getChangePayload(oldItem: PlayerViewModel, newItem: PlayerViewModel) = ""
 }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder.create(parent)

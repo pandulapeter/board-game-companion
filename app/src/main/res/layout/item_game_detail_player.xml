@@ -100,7 +100,7 @@
             android:layout_marginStart="@dimen/large_content_padding"
             android:layout_marginEnd="@dimen/content_padding"
             android:max="100"
-            android:progress="@{viewModel.percentage}"
+            app:animatedProgress="@{viewModel.percentage}"
             app:color="@{viewModel.player.color}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

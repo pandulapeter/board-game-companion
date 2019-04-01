@@ -1,5 +1,6 @@
 package com.rbtgames.boardgame.feature.shared
 
+import android.os.Build
 import android.text.TextUtils
 import android.text.format.DateUtils
 import android.view.View
@@ -39,6 +40,15 @@ fun AppBarLayout.setColor(color: Player.Color?, revealView: View) {
 @BindingAdapter("color")
 fun ProgressBar.setColor(color: Player.Color?) {
     color?.let { progressDrawable = progressDrawable?.mutate()?.apply { setTint(context.color(color.colorResourceId)) } }
+}
+
+@BindingAdapter("animatedProgress")
+fun ProgressBar.setAnimatedProgress(value: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        setProgress(value, true)
+    } else {
+        progress = value
+    }
 }
 
 @BindingAdapter("time")
