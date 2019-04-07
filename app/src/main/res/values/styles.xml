@@ -7,4 +7,8 @@
         <item name="android:overScrollMode">never</item>
     </style>
 
+    <style name="Tab" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>

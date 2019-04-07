@@ -14,6 +14,8 @@
     <string name="home_about">About</string>
 
     <!-- Game list -->
+    <string name="game_list_active">Active</string>
+    <string name="game_list_finished">Finished</string>
     <string name="game_list_new_game">New game</string>
     <string name="game_list_no_games">There are no game sessions</string>
     <string name="game_list_hint">Tap on a card to resume the game or swipe it away horizontally to delete it</string>

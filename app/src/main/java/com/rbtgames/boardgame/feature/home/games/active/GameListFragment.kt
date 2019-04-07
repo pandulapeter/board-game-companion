@@ -1,18 +1,16 @@
-package com.rbtgames.boardgame.feature.home.gameList
+package com.rbtgames.boardgame.feature.home.games.active
 
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameListBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.gameDetail.GameDetailFragment
-import com.rbtgames.boardgame.feature.home.gameList.list.GameListAdapter
-import com.rbtgames.boardgame.feature.home.gameList.list.GameViewModel
-import com.rbtgames.boardgame.feature.newGame.NewGameFragment
+import com.rbtgames.boardgame.feature.home.games.list.GameListAdapter
+import com.rbtgames.boardgame.feature.home.games.list.GameViewModel
 import com.rbtgames.boardgame.feature.shared.ElevationItemTouchHelperCallback
 import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.handleReplace
@@ -22,17 +20,9 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
 
     override val viewModel by viewModel<GameListViewModel>()
     private var gameListAdapter: GameListAdapter? = null
-    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-        if (verticalOffset == 0) {
-            binding.floatingActionButton.extend()
-        } else {
-            binding.floatingActionButton.shrink()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
         gameListAdapter = GameListAdapter { gameViewModel -> navigateToGameDetail(gameViewModel.game.id) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
@@ -68,7 +58,6 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
             adapter = gameListAdapter
             itemTouchHelper.attachToRecyclerView(this)
         }
-        viewModel.shouldOpenNewGameScreen.observe { navigateToNewGame() }
         viewModel.listItems.observe { listItems -> gameListAdapter?.submitList(listItems) }
     }
 
@@ -79,11 +68,8 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
 
     override fun onDestroyView() {
         gameListAdapter = null
-        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
     }
-
-    private fun navigateToNewGame() = activityFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }
 
     private fun navigateToGameDetail(gameId: String) = activityFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 

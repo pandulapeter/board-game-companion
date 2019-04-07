@@ -5,7 +5,7 @@ import com.rbtgames.boardgame.data.persistence.Database
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.gameDetail.GameDetailViewModel
 import com.rbtgames.boardgame.feature.home.about.AboutViewModel
-import com.rbtgames.boardgame.feature.home.gameList.GameListViewModel
+import com.rbtgames.boardgame.feature.home.games.active.GameListViewModel
 import com.rbtgames.boardgame.feature.home.glossary.GlossaryViewModel
 import com.rbtgames.boardgame.feature.home.ruleBook.RuleBookViewModel
 import com.rbtgames.boardgame.feature.newGame.NewGameViewModel

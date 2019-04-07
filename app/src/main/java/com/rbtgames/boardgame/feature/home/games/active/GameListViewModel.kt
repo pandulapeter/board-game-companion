@@ -1,20 +1,18 @@
-package com.rbtgames.boardgame.feature.home.gameList
+package com.rbtgames.boardgame.feature.home.games.active
 
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
-import com.rbtgames.boardgame.feature.home.gameList.list.GameListListItem
-import com.rbtgames.boardgame.feature.home.gameList.list.GameViewModel
-import com.rbtgames.boardgame.feature.home.gameList.list.HintViewModel
+import com.rbtgames.boardgame.feature.home.games.list.GameListListItem
+import com.rbtgames.boardgame.feature.home.games.list.GameViewModel
+import com.rbtgames.boardgame.feature.home.games.list.HintViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GameListViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
 
-    val shouldOpenNewGameScreen: LiveData<Boolean?> get() = _shouldOpenNewGameScreen
-    private val _shouldOpenNewGameScreen = eventLiveData()
     val listItems: LiveData<List<GameListListItem>> get() = _listItems
     private val _listItems = mutableLiveDataOf(emptyList<GameListListItem>())
     private var gameToDeleteId: String? = null
@@ -62,6 +60,4 @@ class GameListViewModel(private val gameRepository: GameRepository) : ScreenView
             gameToDeleteId = null
         }
     }
-
-    fun onNewButtonPressed() = _shouldOpenNewGameScreen.sendEvent()
 }

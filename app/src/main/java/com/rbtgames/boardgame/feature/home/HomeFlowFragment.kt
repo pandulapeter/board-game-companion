@@ -6,7 +6,7 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentHomeFlowBinding
 import com.rbtgames.boardgame.feature.FlowFragment
 import com.rbtgames.boardgame.feature.home.about.AboutFragment
-import com.rbtgames.boardgame.feature.home.gameList.GameListFragment
+import com.rbtgames.boardgame.feature.home.games.GamesFragment
 import com.rbtgames.boardgame.feature.home.glossary.GlossaryFragment
 import com.rbtgames.boardgame.feature.home.ruleBook.RuleBookFragment
 import com.rbtgames.boardgame.utils.consume
@@ -38,7 +38,7 @@ class HomeFlowFragment : FlowFragment<FragmentHomeFlowBinding>(R.layout.fragment
         }
     }
 
-    private fun navigateToGames() = childFragmentManager.handleReplace(addToBackStack = true) { GameListFragment.newInstance() }
+    private fun navigateToGames() = childFragmentManager.handleReplace(addToBackStack = true) { GamesFragment.newInstance() }
 
     private fun navigateToGlossary() = childFragmentManager.handleReplace(addToBackStack = true) { GlossaryFragment.newInstance() }
 

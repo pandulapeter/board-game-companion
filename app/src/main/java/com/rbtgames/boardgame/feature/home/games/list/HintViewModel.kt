@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.gameList.list
+package com.rbtgames.boardgame.feature.home.games.list
 
 import androidx.annotation.StringRes
 
