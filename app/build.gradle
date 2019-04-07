@@ -78,17 +78,17 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
 
     // Persistence
-    def roomVersion = "2.1.0-alpha05"
+    def roomVersion = "2.1.0-alpha06"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
     // UI components
     implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "com.google.android.material:material:1.1.0-alpha04"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
+    implementation "com.google.android.material:material:1.1.0-alpha05"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha4"
 
     // Lifecycle
-    def lifecycleVersion = "2.1.0-alpha03"
+    def lifecycleVersion = "2.1.0-alpha04"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
 }
