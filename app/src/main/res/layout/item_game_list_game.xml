@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{@string/game_list_current_player_name(viewModel.nextPlayerName)}"
+                android:text="@{@string/games_current_player_name(viewModel.nextPlayerName)}"
                 tools:text="Next player name" />
 
         </LinearLayout>

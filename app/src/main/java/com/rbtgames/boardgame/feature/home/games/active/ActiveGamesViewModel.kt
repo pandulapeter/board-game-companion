@@ -11,7 +11,7 @@ import com.rbtgames.boardgame.feature.home.games.list.HintViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GameListViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
+class ActiveGamesViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
 
     val listItems: LiveData<List<GameListListItem>> get() = _listItems
     private val _listItems = mutableLiveDataOf(emptyList<GameListListItem>())
@@ -28,8 +28,8 @@ class GameListViewModel(private val gameRepository: GameRepository) : ScreenView
                     .toMutableList<GameListListItem>()
                     .apply {
                         when (size) {
-                            0 -> add(HintViewModel(R.string.game_list_no_games))
-                            else -> add(HintViewModel(R.string.game_list_hint))
+                            0 -> add(HintViewModel(R.string.games_active_no_games))
+                            else -> add(HintViewModel(R.string.games_active_hint))
                         }
                     })
         }

@@ -5,7 +5,8 @@ import com.rbtgames.boardgame.data.persistence.Database
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.gameDetail.GameDetailViewModel
 import com.rbtgames.boardgame.feature.home.about.AboutViewModel
-import com.rbtgames.boardgame.feature.home.games.active.GameListViewModel
+import com.rbtgames.boardgame.feature.home.games.active.ActiveGamesViewModel
+import com.rbtgames.boardgame.feature.home.games.finished.FinishedGamesViewModel
 import com.rbtgames.boardgame.feature.home.glossary.GlossaryViewModel
 import com.rbtgames.boardgame.feature.home.ruleBook.RuleBookViewModel
 import com.rbtgames.boardgame.feature.newGame.NewGameViewModel
@@ -24,7 +25,8 @@ val dataModule = module {
 }
 
 val featureModule = module {
-    viewModel<GameListViewModel>()
+    viewModel<ActiveGamesViewModel>()
+    viewModel<FinishedGamesViewModel>()
     viewModel<NewGameViewModel>()
     viewModel { (playerId: String, gameId: String) -> PlayerDetailViewModel(get(), playerId, gameId) }
     viewModel { (gameId: String) -> GameDetailViewModel(get(), gameId) }

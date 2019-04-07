@@ -13,15 +13,17 @@
     <string name="home_rule_book">Rule book</string>
     <string name="home_about">About</string>
 
-    <!-- Game list -->
-    <string name="game_list_active">Active</string>
-    <string name="game_list_finished">Finished</string>
-    <string name="game_list_new_game">New game</string>
-    <string name="game_list_no_games">There are no game sessions</string>
-    <string name="game_list_hint">Tap on a card to resume the game or swipe it away horizontally to delete it</string>
-    <string name="game_list_current_player_name">Current turn: %s</string>
-    <string name="game_list_game_deleted_message">Game deleted</string>
-    <string name="game_list_game_deleted_action">@string/undo</string>
+    <!-- Games -->
+    <string name="games_new_game">New game</string>
+    <string name="games_active">Active</string>
+    <string name="games_active_no_games">There are no active game sessions</string>
+    <string name="games_active_hint">Tap on a card to resume the game or swipe it away horizontally to delete it</string>
+    <string name="games_finished">Finished</string>
+    <string name="games_finished_no_games">There are no finished game sessions</string>
+    <string name="games_finished_hint">Tap on a card to see statistics about the game or swipe it away horizontally to delete it</string>
+    <string name="games_current_player_name">Current turn: %s</string>
+    <string name="games_game_deleted_message">Game deleted</string>
+    <string name="games_game_deleted_action">@string/undo</string>
 
     <!-- New game -->
     <string name="new_game_no_players">At least two players are needed to start the game</string>
@@ -42,7 +44,7 @@
     <string name="player_detail_done">Done</string>
 
     <!-- Game detail -->
-    <string name="game_detail_current_turn">@string/game_list_current_player_name</string>
+    <string name="game_detail_current_turn">@string/games_current_player_name</string>
     <string name="game_detail_points_hint">Points</string>
     <string name="game_detail_next_turn">Next turn</string>
     <string name="game_detail_points_format">%d points behind</string>

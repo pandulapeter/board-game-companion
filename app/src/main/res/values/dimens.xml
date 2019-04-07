@@ -12,6 +12,9 @@
     <dimen name="large_content_padding">16dp</dimen>
     <dimen name="list_bottom_padding">96dp</dimen>
 
+    <!-- Text -->
+    <dimen name="text_title">20sp</dimen>
+
     <!-- Widget specific dimensions -->
     <dimen name="button_corner_radius">32dp</dimen>
     <dimen name="card_corner_radius">16dp</dimen>
@@ -21,6 +24,9 @@
     <dimen name="list_item_height">56dp</dimen>
     <dimen name="player_dot_size">24dp</dimen>
     <dimen name="player_dot_corner_radius">12dp</dimen>
+
+    <!-- Games -->
+    <dimen name="games_tab_padding">10dp</dimen>
 
     <!-- Player detail -->
     <dimen name="player_detail_color_card">80dp</dimen>

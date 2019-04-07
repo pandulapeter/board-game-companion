@@ -1,4 +1,4 @@
-package com.rbtgames.boardgame.feature.home.games.active
+package com.rbtgames.boardgame.feature.home.games.finished
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
-import com.rbtgames.boardgame.databinding.FragmentGameListBinding
+import com.rbtgames.boardgame.databinding.FragmentGamesFinishedBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.gameDetail.GameDetailFragment
 import com.rbtgames.boardgame.feature.home.games.list.GameListAdapter
@@ -16,9 +16,9 @@ import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.handleReplace
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewModel>(R.layout.fragment_game_list) {
+class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, FinishedGamesViewModel>(R.layout.fragment_games_finished) {
 
-    override val viewModel by viewModel<GameListViewModel>()
+    override val viewModel by viewModel<FinishedGamesViewModel>()
     private var gameListAdapter: GameListAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,8 +41,8 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
                         (gameListAdapter?.getItem(position) as? GameViewModel?)?.game?.also { gameToDelete ->
                             viewModel.deleteGamePermanently()
                             showSnackbar(
-                                message = getString(R.string.game_list_game_deleted_message),
-                                actionResId = R.string.game_list_game_deleted_action,
+                                message = getString(R.string.games_game_deleted_message),
+                                actionResId = R.string.games_game_deleted_action,
                                 action = { viewModel.cancelDeleteGame() },
                                 dismissAction = { viewModel.deleteGamePermanently() }
                             )
@@ -74,6 +74,6 @@ class GameListFragment : ScreenFragment<FragmentGameListBinding, GameListViewMod
     private fun navigateToGameDetail(gameId: String) = activityFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     companion object {
-        fun newInstance() = GameListFragment()
+        fun newInstance() = FinishedGamesFragment()
     }
 }

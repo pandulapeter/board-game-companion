@@ -1,5 +1,10 @@
 <resources>
 
+    <style name="AppBar">
+        <item name="expandedTitleMarginStart">@dimen/first_keyline</item>
+        <item name="collapsedTitleTextAppearance">@style/Title</item>
+    </style>
+
     <style name="ScrollView">
         <item name="android:clipToPadding">false</item>
         <item name="android:fillViewport">true</item>
@@ -9,6 +14,10 @@
 
     <style name="Tab" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
 </resources>
