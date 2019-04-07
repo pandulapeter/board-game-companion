@@ -17,11 +17,6 @@ abstract class ScreenFragment<B : ViewDataBinding, VM : ScreenViewModel>(layoutR
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         windowObserver?.setTranslucentStatusBar(shouldUseTranslucentStatusBar)
-        windowObserver?.statusBarHeight?.let {
-            if (it != 0) {
-                applyWindowInsets(it)
-            }
-        }
         binding.setVariable(BR.viewModel, viewModel)
     }
 

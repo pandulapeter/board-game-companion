@@ -1,6 +1,5 @@
 package com.rbtgames.boardgame.feature
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.transition.Fade
 import android.transition.Slide
@@ -8,9 +7,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
@@ -52,20 +48,25 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     }
 
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        DataBindingUtil.inflate<B>(inflater, layoutResourceId, container, false).also {
-            realBinding = it
-        }.root
+        DataBindingUtil.inflate<B>(inflater, layoutResourceId, container, false).also { realBinding = it }.root
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.root.apply {
+            post {
+                windowObserver?.statusBarHeight?.let {
+                    if (it != 0) {
+                        applyWindowInsets(it)
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        keyboardHeightProvider = KeyboardHeightProvider(requireActivity()).apply {
-            addKeyboardListener(keyboardListener)
-        }
+        keyboardHeightProvider = KeyboardHeightProvider(requireActivity()).apply { addKeyboardListener(keyboardListener) }
         binding.root.post {
             keyboardListener.onHeightChanged((activity as? WindowObserver?)?.keyboardHeight ?: 0)
             keyboardHeightProvider?.start()
@@ -92,18 +93,6 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
 
     private fun dismissSnackbar() {
         snackbar?.dismiss()
-    }
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        val parent = parentFragment
-        return if (!enter && parent != null && parent.isRemoving) {
-            // This is a workaround for the bug where child fragments disappear when
-            // the parent is removed (as all children are first removed from the parent)
-            // See https://code.google.com/p/android/issues/detail?id=55228
-            AlphaAnimation(1f, 1f).apply { duration = getNextAnimationDuration(parent, 300L) }
-        } else {
-            super.onCreateAnimation(transit, enter, nextAnim)
-        }
     }
 
     open fun applyWindowInsets(statusBarHeight: Int) = binding.root.run { setPadding(paddingStart, statusBarHeight, paddingEnd, paddingBottom) }
@@ -142,25 +131,6 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
             TransitionType.MODAL -> Slide(Gravity.BOTTOM)
         }
         returnTransition = enterTransition
-    }
-
-    private fun getNextAnimationDuration(fragment: Fragment, defValue: Long): Long {
-        try {
-            val animInfoField = Fragment::class.java.getDeclaredField("mAnimationInfo")
-            animInfoField.isAccessible = true
-            val animationInfo = animInfoField.get(fragment)
-            val nextAnimField = animationInfo.javaClass.getDeclaredField("mNextAnim")
-            nextAnimField.isAccessible = true
-            val nextAnimResource = nextAnimField.getInt(animationInfo)
-            val nextAnim = AnimationUtils.loadAnimation(fragment.activity, nextAnimResource)
-            return nextAnim?.duration ?: defValue
-        } catch (ex: NoSuchFieldException) {
-            return defValue
-        } catch (ex: IllegalAccessException) {
-            return defValue
-        } catch (ex: Resources.NotFoundException) {
-            return defValue
-        }
     }
 
     protected enum class TransitionType {

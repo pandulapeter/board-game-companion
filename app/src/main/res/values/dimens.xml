@@ -19,7 +19,7 @@
     <dimen name="button_corner_radius">32dp</dimen>
     <dimen name="card_corner_radius">16dp</dimen>
     <dimen name="app_bar_collapsed_height">64dp</dimen>
-    <dimen name="app_bar_expanded_height">144dp</dimen>
+    <dimen name="app_bar_expanded_height">128dp</dimen>
     <dimen name="app_bar_top_margin">2dp</dimen>
     <dimen name="list_item_height">56dp</dimen>
     <dimen name="player_dot_size">24dp</dimen>

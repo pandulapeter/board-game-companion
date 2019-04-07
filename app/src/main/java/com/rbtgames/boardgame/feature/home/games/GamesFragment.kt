@@ -29,7 +29,6 @@ class GamesFragment : FlowFragment<FragmentGamesBinding>(R.layout.fragment_games
 
     override fun onDestroyView() {
         binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
-        binding.viewPager.adapter = null
         super.onDestroyView()
     }
 

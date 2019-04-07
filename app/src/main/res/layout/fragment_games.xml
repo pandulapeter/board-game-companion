@@ -23,7 +23,6 @@
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_bar_collapsed_height"
-                    android:gravity="center"
                     app:layout_collapseMode="pin" />
 
                 <View

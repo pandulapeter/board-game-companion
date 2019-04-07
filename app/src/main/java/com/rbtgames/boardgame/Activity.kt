@@ -25,8 +25,8 @@ class Activity : AppCompatActivity(), WindowObserver {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity)
         binding.fragmentContainer.windowInsetChangeListener = {
-            currentFragment?.applyWindowInsets(statusBarHeight)
             updateStatusBar()
+            currentFragment?.applyWindowInsets(statusBarHeight)
         }
         if (savedInstanceState == null) {
             supportFragmentManager.handleReplace { HomeFlowFragment.newInstance() }
@@ -38,7 +38,6 @@ class Activity : AppCompatActivity(), WindowObserver {
             super.onBackPressed()
         }
     }
-
 
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)

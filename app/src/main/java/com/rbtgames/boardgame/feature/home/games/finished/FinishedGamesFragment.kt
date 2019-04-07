@@ -71,6 +71,8 @@ class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, Finis
         super.onDestroyView()
     }
 
+    override fun applyWindowInsets(statusBarHeight: Int) = Unit
+
     private fun navigateToGameDetail(gameId: String) = activityFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
     companion object {

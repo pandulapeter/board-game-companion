@@ -66,6 +66,8 @@ class ActiveGamesFragment : ScreenFragment<FragmentGamesActiveBinding, ActiveGam
         viewModel.refreshGames()
     }
 
+    override fun applyWindowInsets(statusBarHeight: Int) = Unit
+
     override fun onDestroyView() {
         gameListAdapter = null
         super.onDestroyView()
