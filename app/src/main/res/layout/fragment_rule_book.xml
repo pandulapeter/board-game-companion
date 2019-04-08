@@ -26,7 +26,7 @@
                 style="@style/AppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="exitUntilCollapsed|scroll"
+                app:layout_scrollFlags="exitUntilCollapsed|scroll|snap"
                 app:title="@string/home_rule_book">
 
                 <androidx.appcompat.widget.Toolbar
