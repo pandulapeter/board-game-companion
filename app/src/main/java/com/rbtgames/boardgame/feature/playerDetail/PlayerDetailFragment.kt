@@ -3,6 +3,7 @@ package com.rbtgames.boardgame.feature.playerDetail
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentPlayerDetailBinding
@@ -11,6 +12,7 @@ import com.rbtgames.boardgame.feature.playerDetail.list.ColorAdapter
 import com.rbtgames.boardgame.feature.playerDetail.list.ColorItemDecoration
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.consume
+import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.hideKeyboard
 import com.rbtgames.boardgame.utils.navigateBack
 import com.rbtgames.boardgame.utils.postDelayed
@@ -54,6 +56,14 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
     override fun onPause() {
         super.onPause()
         hideKeyboard(activity?.currentFocus)
+    }
+
+    override fun onKeyboardHeightChanged(keyboardHeight: Int) {
+        binding.floatingActionButton.apply {
+            layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                bottomMargin = context.dimension(R.dimen.first_keyline) + keyboardHeight
+            }
+        }
     }
 
     override fun onDestroyView() {
