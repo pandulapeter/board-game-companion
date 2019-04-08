@@ -36,8 +36,12 @@ class GameRepository(database: Database) {
         gameDao.getGame(gameId)?.toGame() ?: newGame
     }
 
-    suspend fun getAllGames() = withContext(Dispatchers.Default) {
-        gameDao.getAllGames().map { it.toGame() }
+    suspend fun getActiveGames() = withContext(Dispatchers.Default) {
+        gameDao.getActiveGames().map { it.toGame() }
+    }
+
+    suspend fun getFinishedGames() = withContext(Dispatchers.Default) {
+        gameDao.getFinishedGames().map { it.toGame() }
     }
 
     suspend fun updateGame(game: Game) = withContext(Dispatchers.Default) {

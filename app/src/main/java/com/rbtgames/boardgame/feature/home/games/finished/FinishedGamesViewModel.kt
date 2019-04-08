@@ -21,8 +21,8 @@ class FinishedGamesViewModel(private val gameRepository: GameRepository) : Scree
     fun refreshGames() {
         launch(Dispatchers.Default) {
             _listItems.postValue(
-                gameRepository.getAllGames()
-                    .filter { it.id != gameToDeleteId && it.isFinished }
+                gameRepository.getFinishedGames()
+                    .filter { it.id != gameToDeleteId }
                     .sortedByDescending { it.lastActionTime }
                     .map { game -> FinishedGameViewModel(game) }
                     .toMutableList<GameListListItem>()

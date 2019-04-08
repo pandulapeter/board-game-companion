@@ -13,8 +13,12 @@ import com.rbtgames.boardgame.data.persistence.model.PlayerEntity
 interface FullGameDao {
 
     @Transaction
-    @Query("SELECT * FROM ${GameEntity.TABLE_NAME}")
-    fun getAllGames(): List<FullGame>
+    @Query("SELECT * FROM ${GameEntity.TABLE_NAME} WHERE ${GameEntity.IS_FINISHED} = 0")
+    fun getActiveGames(): List<FullGame>
+
+    @Transaction
+    @Query("SELECT * FROM ${GameEntity.TABLE_NAME} WHERE ${GameEntity.IS_FINISHED} = 1")
+    fun getFinishedGames(): List<FullGame>
 
     @Transaction
     @Query("SELECT * FROM ${GameEntity.TABLE_NAME} WHERE ${GameEntity.ID} IN(:gameId) LIMIT 1")

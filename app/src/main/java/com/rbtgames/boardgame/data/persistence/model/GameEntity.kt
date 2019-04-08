@@ -9,11 +9,12 @@ data class GameEntity(
     @PrimaryKey @ColumnInfo(name = ID) val id: String,
     @ColumnInfo(name = "startTime") val startTime: Long,
     @ColumnInfo(name = "lastActionTime") val lastActionTime: Long,
-    @ColumnInfo(name = "isFinished") val isFinished: Boolean
+    @ColumnInfo(name = IS_FINISHED) val isFinished: Boolean
 ) {
 
     companion object {
         const val TABLE_NAME = "games"
         const val ID = "id"
+        const val IS_FINISHED = "isFinished"
     }
 }

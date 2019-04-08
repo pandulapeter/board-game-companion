@@ -21,8 +21,8 @@ class ActiveGamesViewModel(private val gameRepository: GameRepository) : ScreenV
     fun refreshGames() {
         launch(Dispatchers.Default) {
             _listItems.postValue(
-                gameRepository.getAllGames()
-                    .filter { it.id != gameToDeleteId && !it.isFinished }
+                gameRepository.getActiveGames()
+                    .filter { it.id != gameToDeleteId }
                     .sortedByDescending { it.lastActionTime }
                     .map { game -> ActiveGameViewModel(game) }
                     .toMutableList<GameListListItem>()
