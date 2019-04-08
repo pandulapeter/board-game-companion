@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 data class GameEntity(
     @PrimaryKey @ColumnInfo(name = ID) val id: String,
     @ColumnInfo(name = "startTime") val startTime: Long,
-    @ColumnInfo(name = "lastActionTime") val lastActionTime: Long
+    @ColumnInfo(name = "lastActionTime") val lastActionTime: Long,
+    @ColumnInfo(name = "isFinished") val isFinished: Boolean
 ) {
 
     companion object {

@@ -53,7 +53,8 @@ class GameRepository(database: Database) {
         id = id,
         startTime = startTime,
         lastActionTime = lastActionTime,
-        players = playerEntities.map { it.toPlayer() }
+        players = playerEntities.map { it.toPlayer() },
+        isFinished = isFinished
     )
 
     private fun PlayerEntity.toPlayer() = Player(
@@ -66,7 +67,8 @@ class GameRepository(database: Database) {
     private fun Game.toGameEntity() = GameEntity(
         id = id,
         startTime = startTime,
-        lastActionTime = lastActionTime
+        lastActionTime = lastActionTime,
+        isFinished = isFinished
     )
 
     private fun List<Player>.toPlayerEntity(gameId: String) = map { player ->

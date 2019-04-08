@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
-import com.rbtgames.boardgame.databinding.ItemGameListGameBinding
+import com.rbtgames.boardgame.databinding.ItemGameListGameActiveBinding
 import com.rbtgames.boardgame.databinding.ItemGameListHintBinding
 
 class GameListAdapter(private val onGameClicked: (game: GameViewModel) -> Unit) :
@@ -21,13 +21,13 @@ class GameListAdapter(private val onGameClicked: (game: GameViewModel) -> Unit) 
     private val exception by lazy { IllegalArgumentException("Invalid view type") }
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
-        is GameViewModel -> R.layout.item_game_list_game
+        is GameViewModel -> R.layout.item_game_list_game_active
         is HintViewModel -> R.layout.item_game_list_hint
         else -> throw exception
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        R.layout.item_game_list_game -> GameViewHolder.create(parent) { position -> onGameClicked(getItem(position) as GameViewModel) }
+        R.layout.item_game_list_game_active -> GameViewHolder.create(parent) { position -> onGameClicked(getItem(position) as GameViewModel) }
         R.layout.item_game_list_hint -> HintViewHolder.create(parent)
         else -> throw exception
     }
@@ -40,7 +40,7 @@ class GameListAdapter(private val onGameClicked: (game: GameViewModel) -> Unit) 
 
     public override fun getItem(position: Int): GameListListItem = super.getItem(position)
 
-    class GameViewHolder(private val binding: ItemGameListGameBinding, onItemClicked: (position: Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+    class GameViewHolder(private val binding: ItemGameListGameActiveBinding, onItemClicked: (position: Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
@@ -58,7 +58,7 @@ class GameListAdapter(private val onGameClicked: (game: GameViewModel) -> Unit) 
 
         companion object {
             fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit) =
-                GameViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_game_list_game, parent, false), onItemClicked)
+                GameViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_game_list_game_active, parent, false), onItemClicked)
         }
     }
 

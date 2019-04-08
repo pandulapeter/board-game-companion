@@ -9,5 +9,6 @@ data class FullGame(
     val startTime: Long = System.currentTimeMillis(),
     val lastActionTime: Long = System.currentTimeMillis(),
     @Relation(parentColumn = GameEntity.ID, entityColumn = PlayerEntity.GAME_ID, entity = PlayerEntity::class)
-    val playerEntities: List<PlayerEntity> = listOf()
+    val playerEntities: List<PlayerEntity> = listOf(),
+    val isFinished: Boolean
 )

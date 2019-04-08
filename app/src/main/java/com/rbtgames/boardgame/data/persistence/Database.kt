@@ -8,7 +8,7 @@ import com.rbtgames.boardgame.data.persistence.dao.FullGameDao
 import com.rbtgames.boardgame.data.persistence.model.GameEntity
 import com.rbtgames.boardgame.data.persistence.model.PlayerEntity
 
-@Database(entities = [GameEntity::class, PlayerEntity::class], version = 1, exportSchema = false)
+@Database(entities = [GameEntity::class, PlayerEntity::class], version = 2, exportSchema = false)
 @TypeConverters(value = [ColorConverter::class])
 abstract class Database : RoomDatabase() {
 

@@ -17,7 +17,11 @@ import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val persistenceModule = module {
-    single { Room.databaseBuilder(androidContext(), Database::class.java, "gameDatabase.db").build() }
+    single {
+        Room.databaseBuilder(androidContext(), Database::class.java, "gameDatabase.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 }
 
 val dataModule = module {

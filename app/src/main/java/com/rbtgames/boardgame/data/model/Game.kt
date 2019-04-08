@@ -6,5 +6,6 @@ data class Game(
     val id: String = UUID.randomUUID().toString(),
     val startTime: Long = System.currentTimeMillis(),
     val lastActionTime: Long = System.currentTimeMillis(),
-    val players: List<Player> = listOf()
+    val players: List<Player> = listOf(),
+    val isFinished: Boolean = false
 )

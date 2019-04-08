@@ -19,6 +19,6 @@
         android:paddingTop="@dimen/content_padding"
         android:paddingEnd="@dimen/content_padding"
         android:paddingBottom="@dimen/list_bottom_padding"
-        tools:listitem="@layout/item_game_list_game" />
+        tools:listitem="@layout/item_game_list_game_active" />
 
 </layout>
