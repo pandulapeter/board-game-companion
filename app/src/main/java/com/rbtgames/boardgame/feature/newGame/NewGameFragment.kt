@@ -27,8 +27,8 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
     override val viewModel by viewModel<NewGameViewModel>()
     override val transitionType = TransitionType.DETAIL
     private var newGameAdapter: NewGameAdapter? = null
-    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-        if (verticalOffset == 0) {
+    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        if (verticalOffset > -appBarLayout.totalScrollRange / 2) {
             binding.addPlayerButton.extend()
             binding.startGameButton.extend()
         } else {

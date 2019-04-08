@@ -11,8 +11,8 @@ import com.rbtgames.boardgame.utils.handleReplace
 
 class GamesFragment : FlowFragment<FragmentGamesBinding>(R.layout.fragment_games) {
 
-    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-        if (verticalOffset == 0) {
+    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        if (verticalOffset > -appBarLayout.totalScrollRange / 2) {
             binding.floatingActionButton.extend()
         } else {
             binding.floatingActionButton.shrink()
