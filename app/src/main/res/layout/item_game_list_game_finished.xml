@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.rbtgames.boardgame.feature.home.games.list.ActiveGameViewModel" />
+            type="com.rbtgames.boardgame.feature.home.games.list.FinishedGameViewModel" />
 
     </data>
 
@@ -43,8 +43,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{@string/games_current_player_name(viewModel.nextPlayerName)}"
-                tools:text="Next player name" />
+                app:time="@{viewModel.game.lastActionTime}"
+                tools:text="Game end time" />
 
         </LinearLayout>
 

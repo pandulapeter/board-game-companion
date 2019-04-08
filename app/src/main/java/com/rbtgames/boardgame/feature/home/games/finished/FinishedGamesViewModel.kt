@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
+import com.rbtgames.boardgame.feature.home.games.list.FinishedGameViewModel
 import com.rbtgames.boardgame.feature.home.games.list.GameListListItem
-import com.rbtgames.boardgame.feature.home.games.list.GameViewModel
 import com.rbtgames.boardgame.feature.home.games.list.HintViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,15 +16,15 @@ class FinishedGamesViewModel(private val gameRepository: GameRepository) : Scree
     val listItems: LiveData<List<GameListListItem>> get() = _listItems
     private val _listItems = mutableLiveDataOf(emptyList<GameListListItem>())
     private var gameToDeleteId: String? = null
-    private val games get() = _listItems.value?.filterIsInstance<GameViewModel>() ?: emptyList()
+    private val games get() = _listItems.value?.filterIsInstance<FinishedGameViewModel>() ?: emptyList()
 
     fun refreshGames() {
         launch(Dispatchers.Default) {
             _listItems.postValue(
                 gameRepository.getAllGames()
-                    .filter { it.id != gameToDeleteId }
+                    .filter { it.id != gameToDeleteId && it.isFinished }
                     .sortedByDescending { it.lastActionTime }
-                    .map { game -> GameViewModel(game) }
+                    .map { game -> FinishedGameViewModel(game) }
                     .toMutableList<GameListListItem>()
                     .apply {
                         when (size) {

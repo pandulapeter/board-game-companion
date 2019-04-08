@@ -9,8 +9,8 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGamesFinishedBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.gameDetail.GameDetailFragment
+import com.rbtgames.boardgame.feature.home.games.list.FinishedGameViewModel
 import com.rbtgames.boardgame.feature.home.games.list.GameListAdapter
-import com.rbtgames.boardgame.feature.home.games.list.GameViewModel
 import com.rbtgames.boardgame.feature.shared.ElevationItemTouchHelperCallback
 import com.rbtgames.boardgame.utils.dimension
 import com.rbtgames.boardgame.utils.handleReplace
@@ -23,7 +23,7 @@ class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, Finis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        gameListAdapter = GameListAdapter { gameViewModel -> navigateToGameDetail(gameViewModel.game.id) }
+        gameListAdapter = GameListAdapter { game -> navigateToGameDetail(game.id) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
@@ -38,7 +38,7 @@ class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, Finis
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.also { position ->
                     if (position != RecyclerView.NO_POSITION) {
-                        (gameListAdapter?.getItem(position) as? GameViewModel?)?.game?.also { gameToDelete ->
+                        (gameListAdapter?.getItem(position) as? FinishedGameViewModel?)?.game?.also { gameToDelete ->
                             viewModel.deleteGamePermanently()
                             showSnackbar(
                                 message = getString(R.string.games_game_deleted_message),
