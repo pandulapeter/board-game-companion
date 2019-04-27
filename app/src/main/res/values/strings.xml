@@ -4,6 +4,7 @@
     <string name="app_title" translatable="false">Board Game Companion</string>
     <string name="close">Close</string>
     <string name="back">Back</string>
+    <string name="more">More</string>
     <string name="undo">Undo</string>
     <string name="work_in_progress">Work in progress</string>
 

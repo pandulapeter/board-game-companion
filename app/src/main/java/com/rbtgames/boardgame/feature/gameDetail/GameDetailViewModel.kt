@@ -15,6 +15,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     val points = mutableLiveDataOf("")
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
     private val _shouldNavigateBack = eventLiveData()
+    val shouldShowOverflowMenu: LiveData<Boolean?> get() = _shouldShowOverflowMenu
+    private val _shouldShowOverflowMenu = eventLiveData()
     val currentPlayer: LiveData<Player?> get() = _currentPlayer
     private val _currentPlayer = MutableLiveData<Player?>()
     val isNextTurnButtonEnabled: LiveData<Boolean> get() = _isNextTurnButtonEnabled
@@ -28,6 +30,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     }
 
     fun onBackButtonPressed() = _shouldNavigateBack.sendEvent()
+
+    fun onMoreButtonPressed() = _shouldShowOverflowMenu.sendEvent()
 
     fun onNextTurnButtonPressed() {
         if (isNextTurnButtonEnabled.value == true) {

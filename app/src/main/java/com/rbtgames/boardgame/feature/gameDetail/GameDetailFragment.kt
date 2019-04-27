@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
+import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,7 @@ import com.rbtgames.boardgame.utils.showKeyboard
 import com.rbtgames.boardgame.utils.withArguments
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+
 
 class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailViewModel>(R.layout.fragment_game_detail) {
 
@@ -52,6 +55,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
             addOnScrollListener(onScrollListener)
         }
         viewModel.shouldNavigateBack.observe { navigateBack() }
+        viewModel.shouldShowOverflowMenu.observe { showOverflowMenu() }
         viewModel.players.observe { playerViewModels ->
             gameDetailAdapter?.submitList(playerViewModels)
             binding.recyclerView.apply { postDelayed(SCROLL_TO_TOP_DELAY) { if (isAdded) smoothScrollToPosition(0) } }
@@ -59,6 +63,16 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     }
 
     private fun navigateBack() = activityFragmentManager?.clearBackStack()
+
+    private fun showOverflowMenu() {
+        PopupMenu(requireContext(), binding.moreButton, GravityCompat.END).apply {
+            menu.apply {
+                add("Finish game")
+                add("Add counter")
+            }
+            show()
+        }
+    }
 
     override fun onPause() {
         super.onPause()
@@ -68,7 +82,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     override fun onBackPressed() = consume { navigateBack() }
 
     override fun applyWindowInsets(statusBarHeight: Int) {
-        binding.closeButton.apply {
+        binding.backButton.apply {
             layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
                 topMargin = context.dimension(R.dimen.first_keyline_button) + statusBarHeight
             }
