@@ -90,7 +90,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     }
 
     override fun onKeyboardHeightChanged(keyboardHeight: Int) {
-        binding.recyclerView.apply {
+        binding.listContainer.apply {
             post {
                 if (isAdded) {
                     layoutParams = (layoutParams as LinearLayout.LayoutParams).apply {

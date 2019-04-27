@@ -127,15 +127,29 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            style="@style/ScrollView"
+        <FrameLayout
+            android:id="@+id/list_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/content_padding"
-            android:paddingEnd="@dimen/content_padding"
-            android:paddingBottom="@dimen/large_content_padding"
-            tools:listitem="@layout/item_new_game_player" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                style="@style/ScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/content_padding"
+                android:paddingEnd="@dimen/content_padding"
+                android:paddingBottom="@dimen/large_content_padding"
+                tools:listitem="@layout/item_new_game_player" />
+
+            <ProgressBar
+                android:id="@+id/loading_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:visibility="@{viewModel.shouldShowLoadingIndicator}" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

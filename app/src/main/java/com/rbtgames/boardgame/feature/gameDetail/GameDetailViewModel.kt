@@ -15,6 +15,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     val points = mutableLiveDataOf("")
     val shouldNavigateBack: LiveData<Boolean?> get() = _shouldNavigateBack
     private val _shouldNavigateBack = eventLiveData()
+    val shouldShowLoadingIndicator: LiveData<Boolean> get() = _shouldShowLoadingIndicator
+    private val _shouldShowLoadingIndicator = mutableLiveDataOf(true)
     val shouldShowOverflowMenu: LiveData<Boolean?> get() = _shouldShowOverflowMenu
     private val _shouldShowOverflowMenu = eventLiveData()
     val currentPlayer: LiveData<Player?> get() = _currentPlayer
@@ -71,6 +73,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                 _players.value = playerViewModels.drop(1)
                 _currentPlayer.value = players.first()
                 points.value = ""
+                _shouldShowLoadingIndicator.value = false
             }
         }
     }
