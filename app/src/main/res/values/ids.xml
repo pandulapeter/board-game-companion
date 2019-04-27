@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menu_undo" type="id" />
+    <item name="menu_add_counter" type="id" />
+    <item name="menu_edit_players" type="id" />
+    <item name="menu_finish_game" type="id" />
+</resources>

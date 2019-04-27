@@ -58,6 +58,18 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
 
     fun onLoadingDone() = _shouldShowLoadingIndicator.postValue(false)
 
+    //TODO
+    fun onUndoButtonPressed() = Unit
+
+    //TODO
+    fun onAddCounterButtonPressed() = Unit
+
+    //TODO
+    fun onEditPlayersButtonPressed() = Unit
+
+    //TODO
+    fun onFinishGameButtonPressed() = Unit
+
     private fun refreshList(game: Game? = null) {
         launch(Dispatchers.Default) {
             val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }

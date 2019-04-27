@@ -1,6 +1,7 @@
 package com.rbtgames.boardgame.feature.gameDetail
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
@@ -67,8 +68,19 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     private fun showOverflowMenu() {
         PopupMenu(requireContext(), binding.moreButton, GravityCompat.END).apply {
             menu.apply {
-                add("Finish game")
-                add("Add counter")
+                add(Menu.NONE, R.id.menu_undo, 0, R.string.game_detail_menu_undo)
+                add(Menu.NONE, R.id.menu_add_counter, 1, R.string.game_detail_menu_add_counter)
+                add(Menu.NONE, R.id.menu_edit_players, 2, R.string.game_detail_menu_edit_players)
+                add(Menu.NONE, R.id.menu_finish_game, 3, R.string.game_detail_menu_finish_game)
+                setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.menu_undo -> consume { viewModel.onUndoButtonPressed() }
+                        R.id.menu_add_counter -> consume { viewModel.onAddCounterButtonPressed() }
+                        R.id.menu_edit_players -> consume { viewModel.onEditPlayersButtonPressed() }
+                        R.id.menu_finish_game -> consume { viewModel.onFinishGameButtonPressed() }
+                        else -> false
+                    }
+                }
             }
             show()
         }
