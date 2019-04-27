@@ -20,9 +20,12 @@
     <string name="games_active">Active</string>
     <string name="games_active_no_games">There are no active game sessions</string>
     <string name="games_active_hint">Tap on a card to resume the game or swipe it away horizontally to delete it</string>
+    <string name="games_active_prefix">Started on</string>
     <string name="games_finished">Finished</string>
     <string name="games_finished_no_games">There are no finished game sessions</string>
     <string name="games_finished_hint">Tap on a card to see statistics about the game or swipe it away horizontally to delete it</string>
+    <string name="games_finished_start_prefix">@string/games_active_prefix</string>
+    <string name="games_finished_finished_prefix">Finished on</string>
     <string name="games_current_player_name">Current turn: %s</string>
     <string name="games_game_deleted_message">Game deleted</string>
     <string name="games_game_deleted_action">@string/undo</string>

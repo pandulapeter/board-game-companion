@@ -1,5 +1,6 @@
 package com.rbtgames.boardgame.feature.shared
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
 import android.text.format.DateUtils
@@ -51,9 +52,10 @@ fun ProgressBar.setAnimatedProgress(value: Int) {
     }
 }
 
-@BindingAdapter("time")
-fun TextView.setTime(timeInMilliseconds: Long) {
-    text = DateUtils.formatDateTime(context, timeInMilliseconds, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME)
+@SuppressLint("SetTextI18n")
+@BindingAdapter("time", "prefix")
+fun TextView.setTime(timeInMilliseconds: Long, prefix: String) {
+    text = prefix + " " + DateUtils.formatDateTime(context, timeInMilliseconds, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME)
 }
 
 @BindingAdapter("android:text")
