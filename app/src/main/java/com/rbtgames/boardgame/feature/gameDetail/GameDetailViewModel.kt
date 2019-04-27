@@ -7,7 +7,6 @@ import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.repository.GameRepository
 import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.gameDetail.list.PlayerViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GameDetailViewModel(private val gameRepository: GameRepository, private val gameId: String) : ScreenViewModel() {
@@ -25,6 +24,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     private val _isNextTurnButtonEnabled = mutableLiveDataOf(false)
     val players: LiveData<List<PlayerViewModel>> get() = _players
     private val _players = mutableLiveDataOf(emptyList<PlayerViewModel>())
+    val shouldShowFinishGameConfirmation: LiveData<Boolean?> get() = _shouldShowFinishGameConfirmation
+    private val _shouldShowFinishGameConfirmation = eventLiveData()
 
     init {
         points.observeForever { _isNextTurnButtonEnabled.value = !it.isNullOrBlank() }
@@ -37,7 +38,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
 
     fun onNextTurnButtonPressed() {
         if (isNextTurnButtonEnabled.value == true) {
-            launch(Dispatchers.Default) {
+            launch {
                 val game = gameRepository.getGame(gameId)!!
                 val points = try {
                     points.value?.toInt() ?: 0
@@ -67,27 +68,29 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     //TODO
     fun onEditPlayersButtonPressed() = Unit
 
-    //TODO
-    fun onFinishGameButtonPressed() = Unit
+    fun onFinishGameButtonPressed() = _shouldShowFinishGameConfirmation.sendEvent()
+
+    fun finishGame() {
+        launch {
+            gameRepository.updateGame(gameRepository.getGame(gameId)!!.copy(isFinished = true))
+            _shouldNavigateBack.postValue(true)
+        }
+    }
 
     private fun refreshList(game: Game? = null) {
-        launch(Dispatchers.Default) {
+        launch {
             val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }
-            val baselineMinimum = players.first().points
             val baselineMaximum = players.last().points
-            val playerViewModels = players.mapIndexed { index, player ->
+            _players.postValue(players.mapIndexed { index, player ->
                 PlayerViewModel(
                     order = index,
                     player = player,
-                    baselineMinimum = baselineMinimum,
+                    baselineMinimum = players.first().points,
                     baselineMaximum = baselineMaximum
                 )
-            }
-            launch(Dispatchers.Main) {
-                _players.value = playerViewModels.drop(1)
-                _currentPlayer.value = players.first()
-                points.value = ""
-            }
+            }.drop(1))
+            _currentPlayer.postValue(players.first())
+            points.postValue("")
         }
     }
 }

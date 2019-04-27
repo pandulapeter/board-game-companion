@@ -15,6 +15,7 @@ import com.rbtgames.boardgame.R
 import com.rbtgames.boardgame.databinding.FragmentGameDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.gameDetail.list.GameDetailAdapter
+import com.rbtgames.boardgame.feature.shared.AlertDialogFragment
 import com.rbtgames.boardgame.utils.BundleArgumentDelegate
 import com.rbtgames.boardgame.utils.clearBackStack
 import com.rbtgames.boardgame.utils.consume
@@ -27,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 
-class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailViewModel>(R.layout.fragment_game_detail) {
+class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailViewModel>(R.layout.fragment_game_detail), AlertDialogFragment.OnDialogItemSelectedListener {
 
     override val viewModel by viewModel<GameDetailViewModel> { parametersOf(arguments?.gameId) }
     override val transitionType = TransitionType.DETAIL
@@ -61,30 +62,29 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
             gameDetailAdapter?.submitList(playerViewModels) { viewModel.onLoadingDone() }
             binding.recyclerView.apply { postDelayed(SCROLL_TO_TOP_DELAY) { if (isAdded) smoothScrollToPosition(0) } }
         }
+        viewModel.shouldShowFinishGameConfirmation.observe { showFinishGameConfirmation() }
     }
 
     private fun navigateBack() = activityFragmentManager?.clearBackStack()
 
-    private fun showOverflowMenu() {
-        PopupMenu(requireContext(), binding.moreButton, GravityCompat.END).apply {
-            menu.apply {
-                add(Menu.NONE, R.id.menu_undo, 0, R.string.game_detail_menu_undo)
-                add(Menu.NONE, R.id.menu_add_counter, 1, R.string.game_detail_menu_add_counter)
-                add(Menu.NONE, R.id.menu_edit_players, 2, R.string.game_detail_menu_edit_players)
-                add(Menu.NONE, R.id.menu_finish_game, 3, R.string.game_detail_menu_finish_game)
-                setOnMenuItemClickListener {
-                    when (it.itemId) {
-                        R.id.menu_undo -> consume { viewModel.onUndoButtonPressed() }
-                        R.id.menu_add_counter -> consume { viewModel.onAddCounterButtonPressed() }
-                        R.id.menu_edit_players -> consume { viewModel.onEditPlayersButtonPressed() }
-                        R.id.menu_finish_game -> consume { viewModel.onFinishGameButtonPressed() }
-                        else -> false
-                    }
+    private fun showOverflowMenu() = PopupMenu(requireContext(), binding.moreButton, GravityCompat.END).apply {
+        menu.apply {
+            add(Menu.NONE, R.id.menu_undo, 0, R.string.game_detail_menu_undo)
+            add(Menu.NONE, R.id.menu_add_counter, 1, R.string.game_detail_menu_add_counter)
+            add(Menu.NONE, R.id.menu_edit_players, 2, R.string.game_detail_menu_edit_players)
+            add(Menu.NONE, R.id.menu_finish_game, 3, R.string.game_detail_menu_finish_game)
+            setOnMenuItemClickListener {
+                dismiss()
+                when (it.itemId) {
+                    R.id.menu_undo -> consume { viewModel.onUndoButtonPressed() }
+                    R.id.menu_add_counter -> consume { viewModel.onAddCounterButtonPressed() }
+                    R.id.menu_edit_players -> consume { viewModel.onEditPlayersButtonPressed() }
+                    R.id.menu_finish_game -> consume { viewModel.onFinishGameButtonPressed() }
+                    else -> false
                 }
             }
-            show()
         }
-    }
+    }.show()
 
     override fun onPause() {
         super.onPause()
@@ -119,8 +119,26 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         super.onDestroyView()
     }
 
+    override fun onPositiveButtonSelected(id: Int) {
+        if (id == DIALOG_FINISH_GAME_CONFIRMATION_ID) {
+            viewModel.finishGame()
+        }
+    }
+
+    private fun showFinishGameConfirmation() = AlertDialogFragment.show(
+        id = DIALOG_FINISH_GAME_CONFIRMATION_ID,
+        fragmentManager = childFragmentManager,
+        title = R.string.game_detail_finish_confirmation_title,
+        message = R.string.game_detail_finish_confirmation_message,
+        positiveButton = R.string.game_detail_finish_confirmation_positive,
+        negativeButton = R.string.game_detail_finish_confirmation_negative
+    )
+
+
     companion object {
         private const val SCROLL_TO_TOP_DELAY = 100L
+        private const val DIALOG_FINISH_GAME_CONFIRMATION_ID = 1
+
         private var Bundle.gameId by BundleArgumentDelegate.String("gameId")
 
         fun newInstance(gameId: String) = GameDetailFragment().withArguments {

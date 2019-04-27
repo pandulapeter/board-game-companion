@@ -6,6 +6,7 @@
     <string name="back">Back</string>
     <string name="more">More</string>
     <string name="undo">Undo</string>
+    <string name="cancel">Cancel</string>
     <string name="work_in_progress">Work in progress</string>
 
     <!-- Home -->
@@ -37,7 +38,7 @@
     <string name="new_game_close_confirmation_title">Are you sure you want to leave?</string>
     <string name="new_game_close_confirmation_message">The players you added will not be saved.</string>
     <string name="new_game_close_confirmation_positive">Leave</string>
-    <string name="new_game_close_confirmation_negative">Cancel</string>
+    <string name="new_game_close_confirmation_negative">@string/cancel</string>
 
     <!-- Player detail -->
     <string name="player_detail_player_name">Player name</string>
@@ -53,5 +54,9 @@
     <string name="game_detail_menu_add_counter">Add counter</string>
     <string name="game_detail_menu_edit_players">Edit players</string>
     <string name="game_detail_menu_finish_game">Finish game</string>
+    <string name="game_detail_finish_confirmation_title">Are you sure you want to finish this game?</string>
+    <string name="game_detail_finish_confirmation_message">This action cannot be reversed.</string>
+    <string name="game_detail_finish_confirmation_positive">Finish</string>
+    <string name="game_detail_finish_confirmation_negative">@string/cancel</string>
 
 </resources>
