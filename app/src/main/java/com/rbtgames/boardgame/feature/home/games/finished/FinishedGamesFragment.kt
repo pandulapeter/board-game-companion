@@ -58,7 +58,7 @@ class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, Finis
             adapter = gameListAdapter
             itemTouchHelper.attachToRecyclerView(this)
         }
-        viewModel.listItems.observe { listItems -> gameListAdapter?.submitList(listItems) }
+        viewModel.listItems.observe { listItems -> gameListAdapter?.submitList(listItems) { viewModel.onLoadingDone() } }
     }
 
     override fun onResume() {

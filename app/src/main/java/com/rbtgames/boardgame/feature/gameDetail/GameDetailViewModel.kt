@@ -56,6 +56,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
         }
     }
 
+    fun onLoadingDone() = _shouldShowLoadingIndicator.postValue(false)
+
     private fun refreshList(game: Game? = null) {
         launch(Dispatchers.Default) {
             val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }
@@ -73,7 +75,6 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                 _players.value = playerViewModels.drop(1)
                 _currentPlayer.value = players.first()
                 points.value = ""
-                _shouldShowLoadingIndicator.value = false
             }
         }
     }

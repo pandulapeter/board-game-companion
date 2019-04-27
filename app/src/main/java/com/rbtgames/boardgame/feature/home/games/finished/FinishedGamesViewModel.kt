@@ -15,6 +15,8 @@ class FinishedGamesViewModel(private val gameRepository: GameRepository) : Scree
 
     val listItems: LiveData<List<GameListListItem>> get() = _listItems
     private val _listItems = mutableLiveDataOf(emptyList<GameListListItem>())
+    val shouldShowLoadingIndicator: LiveData<Boolean> get() = _shouldShowLoadingIndicator
+    private val _shouldShowLoadingIndicator = mutableLiveDataOf(true)
     private var gameToDeleteId: String? = null
     private val games get() = _listItems.value?.filterIsInstance<FinishedGameViewModel>() ?: emptyList()
 
@@ -34,6 +36,8 @@ class FinishedGamesViewModel(private val gameRepository: GameRepository) : Scree
                     })
         }
     }
+
+    fun onLoadingDone() = _shouldShowLoadingIndicator.postValue(false)
 
     fun canSwipeItem(position: Int) = games.size.let { size ->
         when (size) {

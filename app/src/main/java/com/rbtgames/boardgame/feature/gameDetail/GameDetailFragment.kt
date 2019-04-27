@@ -57,7 +57,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldShowOverflowMenu.observe { showOverflowMenu() }
         viewModel.players.observe { playerViewModels ->
-            gameDetailAdapter?.submitList(playerViewModels)
+            gameDetailAdapter?.submitList(playerViewModels) { viewModel.onLoadingDone() }
             binding.recyclerView.apply { postDelayed(SCROLL_TO_TOP_DELAY) { if (isAdded) smoothScrollToPosition(0) } }
         }
     }

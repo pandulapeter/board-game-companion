@@ -130,7 +130,8 @@
         <FrameLayout
             android:id="@+id/list_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -146,7 +147,8 @@
                 android:id="@+id/loading_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/list_bottom_padding"
                 app:visibility="@{viewModel.shouldShowLoadingIndicator}" />
 
         </FrameLayout>

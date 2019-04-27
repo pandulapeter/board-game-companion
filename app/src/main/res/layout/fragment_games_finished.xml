@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -10,15 +11,30 @@
 
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        style="@style/ScrollView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="@dimen/first_keyline"
-        android:paddingTop="@dimen/content_padding"
-        android:paddingEnd="@dimen/content_padding"
-        android:paddingBottom="@dimen/list_bottom_padding"
-        tools:listitem="@layout/item_game_list_game_active" />
+        android:animateLayoutChanges="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            style="@style/ScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/first_keyline"
+            android:paddingTop="@dimen/content_padding"
+            android:paddingEnd="@dimen/content_padding"
+            android:paddingBottom="@dimen/list_bottom_padding"
+            tools:listitem="@layout/item_game_list_game_active" />
+
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/list_bottom_padding"
+            app:visibility="@{viewModel.shouldShowLoadingIndicator}" />
+
+    </FrameLayout>
 
 </layout>
