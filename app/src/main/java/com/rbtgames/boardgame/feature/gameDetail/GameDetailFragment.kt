@@ -45,7 +45,6 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.pointsInput.apply {
-            post { if (isAdded) showKeyboard(this) }
             setOnEditorActionListener { _, actionId, _ -> consume { if (actionId == EditorInfo.IME_ACTION_DONE) viewModel.onNextTurnButtonPressed() } }
         }
         gameDetailAdapter = GameDetailAdapter()
@@ -63,6 +62,16 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
             binding.recyclerView.apply { postDelayed(SCROLL_TO_TOP_DELAY) { if (isAdded) smoothScrollToPosition(0) } }
         }
         viewModel.shouldShowFinishGameConfirmation.observe { showFinishGameConfirmation() }
+        viewModel.isGameActive.observe {
+            binding.root.post {
+                if (isAdded) {
+                    when (it) {
+                        true -> showKeyboard(binding.pointsInput)
+                        false -> hideKeyboard(activity?.currentFocus)
+                    }
+                }
+            }
+        }
     }
 
     private fun navigateBack() = activityFragmentManager?.clearBackStack()

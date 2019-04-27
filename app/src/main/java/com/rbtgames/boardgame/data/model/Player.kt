@@ -26,6 +26,7 @@ data class Player(
         COLOR_12(R.color.player_12),
         COLOR_13(R.color.player_13),
         COLOR_14(R.color.player_14),
-        COLOR_15(R.color.player_15)
+        COLOR_15(R.color.player_15),
+        COLOR_FINISHED(R.color.brand)
     }
 }

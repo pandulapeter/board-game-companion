@@ -1,5 +1,6 @@
 package com.rbtgames.boardgame.feature.home.games.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -17,7 +18,10 @@ class GameListAdapter(private val onGameClicked: (game: Game) -> Unit) :
 
         override fun areItemsTheSame(oldItem: GameListListItem, newItem: GameListListItem) = oldItem.id == newItem.id
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: GameListListItem, newItem: GameListListItem) = oldItem == newItem
+
+        override fun getChangePayload(oldItem: GameListListItem, newItem: GameListListItem) = ""
     }) {
 
     private val exception by lazy { IllegalArgumentException("Invalid view type") }

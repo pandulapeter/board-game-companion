@@ -32,7 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
                 app:prefix="@{@string/games_finished_start_prefix}"
                 app:time="@{viewModel.game.startTime}"

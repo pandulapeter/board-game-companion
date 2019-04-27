@@ -71,7 +71,8 @@
                     android:padding="@dimen/content_padding"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/back_button"
-                    app:srcCompat="@drawable/ic_more" />
+                    app:srcCompat="@drawable/ic_more"
+                    app:visibility="@{viewModel.isGameActive}" />
 
                 <TextView
                     android:id="@+id/next_player_name"
@@ -81,13 +82,20 @@
                     android:layout_marginEnd="@dimen/content_padding"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{@string/game_detail_current_turn(viewModel.currentPlayer.name)}"
+                    android:text="@{viewModel.isGameActive ? @string/game_detail_current_turn(viewModel.currentPlayer.name) : @string/game_detail_finished}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     app:layout_constraintBottom_toBottomOf="@+id/back_button"
                     app:layout_constraintEnd_toStartOf="@+id/more_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/back_button"
                     tools:text="Next turn" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/content_padding"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
                 <EditText
                     android:id="@+id/points_input"
@@ -107,6 +115,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/next_turn_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/back_button"
+                    app:visibility="@{viewModel.isGameActive}"
                     tools:ignore="UnusedAttribute" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -121,7 +130,8 @@
                     android:theme="@style/AppTheme"
                     app:icon="@drawable/ic_done"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:visibility="@{viewModel.isGameActive}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

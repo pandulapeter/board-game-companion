@@ -26,6 +26,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     private val _players = mutableLiveDataOf(emptyList<PlayerViewModel>())
     val shouldShowFinishGameConfirmation: LiveData<Boolean?> get() = _shouldShowFinishGameConfirmation
     private val _shouldShowFinishGameConfirmation = eventLiveData()
+    val isGameActive: LiveData<Boolean?> get() = _isGameActive
+    private val _isGameActive = MutableLiveData<Boolean>()
 
     init {
         points.observeForever { _isNextTurnButtonEnabled.value = !it.isNullOrBlank() }
@@ -72,15 +74,18 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
 
     fun finishGame() {
         launch {
-            gameRepository.updateGame(gameRepository.getGame(gameId)!!.copy(isFinished = true))
-            _shouldNavigateBack.postValue(true)
+            val newGame = gameRepository.getGame(gameId)!!.copy(isFinished = true)
+            gameRepository.updateGame(newGame)
+            refreshList(newGame)
         }
     }
 
     private fun refreshList(game: Game? = null) {
         launch {
-            val players = (game ?: gameRepository.getGame(gameId)!!).players.sortedBy { it.points }
+            val currentGame = game ?: gameRepository.getGame(gameId)!!
+            val players = currentGame.players.sortedBy { it.points }
             val baselineMaximum = players.last().points
+            _isGameActive.postValue(!currentGame.isFinished)
             _players.postValue(players.mapIndexed { index, player ->
                 PlayerViewModel(
                     order = index,
@@ -88,8 +93,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                     baselineMinimum = players.first().points,
                     baselineMaximum = baselineMaximum
                 )
-            }.drop(1))
-            _currentPlayer.postValue(players.first())
+            }.run { if (currentGame.isFinished) this else drop(1) })
+            _currentPlayer.postValue(if (currentGame.isFinished) Player(color = Player.Color.COLOR_FINISHED) else players.first())
             points.postValue("")
         }
     }

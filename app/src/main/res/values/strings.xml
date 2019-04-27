@@ -61,5 +61,6 @@
     <string name="game_detail_finish_confirmation_message">This action cannot be reversed.</string>
     <string name="game_detail_finish_confirmation_positive">Finish</string>
     <string name="game_detail_finish_confirmation_negative">@string/cancel</string>
+    <string name="game_detail_finished">Finished game</string>
 
 </resources>
