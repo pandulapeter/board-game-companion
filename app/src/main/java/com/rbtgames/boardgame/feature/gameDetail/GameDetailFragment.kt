@@ -49,7 +49,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         viewModel.players.observe { playerViewModels ->
             gameDetailAdapter.submitList(playerViewModels) {
                 viewModel.onLoadingDone()
-                binding.recyclerView.smoothScrollToPosition(0)
+                binding.recyclerView.apply { post { smoothScrollToPosition(0) } }
             }
         }
         viewModel.shouldShowFinishGameConfirmation.observe { showFinishGameConfirmation() }
