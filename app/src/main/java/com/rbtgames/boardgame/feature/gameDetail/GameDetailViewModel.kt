@@ -94,7 +94,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     private fun refreshList(game: Game? = null) {
         launch {
             val currentGame = game ?: gameRepository.getGame(gameId)!!
-            val players = currentGame.players.sortedBy { it.points }
+            val players = currentGame.players.reversed().sortedBy { it.points }
             val baselineMaximum = players.last().points
             _isGameActive.postValue(!currentGame.isFinished)
             _players.postValue(players.mapIndexed { index, player ->
