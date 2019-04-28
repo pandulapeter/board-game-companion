@@ -28,6 +28,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     private val _shouldShowFinishGameConfirmation = eventLiveData()
     val isGameActive: LiveData<Boolean?> get() = _isGameActive
     private val _isGameActive = MutableLiveData<Boolean>()
+    private var previousGameState: Game? = null
 
     init {
         points.observeForever { _isNextTurnButtonEnabled.value = !it.isNullOrBlank() }
@@ -47,6 +48,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                 } catch (_: NumberFormatException) {
                     0
                 }
+                previousGameState = game
                 val newGame = game.copy(
                     lastActionTime = System.currentTimeMillis(),
                     players = game.players.map { player ->
@@ -61,8 +63,17 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
 
     fun onLoadingDone() = _shouldShowLoadingIndicator.postValue(false)
 
-    //TODO
-    fun onUndoButtonPressed() = Unit
+    fun isUndoAvailable() = previousGameState != null
+
+    fun onUndoButtonPressed() {
+        launch {
+            previousGameState?.let {
+                gameRepository.updateGame(it)
+                refreshList(it)
+                previousGameState = null
+            }
+        }
+    }
 
     //TODO
     fun onAddCounterButtonPressed() = Unit
