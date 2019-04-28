@@ -4,7 +4,6 @@
     <!-- Base colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="transparent">#00000000</color>
 
     <!-- Brand -->
     <color name="brand">#CDDC39</color>

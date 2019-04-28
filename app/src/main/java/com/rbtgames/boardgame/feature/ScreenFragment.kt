@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.rbtgames.boardgame.BR
 
-abstract class ScreenFragment<B : ViewDataBinding, VM : ScreenViewModel>(layoutResourceId: Int) : Fragment<B>(layoutResourceId) {
+abstract class ScreenFragment<B : ViewDataBinding, VM : ScreenViewModel>(layoutResourceId: Int) : BaseFragment<B>(layoutResourceId) {
 
     protected abstract val viewModel: VM
     open val shouldUseTranslucentStatusBar = false

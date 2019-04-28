@@ -85,7 +85,7 @@
             android:id="@+id/points_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/game_detail_points_format(viewModel.points)}"
+            android:text="@{@plurals/game_detail_points_format(viewModel.points,viewModel.points)}"
             app:layout_constraintBottom_toTopOf="@+id/progress_bar"
             app:layout_constraintStart_toStartOf="@+id/progress_bar"
             app:layout_constraintTop_toTopOf="parent"

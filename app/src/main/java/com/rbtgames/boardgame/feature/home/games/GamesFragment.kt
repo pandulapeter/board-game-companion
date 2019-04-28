@@ -11,25 +11,18 @@ import com.rbtgames.boardgame.utils.handleReplace
 
 class GamesFragment : FlowFragment<FragmentGamesBinding>(R.layout.fragment_games) {
 
-    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-        if (verticalOffset > -appBarLayout.totalScrollRange / 2) {
-            binding.floatingActionButton.extend()
-        } else {
-            binding.floatingActionButton.shrink()
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.floatingActionButton.setOnClickListener { navigateToNewGame() }
-        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (verticalOffset > -appBarLayout.totalScrollRange / 2) {
+                binding.floatingActionButton.extend()
+            } else {
+                binding.floatingActionButton.shrink()
+            }
+        })
         binding.viewPager.adapter = GamesPagerAdapter(requireContext(), childFragmentManager)
         binding.tabLayout.setupWithViewPager(binding.viewPager)
-    }
-
-    override fun onDestroyView() {
-        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
-        super.onDestroyView()
     }
 
     private fun navigateToNewGame() = activityFragmentManager?.handleReplace(addToBackStack = true) { NewGameFragment.newInstance() }

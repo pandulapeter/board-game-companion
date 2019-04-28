@@ -26,21 +26,19 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
 
     override val viewModel by viewModel<NewGameViewModel>()
     override val transitionType = TransitionType.DETAIL
-    private var newGameAdapter: NewGameAdapter? = null
-    private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-        if (verticalOffset > -appBarLayout.totalScrollRange / 2) {
-            binding.addPlayerButton.extend()
-            binding.startGameButton.extend()
-        } else {
-            binding.addPlayerButton.shrink()
-            binding.startGameButton.shrink()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
-        newGameAdapter = NewGameAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
+        binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (verticalOffset > -appBarLayout.totalScrollRange / 2) {
+                binding.addPlayerButton.extend()
+                binding.startGameButton.extend()
+            } else {
+                binding.addPlayerButton.shrink()
+                binding.startGameButton.shrink()
+            }
+        })
+        val newGameAdapter = NewGameAdapter { playerViewModel -> navigateToNewPlayerScreen(playerViewModel.player) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
@@ -66,7 +64,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.also { position ->
                     if (position != RecyclerView.NO_POSITION) {
-                        (newGameAdapter?.getItem(position) as? PlayerViewModel?)?.player?.also { playerToDelete ->
+                        (newGameAdapter.getItem(position) as? PlayerViewModel?)?.player?.also { playerToDelete ->
                             viewModel.deletePlayerPermanently()
                             showSnackbar(
                                 message = getString(R.string.new_game_player_deleted_message, playerToDelete.name),
@@ -80,7 +78,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
                 }
             }
         })
-        newGameAdapter?.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.also { itemTouchHelper.startDrag(it) } }
+        newGameAdapter.dragHandleTouchListener = { position -> binding.recyclerView.findViewHolderForAdapterPosition(position)?.also { itemTouchHelper.startDrag(it) } }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
@@ -91,7 +89,7 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
         viewModel.shouldShowCloseConfirmation.observe { showCloseConfirmationDialog() }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldNavigateToNewPlayerScreen.observe { navigateToNewPlayerScreen(Player()) }
-        viewModel.listItems.observe { players -> newGameAdapter?.submitList(players) }
+        viewModel.listItems.observe { players -> newGameAdapter.submitList(players) }
     }
 
     override fun onResume() {
@@ -105,12 +103,6 @@ class NewGameFragment : ScreenFragment<FragmentNewGameBinding, NewGameViewModel>
         if (id == DIALOG_CLOSE_CONFIRMATION_ID) {
             viewModel.navigateBack()
         }
-    }
-
-    override fun onDestroyView() {
-        newGameAdapter = null
-        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
-        super.onDestroyView()
     }
 
     private fun navigateBack() = activityFragmentManager?.navigateBack()

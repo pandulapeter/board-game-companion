@@ -20,7 +20,7 @@ class GameDetailAdapter : ListAdapter<PlayerViewModel, GameDetailAdapter.ViewHol
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder.create(parent)
 
-    override fun onBindViewHolder(holder: GameDetailAdapter.ViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
 
     class ViewHolder(private val binding: ItemGameDetailPlayerBinding) : RecyclerView.ViewHolder(binding.root) {
 

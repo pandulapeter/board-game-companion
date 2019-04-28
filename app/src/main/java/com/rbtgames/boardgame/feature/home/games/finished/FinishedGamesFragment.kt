@@ -19,11 +19,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, FinishedGamesViewModel>(R.layout.fragment_games_finished) {
 
     override val viewModel by viewModel<FinishedGamesViewModel>()
-    private var gameListAdapter: GameListAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        gameListAdapter = GameListAdapter { game -> navigateToGameDetail(game.id) }
+        val gameListAdapter = GameListAdapter { game -> navigateToGameDetail(game.id) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
@@ -38,7 +37,7 @@ class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, Finis
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.also { position ->
                     if (position != RecyclerView.NO_POSITION) {
-                        (gameListAdapter?.getItem(position) as? FinishedGameViewModel?)?.game?.also { gameToDelete ->
+                        (gameListAdapter.getItem(position) as? FinishedGameViewModel?)?.game?.also { gameToDelete ->
                             viewModel.deleteGamePermanently()
                             showSnackbar(
                                 message = getString(R.string.games_game_deleted_message),
@@ -58,17 +57,12 @@ class FinishedGamesFragment : ScreenFragment<FragmentGamesFinishedBinding, Finis
             adapter = gameListAdapter
             itemTouchHelper.attachToRecyclerView(this)
         }
-        viewModel.listItems.observe { listItems -> gameListAdapter?.submitList(listItems) { viewModel.onLoadingDone() } }
+        viewModel.listItems.observe { listItems -> gameListAdapter.submitList(listItems) { viewModel.onLoadingDone() } }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.refreshGames()
-    }
-
-    override fun onDestroyView() {
-        gameListAdapter = null
-        super.onDestroyView()
     }
 
     override fun applyWindowInsets(statusBarHeight: Int) = Unit

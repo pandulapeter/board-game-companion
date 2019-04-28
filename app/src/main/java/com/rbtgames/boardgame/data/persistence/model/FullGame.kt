@@ -1,7 +1,6 @@
 package com.rbtgames.boardgame.data.persistence.model
 
 import androidx.room.Relation
-import com.rbtgames.boardgame.data.persistence.model.PlayerEntity
 import java.util.UUID
 
 data class FullGame(

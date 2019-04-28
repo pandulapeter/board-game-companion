@@ -42,7 +42,7 @@ internal class KeyboardHeightProvider(private val activity: Activity) : PopupWin
         contentView = View.inflate(activity, R.layout.activity, null)
         resizableView = contentView.findViewById(R.id.fragment_container)
         softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-        inputMethodMode = PopupWindow.INPUT_METHOD_NEEDED
+        inputMethodMode = INPUT_METHOD_NEEDED
         width = 0
         height = WindowManager.LayoutParams.MATCH_PARENT
         parentView = activity.findViewById(android.R.id.content)

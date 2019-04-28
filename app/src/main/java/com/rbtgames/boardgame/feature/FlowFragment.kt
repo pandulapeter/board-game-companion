@@ -4,9 +4,9 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import com.rbtgames.boardgame.R
 
-abstract class FlowFragment<B : ViewDataBinding>(@LayoutRes layoutResourceId: Int) : Fragment<B>(layoutResourceId) {
+abstract class FlowFragment<B : ViewDataBinding>(@LayoutRes layoutResourceId: Int) : BaseFragment<B>(layoutResourceId) {
 
-    protected val currentFragment get() = childFragmentManager.findFragmentById(R.id.fragment_container) as? Fragment<*>
+    protected val currentFragment get() = childFragmentManager.findFragmentById(R.id.fragment_container) as? BaseFragment<*>
 
     override fun onBackPressed() = currentFragment.let {
         when {

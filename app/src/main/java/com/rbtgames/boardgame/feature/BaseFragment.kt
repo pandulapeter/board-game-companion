@@ -17,12 +17,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.rbtgames.boardgame.WindowObserver
+import com.rbtgames.boardgame.feature.shared.AutoClearedValue
 import com.rbtgames.boardgame.feature.shared.KeyboardHeightProvider
 
-abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResourceId: Int) : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutResourceId: Int) : Fragment() {
 
-    private var realBinding: B? = null
-    protected val binding get() = realBinding ?: throw IllegalStateException("Trying to access a null binding.")
+    protected var binding by AutoClearedValue<B>()
+        private set
     protected val activityFragmentManager get() = (activity as? AppCompatActivity?)?.supportFragmentManager
     protected val parentFragmentManager get() = parentFragment?.childFragmentManager
     protected open val transitionType = TransitionType.SIBLING
@@ -48,7 +49,7 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
     }
 
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        DataBindingUtil.inflate<B>(inflater, layoutResourceId, container, false).also { realBinding = it }.root
+        DataBindingUtil.inflate<B>(inflater, layoutResourceId, container, false).also { binding = it }.root
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,12 +84,6 @@ abstract class Fragment<B : ViewDataBinding>(@LayoutRes private val layoutResour
         }
         keyboardHeightProvider = null
         previousKeyboardHeight = 0
-    }
-
-    @CallSuper
-    override fun onDestroyView() {
-        super.onDestroyView()
-        realBinding = null
     }
 
     private fun dismissSnackbar() {

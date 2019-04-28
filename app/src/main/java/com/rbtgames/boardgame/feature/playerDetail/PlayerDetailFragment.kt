@@ -25,11 +25,10 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
 
     override val viewModel by viewModel<PlayerDetailViewModel> { parametersOf(arguments?.playerId, arguments?.gameId) }
     override val transitionType = TransitionType.MODAL
-    private var colorAdapter: ColorAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        colorAdapter = ColorAdapter { color -> viewModel.onColorSelected(color) }
+        val colorAdapter = ColorAdapter { color -> viewModel.onColorSelected(color) }
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -49,7 +48,7 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
                 binding.root.postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) activityFragmentManager?.navigateBack() }
             }
         }
-        viewModel.colors.observe { colorViewModels -> colorAdapter?.submitList(colorViewModels) }
+        viewModel.colors.observe { colorViewModels -> colorAdapter.submitList(colorViewModels) }
         viewModel.initialSelectedColorIndex.observe { position -> binding.recyclerView.apply { postDelayed(KEYBOARD_HIDE_DELAY) { if (isAdded) smoothScrollToPosition(position) } } }
     }
 
@@ -64,11 +63,6 @@ class PlayerDetailFragment : ScreenFragment<FragmentPlayerDetailBinding, PlayerD
                 bottomMargin = context.dimension(R.dimen.first_keyline) + keyboardHeight
             }
         }
-    }
-
-    override fun onDestroyView() {
-        colorAdapter = null
-        super.onDestroyView()
     }
 
     companion object {

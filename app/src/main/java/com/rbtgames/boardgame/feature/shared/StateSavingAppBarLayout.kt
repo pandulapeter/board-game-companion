@@ -11,9 +11,7 @@ import kotlinx.android.parcel.Parcelize
 
 open class StateSavingAppBarLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppBarLayout(context, attrs) {
 
-    var isAppBarExpanded = false
-        private set
-
+    private var isAppBarExpanded = false
     private val onOffsetChangedListener = OnOffsetChangedListener { _, offset -> onOffsetChanged(offset) }
 
     override fun onAttachedToWindow() {

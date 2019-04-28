@@ -8,7 +8,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.rbtgames.boardgame.databinding.ActivityBinding
-import com.rbtgames.boardgame.feature.Fragment
+import com.rbtgames.boardgame.feature.BaseFragment
 import com.rbtgames.boardgame.feature.home.HomeFlowFragment
 import com.rbtgames.boardgame.utils.handleReplace
 
@@ -18,7 +18,7 @@ class Activity : AppCompatActivity(), WindowObserver {
     override val statusBarHeight get() = if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInMultiWindowMode)) 1 else binding.fragmentContainer.statusBarHeight
     override var keyboardHeight = 0
 
-    private val currentFragment get() = supportFragmentManager.findFragmentById(R.id.fragment_container) as? Fragment<*>
+    private val currentFragment get() = supportFragmentManager.findFragmentById(R.id.fragment_container) as? BaseFragment<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)

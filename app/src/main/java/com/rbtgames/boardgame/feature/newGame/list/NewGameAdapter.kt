@@ -17,6 +17,7 @@ class NewGameAdapter(private val onPlayerClicked: (player: PlayerViewModel) -> U
 
         override fun areItemsTheSame(oldItem: NewGameListItem, newItem: NewGameListItem) = oldItem.id == newItem.id
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: NewGameListItem, newItem: NewGameListItem) = oldItem == newItem
     }) {
 

@@ -12,7 +12,7 @@ class GamesPagerAdapter(private val context: Context, fragmentManager: FragmentM
     override fun getItem(position: Int) = when (position) {
         0 -> ActiveGamesFragment.newInstance()
         1 -> FinishedGamesFragment.newInstance()
-        else -> throw IllegalArgumentException("No Fragment defined for position $position.")
+        else -> throw IllegalArgumentException("No BaseFragment defined for position $position.")
     }
 
     override fun getPageTitle(position: Int): CharSequence = when (position) {

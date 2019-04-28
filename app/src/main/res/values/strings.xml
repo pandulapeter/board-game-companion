@@ -52,7 +52,10 @@
     <string name="game_detail_current_turn">@string/games_current_player_name</string>
     <string name="game_detail_points_hint">Points</string>
     <string name="game_detail_next_turn">Next turn</string>
-    <string name="game_detail_points_format">%d points behind</string>
+    <plurals name="game_detail_points_format">
+        <item quantity="one">%d point behind</item>
+        <item quantity="other">%d points behind</item>
+    </plurals>
     <string name="game_detail_menu_undo">Undo</string>
     <string name="game_detail_menu_add_counter">Add counter</string>
     <string name="game_detail_menu_edit_players">Edit players</string>

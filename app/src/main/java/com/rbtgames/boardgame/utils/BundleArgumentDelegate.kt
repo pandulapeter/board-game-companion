@@ -26,11 +26,4 @@ sealed class BundleArgumentDelegate<T>(protected val key: kotlin.String, protect
 
         override fun setValue(thisRef: Bundle?, property: KProperty<*>, value: kotlin.String) = thisRef?.putString(key, value) ?: Unit
     }
-
-    class Parcelable<P : android.os.Parcelable>(key: kotlin.String, defaultValue: P? = null) : BundleArgumentDelegate<P?>(key, defaultValue) {
-
-        override fun getValue(thisRef: Bundle?, property: KProperty<*>) = thisRef?.getParcelable(key) as P?
-
-        override fun setValue(thisRef: Bundle?, property: KProperty<*>, value: P?) = thisRef?.putParcelable(key, value) ?: Unit
-    }
 }

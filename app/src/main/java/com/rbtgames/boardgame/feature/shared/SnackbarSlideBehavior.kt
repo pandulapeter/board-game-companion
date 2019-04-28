@@ -9,7 +9,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.rbtgames.boardgame.utils.consume
 
 @Suppress("unused")
-class SnackbarSlideBehavior @JvmOverloads constructor(private val context: Context, attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>(context, attrs) {
+class SnackbarSlideBehavior @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>(context, attrs) {
 
     override fun onAttachedToLayoutParams(lp: CoordinatorLayout.LayoutParams) {
         if (lp.dodgeInsetEdges == Gravity.NO_GRAVITY) {

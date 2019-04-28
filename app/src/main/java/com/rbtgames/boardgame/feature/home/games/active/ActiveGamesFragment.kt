@@ -19,11 +19,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ActiveGamesFragment : ScreenFragment<FragmentGamesActiveBinding, ActiveGamesViewModel>(R.layout.fragment_games_active) {
 
     override val viewModel by viewModel<ActiveGamesViewModel>()
-    private var gameListAdapter: GameListAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        gameListAdapter = GameListAdapter { game -> navigateToGameDetail(game.id) }
+        val gameListAdapter = GameListAdapter { game -> navigateToGameDetail(game.id) }
         val itemTouchHelper = ItemTouchHelper(object : ElevationItemTouchHelperCallback((context?.dimension(R.dimen.content_padding) ?: 0).toFloat()) {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
@@ -38,7 +37,7 @@ class ActiveGamesFragment : ScreenFragment<FragmentGamesActiveBinding, ActiveGam
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder.adapterPosition.also { position ->
                     if (position != RecyclerView.NO_POSITION) {
-                        (gameListAdapter?.getItem(position) as? ActiveGameViewModel?)?.game?.also { gameToDelete ->
+                        (gameListAdapter.getItem(position) as? ActiveGameViewModel?)?.game?.also { gameToDelete ->
                             viewModel.deleteGamePermanently()
                             showSnackbar(
                                 message = getString(R.string.games_game_deleted_message),
@@ -58,7 +57,7 @@ class ActiveGamesFragment : ScreenFragment<FragmentGamesActiveBinding, ActiveGam
             adapter = gameListAdapter
             itemTouchHelper.attachToRecyclerView(this)
         }
-        viewModel.listItems.observe { listItems -> gameListAdapter?.submitList(listItems) { viewModel.onLoadingDone() } }
+        viewModel.listItems.observe { listItems -> gameListAdapter.submitList(listItems) { viewModel.onLoadingDone() } }
     }
 
     override fun onResume() {
@@ -67,11 +66,6 @@ class ActiveGamesFragment : ScreenFragment<FragmentGamesActiveBinding, ActiveGam
     }
 
     override fun applyWindowInsets(statusBarHeight: Int) = Unit
-
-    override fun onDestroyView() {
-        gameListAdapter = null
-        super.onDestroyView()
-    }
 
     private fun navigateToGameDetail(gameId: String) = activityFragmentManager?.handleReplace(addToBackStack = true) { GameDetailFragment.newInstance(gameId) }
 
