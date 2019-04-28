@@ -78,7 +78,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
 
     // Persistence
-    def roomVersion = "2.1.0-alpha06"
+    def roomVersion = "2.1.0-alpha07"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
@@ -91,5 +91,12 @@ dependencies {
     def lifecycleVersion = "2.1.0-alpha04"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
+
+    // Leak detection
+    def leakCanaryVersion = '1.6.3'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    internalImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leakCanaryVersion"
 }
 apply plugin: 'com.google.gms.google-services'
