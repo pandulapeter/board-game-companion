@@ -54,14 +54,14 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         }
         viewModel.shouldShowFinishGameConfirmation.observe { showFinishGameConfirmation() }
         viewModel.isGameActive.observe {
-            binding.root.post {
+            binding.root.postDelayed({
                 if (isAdded) {
                     when (it) {
                         true -> showKeyboard(binding.pointsInput)
                         false -> hideKeyboard(activity?.currentFocus)
                     }
                 }
-            }
+            }, 200)
         }
     }
 

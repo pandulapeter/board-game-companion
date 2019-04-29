@@ -27,7 +27,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     val shouldShowFinishGameConfirmation: LiveData<Boolean?> get() = _shouldShowFinishGameConfirmation
     private val _shouldShowFinishGameConfirmation = eventLiveData()
     val isGameActive: LiveData<Boolean?> get() = _isGameActive
-    private val _isGameActive = MutableLiveData<Boolean>()
+    private val _isGameActive = MutableLiveData<Boolean?>()
     private var previousGameState: Game? = null
 
     init {
