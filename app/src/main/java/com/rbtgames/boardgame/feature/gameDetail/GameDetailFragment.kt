@@ -69,12 +69,11 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
 
     private fun showOverflowMenu() = PopupMenu(requireContext(), binding.moreButton, GravityCompat.END).apply {
         menu.apply {
-            if (viewModel.isUndoAvailable()) {
-                add(Menu.NONE, R.id.menu_undo, 0, R.string.game_detail_menu_undo)
-            }
-            add(Menu.NONE, R.id.menu_add_counter, 1, R.string.game_detail_menu_add_counter)
-            add(Menu.NONE, R.id.menu_edit_players, 2, R.string.game_detail_menu_edit_players)
-            add(Menu.NONE, R.id.menu_finish_game, 3, R.string.game_detail_menu_finish_game)
+            add(Menu.NONE, R.id.menu_undo, 0, R.string.game_detail_menu_undo)
+            add(Menu.FIRST, R.id.menu_add_counter, 1, R.string.game_detail_menu_add_counter)
+            add(Menu.FIRST, R.id.menu_edit_players, 2, R.string.game_detail_menu_edit_players)
+            add(Menu.FIRST, R.id.menu_finish_game, 3, R.string.game_detail_menu_finish_game)
+            setGroupEnabled(Menu.NONE, viewModel.isUndoAvailable())
             setOnMenuItemClickListener {
                 dismiss()
                 when (it.itemId) {
