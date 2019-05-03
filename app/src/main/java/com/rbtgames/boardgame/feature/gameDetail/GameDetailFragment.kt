@@ -131,7 +131,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         negativeButton = R.string.game_detail_finish_confirmation_negative
     )
 
-    private fun showCounterDialog() = activityFragmentManager?.let { CounterDialogFragment.show(it) }
+    private fun showCounterDialog() = CounterDialogFragment.show(childFragmentManager)
 
     companion object {
         private const val DIALOG_FINISH_GAME_CONFIRMATION_ID = 1

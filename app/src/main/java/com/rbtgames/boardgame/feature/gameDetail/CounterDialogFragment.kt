@@ -54,6 +54,7 @@ class CounterDialogFragment : AppCompatDialogFragment() {
                     }
                 )
             )
+            dismiss()
         }
     }
 

@@ -136,7 +136,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                     baselineMaximum = baselineMaximum
                 )
             )
-            player.counters.forEach { counter ->
+            player.counters.sortedBy { it.points }.forEach { counter ->
                 if ((counter.points - baselineMinimum) > 0) {
                     items.add(
                         CounterViewModel(
