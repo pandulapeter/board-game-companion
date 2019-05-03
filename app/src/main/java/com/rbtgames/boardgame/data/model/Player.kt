@@ -8,7 +8,8 @@ data class Player(
     val id: String = UUID.randomUUID().toString(),
     val name: String = "",
     val color: Color = Color.COLOR_1,
-    val points: Int = 0
+    val points: Int = 0,
+    val counters: List<Counter> = listOf()
 ) {
 
     enum class Color(@ColorRes val colorResourceId: Int) {

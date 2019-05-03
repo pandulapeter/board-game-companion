@@ -15,7 +15,8 @@ data class PlayerEntity(
     @ColumnInfo(name = GAME_ID) val gameId: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "color") val color: Color,
-    @ColumnInfo(name = "points") val points: Int
+    @ColumnInfo(name = "points") val points: Int,
+    @ColumnInfo(name = "counters") val counters: String
 ) {
     companion object {
         const val TABLE_NAME = "players"

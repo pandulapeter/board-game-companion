@@ -1,11 +1,14 @@
 package com.rbtgames.boardgame.data.repository
 
+import com.rbtgames.boardgame.data.model.Counter
 import com.rbtgames.boardgame.data.model.Game
 import com.rbtgames.boardgame.data.model.Player
 import com.rbtgames.boardgame.data.persistence.Database
 import com.rbtgames.boardgame.data.persistence.model.FullGame
 import com.rbtgames.boardgame.data.persistence.model.GameEntity
 import com.rbtgames.boardgame.data.persistence.model.PlayerEntity
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -13,6 +16,7 @@ class GameRepository(database: Database) {
 
     private val gameDao = database.fullGameDao()
     private var newGame: Game? = null
+    private val counterAdapter by lazy { Moshi.Builder().build().adapter<List<Counter>>(Types.newParameterizedType(List::class.java, Counter::class.java)) }
 
     fun getNewGame() = (newGame ?: Game()).also {
         newGame = it
@@ -65,7 +69,8 @@ class GameRepository(database: Database) {
         id = id,
         name = name,
         color = color,
-        points = points
+        points = points,
+        counters = counterAdapter.fromJson(counters) ?: listOf()
     )
 
     private fun Game.toGameEntity() = GameEntity(
@@ -81,7 +86,8 @@ class GameRepository(database: Database) {
             gameId = gameId,
             name = player.name,
             color = player.color,
-            points = player.points
+            points = player.points,
+            counters = counterAdapter.toJson(player.counters)
         )
     }
 }
