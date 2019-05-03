@@ -32,5 +32,6 @@
 
     <!-- Game detail -->
     <dimen name="game_detail_fab_bottom_margin">12dp</dimen>
+    <dimen name="game_detail_counter_margin_start">20dp</dimen>
 
 </resources>

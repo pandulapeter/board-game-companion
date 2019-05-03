@@ -103,7 +103,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                 lastActionTime = System.currentTimeMillis(),
                 players = game.players.map { player ->
                     if (player.id == _currentPlayer.value?.id) player.copy(counters = player.counters.toMutableList().apply {
-                        add(counter)
+                        add(counter.copy(points = counter.points + player.points))
                     }) else player
                 }
             )
@@ -124,6 +124,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     }
 
     private fun List<Player>.toViewModels(currentGame: Game): List<GameDetailListItem> {
+        val baselineMinimum = first().points
         val baselineMaximum = last().points
         val items = mutableListOf<GameDetailListItem>()
         forEachIndexed { index, player ->
@@ -131,17 +132,17 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
                 PlayerViewModel(
                     order = index,
                     player = player,
-                    baselineMinimum = first().points,
+                    baselineMinimum = baselineMinimum,
                     baselineMaximum = baselineMaximum
                 )
             )
             player.counters.forEach { counter ->
-                if (counter.points - first().points > 0) {
+                if ((counter.points - baselineMinimum) > 0) {
                     items.add(
                         CounterViewModel(
                             player = player,
                             counter = counter,
-                            baselineMinimum = first().points,
+                            baselineMinimum = baselineMinimum,
                             baselineMaximum = baselineMaximum
                         )
                     )

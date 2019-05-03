@@ -28,46 +28,28 @@
             android:id="@+id/card_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/game_detail_counter_margin_start"
             app:cardCornerRadius="@dimen/card_corner_radius"
+            app:color="@{viewModel.player.color}"
             app:contentPadding="@dimen/content_padding"
             app:layout_constraintEnd_toEndOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:cardBackgroundColor="@color/brand">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/counter_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/dot"
-                    android:layout_width="@dimen/player_dot_size"
-                    android:layout_height="@dimen/player_dot_size"
-                    android:importantForAccessibility="no"
-                    app:cardCornerRadius="@dimen/player_dot_corner_radius"
-                    app:color="@{viewModel.player.color}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:cardBackgroundColor="@color/brand" />
-
-                <TextView
-                    android:id="@+id/counter_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/content_padding"
-                    android:layout_marginEnd="@dimen/content_padding"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@{viewModel.counter.name}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/dot"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Player name" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@{viewModel.counter.name}"
+                android:textColor="@color/black"
+                tools:text="Player name" />
 
         </androidx.cardview.widget.CardView>
 
@@ -75,7 +57,7 @@
             android:id="@+id/points_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@plurals/game_detail_points_format(viewModel.points,viewModel.points)}"
+            android:text="@{@plurals/game_detail_points_counter_format(viewModel.points,viewModel.points)}"
             app:layout_constraintBottom_toTopOf="@+id/progress_bar"
             app:layout_constraintStart_toStartOf="@+id/progress_bar"
             app:layout_constraintTop_toTopOf="parent"
