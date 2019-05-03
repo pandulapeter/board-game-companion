@@ -8,7 +8,6 @@ import com.rbtgames.boardgame.feature.ScreenViewModel
 import com.rbtgames.boardgame.feature.home.games.list.FinishedGameViewModel
 import com.rbtgames.boardgame.feature.home.games.list.GameListListItem
 import com.rbtgames.boardgame.feature.home.games.list.HintViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FinishedGamesViewModel(private val gameRepository: GameRepository) : ScreenViewModel() {
@@ -21,7 +20,7 @@ class FinishedGamesViewModel(private val gameRepository: GameRepository) : Scree
     private val games get() = _listItems.value?.filterIsInstance<FinishedGameViewModel>() ?: emptyList()
 
     fun refreshGames() {
-        launch(Dispatchers.Default) {
+        launch {
             _listItems.postValue(
                 gameRepository.getFinishedGames()
                     .filter { it.id != gameToDeleteId }
