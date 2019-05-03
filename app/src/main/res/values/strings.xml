@@ -51,7 +51,7 @@
     <!-- Game detail -->
     <string name="game_detail_current_turn">@string/games_current_player_name</string>
     <string name="game_detail_points_hint">Points</string>
-    <string name="game_detail_next_turn">Next turn</string>
+    <string name="game_detail_done">Done</string>
     <plurals name="game_detail_points_format">
         <item quantity="one">%d point behind</item>
         <item quantity="other">%d points behind</item>

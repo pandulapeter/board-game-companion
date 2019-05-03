@@ -20,18 +20,20 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
     private val _shouldShowOverflowMenu = eventLiveData()
     val currentPlayer: LiveData<Player?> get() = _currentPlayer
     private val _currentPlayer = MutableLiveData<Player?>()
-    val isNextTurnButtonEnabled: LiveData<Boolean> get() = _isNextTurnButtonEnabled
-    private val _isNextTurnButtonEnabled = mutableLiveDataOf(false)
+    val isDoneButtonEnabled: LiveData<Boolean> get() = _isDoneButtonEnabled
+    private val _isDoneButtonEnabled = mutableLiveDataOf(false)
     val players: LiveData<List<PlayerViewModel>> get() = _players
     private val _players = mutableLiveDataOf(emptyList<PlayerViewModel>())
     val shouldShowFinishGameConfirmation: LiveData<Boolean?> get() = _shouldShowFinishGameConfirmation
     private val _shouldShowFinishGameConfirmation = eventLiveData()
     val isGameActive: LiveData<Boolean?> get() = _isGameActive
     private val _isGameActive = MutableLiveData<Boolean?>()
+    val shouldShowCounterDialog: LiveData<Boolean?> get() = _shouldShowCounterDialog
+    private val _shouldShowCounterDialog = eventLiveData()
     private var previousGameState: Game? = null
 
     init {
-        points.observeForever { _isNextTurnButtonEnabled.value = !it.isNullOrBlank() }
+        points.observeForever { _isDoneButtonEnabled.value = !it.isNullOrBlank() }
         refreshList()
     }
 
@@ -39,8 +41,8 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
 
     fun onMoreButtonPressed() = _shouldShowOverflowMenu.sendEvent()
 
-    fun onNextTurnButtonPressed() {
-        if (isNextTurnButtonEnabled.value == true) {
+    fun onDoneButtonPressed() {
+        if (isDoneButtonEnabled.value == true) {
             launch {
                 val game = gameRepository.getGame(gameId)!!
                 val points = try {
@@ -75,8 +77,7 @@ class GameDetailViewModel(private val gameRepository: GameRepository, private va
         }
     }
 
-    //TODO
-    fun onAddCounterButtonPressed() = Unit
+    fun onAddCounterButtonPressed() = _shouldShowCounterDialog.sendEvent()
 
     //TODO
     fun onEditPlayersButtonPressed() = Unit

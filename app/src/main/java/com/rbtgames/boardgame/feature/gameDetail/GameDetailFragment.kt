@@ -35,7 +35,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.pointsInput.apply {
-            setOnEditorActionListener { _, actionId, _ -> consume { if (actionId == EditorInfo.IME_ACTION_DONE) viewModel.onNextTurnButtonPressed() } }
+            setOnEditorActionListener { _, actionId, _ -> consume { if (actionId == EditorInfo.IME_ACTION_DONE) viewModel.onDoneButtonPressed() } }
         }
         val gameDetailAdapter = GameDetailAdapter()
         binding.recyclerView.apply {
@@ -52,6 +52,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
                 binding.recyclerView.apply { post { smoothScrollToPosition(0) } }
             }
         }
+        viewModel.shouldShowCounterDialog.observe { showCounterDialog() }
         viewModel.shouldShowFinishGameConfirmation.observe { showFinishGameConfirmation() }
         viewModel.isGameActive.observe {
             binding.root.postDelayed({
@@ -126,9 +127,12 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         negativeButton = R.string.game_detail_finish_confirmation_negative
     )
 
+    private fun showCounterDialog() {
+        //TODO:
+        showSnackbar("Work in progress")
+    }
 
     companion object {
-        private const val SCROLL_TO_TOP_DELAY = 100L
         private const val DIALOG_FINISH_GAME_CONFIRMATION_ID = 1
 
         private var Bundle.gameId by BundleArgumentDelegate.String("gameId")
