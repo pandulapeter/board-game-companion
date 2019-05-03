@@ -3,8 +3,11 @@ package com.rbtgames.boardgame.utils
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.widget.EditText
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
@@ -50,6 +53,15 @@ fun View.animateCircularReveal(onAnimationEnd: () -> Unit) {
         animator.start()
     }
 }
+
+inline fun EditText.onTextChanged(crossinline callback: (String) -> Unit) = addTextChangedListener(object : TextWatcher {
+
+    override fun afterTextChanged(s: Editable?) = Unit
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = callback(s?.toString() ?: "")
+})
 
 inline fun Animator.addListener(
     crossinline onAnimationRepeat: () -> Unit = {},

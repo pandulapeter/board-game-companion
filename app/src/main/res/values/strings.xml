@@ -69,5 +69,9 @@
     <string name="game_detail_finish_confirmation_positive">Finish</string>
     <string name="game_detail_finish_confirmation_negative">@string/cancel</string>
     <string name="game_detail_finished">Finished game</string>
+    <string name="game_detail_counter_new_counter">New counter</string>
+    <string name="game_detail_counter_add">Add</string>
+    <string name="game_detail_counter_name">Name</string>
+    <string name="game_detail_counter_points">Points</string>
 
 </resources>
