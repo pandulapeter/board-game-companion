@@ -11,6 +11,7 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rbtgames.boardgame.R
+import com.rbtgames.boardgame.data.model.Counter
 import com.rbtgames.boardgame.databinding.FragmentGameDetailBinding
 import com.rbtgames.boardgame.feature.ScreenFragment
 import com.rbtgames.boardgame.feature.gameDetail.list.GameDetailAdapter
@@ -26,7 +27,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 
-class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailViewModel>(R.layout.fragment_game_detail), AlertDialogFragment.OnDialogItemSelectedListener {
+class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailViewModel>(R.layout.fragment_game_detail), AlertDialogFragment.OnDialogItemSelectedListener,
+    CounterDialogFragment.OnDialogItemSelectedListener {
 
     override val viewModel by viewModel<GameDetailViewModel> { parametersOf(arguments?.gameId) }
     override val transitionType = TransitionType.DETAIL
@@ -46,8 +48,8 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         }
         viewModel.shouldNavigateBack.observe { navigateBack() }
         viewModel.shouldShowOverflowMenu.observe { showOverflowMenu() }
-        viewModel.players.observe { playerViewModels ->
-            gameDetailAdapter.submitList(playerViewModels) {
+        viewModel.players.observe { gameDetailListItems ->
+            gameDetailAdapter.submitList(gameDetailListItems) {
                 viewModel.onLoadingDone()
                 binding.recyclerView.apply { post { smoothScrollToPosition(0) } }
             }
@@ -118,6 +120,8 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         }
     }
 
+    override fun onCounterAdded(counter: Counter) = viewModel.addCounter(counter)
+
     private fun showFinishGameConfirmation() = AlertDialogFragment.show(
         id = DIALOG_FINISH_GAME_CONFIRMATION_ID,
         fragmentManager = childFragmentManager,
@@ -127,10 +131,7 @@ class GameDetailFragment : ScreenFragment<FragmentGameDetailBinding, GameDetailV
         negativeButton = R.string.game_detail_finish_confirmation_negative
     )
 
-    private fun showCounterDialog() {
-        //TODO:
-        showSnackbar("Work in progress")
-    }
+    private fun showCounterDialog() = CounterDialogFragment.show(childFragmentManager)
 
     companion object {
         private const val DIALOG_FINISH_GAME_CONFIRMATION_ID = 1
